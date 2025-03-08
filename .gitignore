@@ -1,0 +1,27 @@
+# Node.js (se usi pacchetti npm per test o build)
+node_modules/
+package-lock.json
+npm-debug.log*
+yarn.lock
+
+# Cache e file temporanei
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+
+# File di build o compilati (se usi un task runner tipo Gulp/Webpack)
+dist/
+build/
+.cache/
+.vscode/
+.idea/
+*.bak
+
+# Cartelle di sistema (Mac & Linux)
+*.swp
+*.swo
+
+# Configurazioni personali
+.env
+.env.local
