@@ -1,11 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link
+      rel="stylesheet"
+      href="node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="css/index.css">
+  </head>
+  <body>
+    <!-- Loader -->
+    <div id="loader">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Caricamento...</span>
+      </div>
+    </div>
+
+    <!-- Contenuto della pagina -->
+    <div id="content" class="container text-center mt-5" style="display: none">
+      <h1>Benvenuto nella pagina!</h1>
+      <div class="d-flex justify-content-center align-items-center mt-5">
+        <a href="pages/login.html" class="btn btn-primary btn-lg">Accedi</a>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    // Simula un caricamento di 3 secondi
+    setTimeout(() => {
+      $("#loader").hide(); // Nasconde il loader
+      $("#content").show(); // Mostra il contenuto
+    }, 2000);
+  </script>
 </html>

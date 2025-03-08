@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <!-- IMPORT BOOTSTRAP -->
+    <link
+      rel="stylesheet"
+      href="/node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
+
+    <!-- IMPORT JQUERY -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- IMPORT BOOTSTRAP POPPERS/CORE -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- IMPORT FILE .CSS-->
+    <link rel="stylesheet" href="/css/login.css" />
+
+    <!-- IMPORT FONT -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- IMPORT SCRIPT -->
+    <script src="/js/login.js"></script>
+  </head>
+  <body>
+    <!-- Loader -->
+    <div id="loader">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Caricamento...</span>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div
+      class="container d-flex justify-content-center align-items-center vh-100"
+      id="content"
+      style="display: none"
+    >
+      <div
+        class="card p-4"
+        style="max-width: 400px; width: 100%; border-radius: 8px"
+      >
+        <h3 class="text-center mb-4">Accedi</h3>
+        <form>
+          <!-- Username -->
+          <div class="form-group mb-4">
+            <label for="E-mail">E-mail</label>
+            <input
+              type="text"
+              class="form-control"
+              id="email"
+              placeholder="Inserisci l'email"
+              required
+            />
+          </div>
+
+          <!-- Password -->
+          <div class="form-group mb-4 position-relative">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              placeholder="Inserisci la tua password"
+              required
+            />
+            <!-- Icona occhio per mostrare/nascondere la password -->
+            <img
+              src="/assets/images/eye-icon.png"
+              alt="Mostra/Nascondi"
+              id="eye-icon"
+              class="position-absolute"
+              style="top: 50%; right: 10px; cursor: pointer"
+              onclick="togglePassword()"
+            />
+          </div>
+
+          <!-- Bottone di login -->
+          <button type="submit" class="btn btn-primary btn-block w-100">
+            Accedi
+          </button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
