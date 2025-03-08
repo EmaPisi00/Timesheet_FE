@@ -64,7 +64,7 @@
         <form>
           <!-- Username -->
           <div class="form-group mb-4">
-            <label for="E-mail">E-mail</label>
+            <label for="E-mail" class="mb-2">E-mail</label>
             <input
               type="text"
               class="form-control"
@@ -75,8 +75,8 @@
           </div>
 
           <!-- Password -->
-          <div class="form-group mb-4 position-relative">
-            <label for="password">Password</label>
+          <div class="form-group mb-1 position-relative">
+            <label for="password" class="mb-2">Password</label>
             <input
               type="password"
               class="form-control"
@@ -90,9 +90,14 @@
               alt="Mostra/Nascondi"
               id="eye-icon"
               class="position-absolute"
-              style="top: 50%; right: 10px; cursor: pointer"
+              style="top: 55%; right: 10px; cursor: pointer"
               onclick="togglePassword()"
             />
+          </div>
+
+           <!-- Password dimenticata -->
+           <div class="form-group mb-5">
+           <a href="#">Password Dimenticata?</a>
           </div>
 
           <!-- Bottone di login -->
