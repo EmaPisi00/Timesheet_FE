@@ -25,3 +25,6 @@ build/
 # Configurazioni personali
 .env
 .env.local
+
+# Node
+node_modules/
