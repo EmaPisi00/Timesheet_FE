@@ -11,7 +11,9 @@ function togglePassword() {
   }
 }
 
-setTimeout(() => {
-  $(`#loader`).hide();
-  $(`#content`).show();
-}, 2000);
+
+$(document).ready(function(){
+	$('#nav-icon4').click(function(){
+		$(this).toggleClass('open');
+	});
+});

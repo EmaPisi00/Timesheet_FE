@@ -1,0 +1,49 @@
+#nav-icon4 {
+    width: 50px; /* Larghezza del bottone */
+    height: 40px; /* Altezza totale */
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#nav-icon4 span {
+    display: block;
+    position: absolute;
+    height: 6px; /* Spessore della linea */
+    width: 40px; /* Lunghezza della linea */
+    background: black; /* Colore delle linee */
+    border-radius: 50px; /* Arrotondamento */
+    transition: all 0.3s ease-in-out;
+    margin: 10px;
+}
+
+/* Posizionamento delle linee */
+#nav-icon4 span:nth-child(1) {
+    top: 0px;
+    transform-origin: center;
+}
+
+#nav-icon4 span:nth-child(2) {
+    top: 14px;
+    transform-origin: center;
+}
+
+#nav-icon4 span:nth-child(3) {
+    top: 28px;
+    transform-origin: center;
+}
+
+/* Animazione della "X" */
+#nav-icon4.open span:nth-child(1) {
+    transform: translateY(14px) rotate(45deg);
+}
+
+#nav-icon4.open span:nth-child(2) {
+    opacity: 0;
+}
+
+#nav-icon4.open span:nth-child(3) {
+    transform: translateY(-14px) rotate(-45deg);
+}
