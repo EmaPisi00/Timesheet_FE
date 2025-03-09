@@ -15,6 +15,9 @@
   /* Applica il font Roboto a tutto il corpo della pagina */
   body {
     font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    transition: margin-left 0.3s ease-in-out;
   }
 
   input,
@@ -43,4 +46,61 @@
     width: 25px;
     height: 25px;
     cursor: pointer;
+  }
+
+  /*** HAMBURGER MENU ***/
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #f8f9fa;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar.hidden {
+    transform: translateX(-250px);
+    /* Nasconde il menu */
+  }
+
+  .sidebar a {
+    display: block;
+    margin: 20px 0;
+    /* Più spazio tra i link */
+    color: #000;
+    text-decoration: none;
+    font-size: 18px;
+    /* Maggior leggibilità */
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+
+  .sidebar a:hover {
+    color: #007bff;
+    /* Cambia colore al passaggio del mouse */
+    transform: translateX(20px);
+    /* Leggero movimento a destra */
+    font-size: 20px;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+
+  .open-btn {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 1000;
   }
