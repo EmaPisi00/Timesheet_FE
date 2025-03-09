@@ -49,58 +49,97 @@
   }
 
   /*** HAMBURGER MENU ***/
+  #nav-icon {
+    width: 50px;
+    height: 40px;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1002;
+    padding: 10px;
+    transition: all 0.3s ease;
+  }
 
-  .sidebar {
+  #nav-icon span {
+    display: block;
+    position: absolute;
+    height: 5px;
+    width: 35px;
+    background: black;
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  /* Posizione iniziale delle linee */
+  #nav-icon span:nth-child(1) {
+    top: 8px;
+  }
+
+  #nav-icon span:nth-child(2) {
+    top: 18px;
+  }
+
+  #nav-icon span:nth-child(3) {
+    top: 28px;
+  }
+
+  /* Animazione della "X" (inversione dell'animazione) */
+  #nav-icon.open span:nth-child(1) {
+    transform: translateY(10px) rotate(45deg);
+  }
+
+  #nav-icon.open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  #nav-icon.open span:nth-child(3) {
+    transform: translateY(-10px) rotate(-45deg);
+  }
+
+  /* SIDEBAR */
+  #sidebar {
     position: fixed;
     top: 0;
-    left: 0;
+    left: -260px;
     width: 250px;
     height: 100%;
-    background-color: #f8f9fa;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    transition: transform 0.3s ease;
+    background: #2c3e50;
+    padding: 70px 20px 20px;
+    /* Padding-top maggiore per lasciare spazio al bottone */
+    transition: left 0.3s ease-in-out;
+    box-shadow: 5px 0 10px rgba(0, 0, 0, 0.2);
+    color: white;
   }
 
-  .sidebar.hidden {
-    transform: translateX(-250px);
-    /* Nasconde il menu */
+  #sidebar.active {
+    left: 0;
+    /* La sidebar è visibile */
   }
 
-  .sidebar a {
+  #sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+  }
+
+  #sidebar ul li {
+    margin-bottom: 12px;
+  }
+
+  #sidebar a {
     display: block;
-    margin: 20px 0;
-    /* Più spazio tra i link */
-    color: #000;
-    text-decoration: none;
+    padding: 12px;
     font-size: 18px;
-    /* Maggior leggibilità */
-    transition: color 0.3s ease, transform 0.3s ease;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
   }
 
-  .sidebar a:hover {
-    color: #007bff;
-    /* Cambia colore al passaggio del mouse */
-    transform: translateX(20px);
-    /* Leggero movimento a destra */
-    font-size: 20px;
-  }
-
-  .close-btn {
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    margin-bottom: 20px;
-  }
-
-  .open-btn {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    z-index: 1000;
+  #sidebar a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    padding-left: 15px;
   }
