@@ -9,17 +9,21 @@ export const generateTimesheet = (year, month) => {
   hideItem("#generateTimesheet");
   hideItem("#colSelectMonth");
   hideItem("#colSelectYear");
+  hideItem("#titleTimesheet");
 
+  hideItem("#tableContainer");
+
+  hideItem("#colSelectYear");
   // Disabilito i link o pulsanti
   disableLinks();
 
-  // INSERISCO UN TIMEOUT PER SIMULARE UN RITARDO DI GENERAZIONE
+  // Inserisco un timeout per ritardare la generazione
   setTimeout(() => {
     const tableContainer = $("#tableContainer");
     tableContainer.empty(); // Pulisce qualsiasi tabella esistente
 
     // Determina il numero di giorni nel mese
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const daysInMonth = new Date(year, month, 0).getDate();
 
     // Creazione della tabella con classi Bootstrap
     const table = $("<table>").addClass(
@@ -40,9 +44,7 @@ export const generateTimesheet = (year, month) => {
 
     // Ciclo per generare una riga per ogni giorno del mese
     for (let day = 1; day <= daysInMonth; day++) {
-      const dateString = `${day.toString().padStart(2, "0")}/${(month + 1)
-        .toString()
-        .padStart(2, "0")}/${year}`;
+      const dateString = `${day} ${getMonthName(month)} ${year}`;
 
       const row = $("<tr>").addClass("text-center align-middle");
 
@@ -97,6 +99,7 @@ export const generateTimesheet = (year, month) => {
     showItem("#generateTimesheet");
     showItem("#colSelectMonth");
     showItem("#colSelectYear");
+    showItem("#tableContainer");
 
     // Mostro il titolo del timesheet con mese + anno
     $("#titleTimesheet")
@@ -111,5 +114,9 @@ export const generateTimesheet = (year, month) => {
 
     // Riabilito i bottoni dopo la generazione della tabella
     enableLinks();
-  }, 2000); // Timeout ridotto a 2 secondi per velocizzare il test
+
+    // Setto nuovamente le select su default
+    $("#monthsSelect").prop("selectedIndex", 0);
+    $("#yearsSelect").prop("selectedIndex", 0);
+  }, 2000);
 };

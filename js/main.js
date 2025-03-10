@@ -53,7 +53,7 @@ $(document).ready(function () {
   // Controlla la selezione al click del pulsante
   $("#generateTimesheet").click(function () {
     // Ottieni i valori selezionati per mese e anno
-    var month = parseInt($("#monthsSelect").val(), 10); // Mese come numero (0-11)
+    var month = parseInt($("#monthsSelect").val(), 10);
     var year = parseInt($("#yearsSelect").val(), 10);
 
     var isValid = true;

@@ -165,12 +165,11 @@
     text-align: center;
   }
 
-
-  input[type="text"].note-input {
-    width: 400px;
+  .note-input {
+    width: 100%;
     /* Allargato input per note */
     padding: 5px;
-    font-size: 12px;
+    font-size: 15px;
   }
 
   select {
@@ -180,7 +179,28 @@
   }
 
   .status-select {
-    width: 120px;
+    width: 100%;
+  }
+
+  /*IMPOSTO LA LARGHEZZA DELLE COLONNE*/
+  table td:nth-child(1) {
+    width: 160px;
+  }
+
+  table td:nth-child(2) {
+    width: 100px;
+  }
+
+  table td:nth-child(3) {
+    width: 100px;
+  }
+
+  table td:nth-child(4) {
+    width: 500px;
+  }
+
+  table td:nth-child(5) {
+    width: 160px;
   }
 
   /** ERRORE ANNO MESE NELLA GENERAZIONE TIMESHEET **/
