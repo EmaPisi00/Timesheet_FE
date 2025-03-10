@@ -23,3 +23,7 @@ export function hideItem(item) {
 export function showItem(item) {
   $(item).show();
 }
+
+export function isEmpty(value) {
+  return value === undefined || value === null || value === "";
+}

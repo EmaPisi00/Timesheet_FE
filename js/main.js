@@ -1,4 +1,4 @@
-import { hideItem, showItem } from "./utils/utils.js";
+import { hideItem, showItem, isEmpty } from "./utils/utils.js";
 import { generateTimesheet } from "./utils/tableUtils.js";
 
 // SETTO IL TIMEOUT PER RITARDARE IL CARICAMENTO
@@ -50,11 +50,48 @@ $(document).ready(function () {
     $("#containerGenerateTimesheet").show();
   });
 
-  // Aggiungi evento per generare il timesheet al clic
+  // Controlla la selezione al click del pulsante
   $("#generateTimesheet").click(function () {
-    var year = 2025; // Puoi sostituirlo con un valore dinamico
-    var month = 0; // Gennaio (mese parte da 0)
-    generateTimesheet(year, month); // Chiamata alla funzione per generare la tabella
+    // Ottieni i valori selezionati per mese e anno
+    var month = parseInt($("#monthsSelect").val(), 10); // Mese come numero (0-11)
+    var year = parseInt($("#yearsSelect").val(), 10);
+
+    var isValid = true;
+
+    // Controlla se il mese selezionato è valido
+    if (isEmpty(month) || isNaN(month)) {
+      isValid = false;
+      showItem("#monthError"); // Mostra errore mese
+    } else {
+      hideItem("#monthError"); // Nascondi errore mese
+    }
+
+    // Controlla se l'anno selezionato è valido
+    if (isEmpty(year) || isNaN(year)) {
+      isValid = false;
+      showItem("#yearError"); // Mostra errore anno
+    } else {
+      hideItem("#yearError"); // Nascondi errore anno
+    }
+
+    // Se tutto è valido, genera il timesheet
+    if (isValid) {
+      generateTimesheet(year, month);
+    }
+  });
+
+  // Controlla e nasconde gli errori quando l'utente cambia selezione
+  $("#monthsSelect, #yearsSelect").change(function () {
+    var month = parseInt($("#monthsSelect").val(), 10); // Mese come numero (0-11)
+    var year = parseInt($("#yearsSelect").val(), 10);
+
+    // Nascondi gli errori ogni volta che l'utente cambia selezione
+    if (!isEmpty(month) && !isNaN(month)) {
+      hideItem("#monthError");
+    }
+    if (!isEmpty(year) && !isNaN(year)) {
+      hideItem("#yearError");
+    }
   });
 
   $("#home").click(function () {
