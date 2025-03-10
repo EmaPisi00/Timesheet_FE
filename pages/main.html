@@ -30,8 +30,8 @@
     />
 
     <!-- IMPORT SCRIPT -->
-    <script src="/js/login.js"></script>
-    <script src="/js/utils/dateUtils.js"></script>
+    <script type="module" src="/js/main.js"></script>
+    <script type="module" src="/js/utils/dateUtils.js"></script>
 
     <!-- Aggiungi la favicon -->
     <link
@@ -60,11 +60,6 @@
       id="content"
       style="display: none"
     >
-      <div id="loader-middle" style="display: none">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Caricamento...</span>
-        </div>
-      </div>
       <div
         class="card p-4"
         style="max-width: 400px; width: 100%; border-radius: 8px"
@@ -122,35 +117,63 @@
         </form>
       </div>
 
-      <!-- TIMESHEET CARD -->
-      <div class="" id="containerGenerateTimesheet" style="display: none">
-        <div id="selectYearsMonths">
-          <!-- SELECT PER MOSTRARE I MESI DELL'ANNO -->
-          <div id="monthDiv">
-            <label>Seleziona Mese </label>
-            <select id="monthsSelect">
-              <option value="" disabled selected>Seleziona Mese</option>
-            </select>
+      <!-- GENERAZIONE TIMESHEET -->
+      <div
+        class="container mt-5"
+        id="containerGenerateTimesheet"
+        style="display: none"
+      >
+        <div id="loader-middle" class="text-center" style="display: none">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Caricamento...</span>
           </div>
+        </div>
+        <div class="row justify-content-center" id="containerTitleSelect">
+          <div class="col-md-6">
+            <form>
+              <h3
+                class="text-center mb-4"
+                style="display: none"
+                id="titleTimesheet"
+              ></h3>
+              <div class="row">
+                <!-- Primo Select -->
+                <div class="col-6 mb-3" id="colSelectMonth">
+                  <label for="selectMonth" class="form-label"
+                    >Seleziona un mese</label
+                  >
+                  <select class="form-select" id="monthsSelect">
+                    <option selected disabled>Seleziona un mese</option>
+                  </select>
+                </div>
 
-          <!-- SELECT PER MOSTRARE GLI ANNI-->
-          <div id="yearDiv">
-            <label style="margin-top: 20px;">Seleziona Anno </label>
-            <select id="yearsSelect">
-              <option value="" disabled selected>Seleziona Anno</option>
-            </select>
+                <!-- Secondo Select -->
+                <div class="col-6 mb-3" id="colSelectYear">
+                  <label for="selectYear" class="form-label"
+                    >Seleziona un anno</label
+                  >
+                  <select class="form-select" id="yearsSelect">
+                    <option selected disabled>Seleziona un anno</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Bottone -->
+              <div class="text-center">
+                <button
+                  type="button"
+                  id="generateTimesheet"
+                  class="btn btn-primary btn-block"
+                >
+                  Genera Timesheet
+                </button>
+              </div>
+            </form>
           </div>
         </div>
-        <div id="generateButton">
-          <button
-            type="button"
-            id="generateTimesheet"
-            class="btn btn-primary btn-block w-20"
-          >
-            Genera Timesheet
-          </button>
-        </div>
-        <div id="tableContainer" class=""></div>
+
+        <!-- Aggiungi un margine sopra la tabella -->
+        <div id="tableContainer" class="mt-4"></div>
       </div>
 
       <!-- NAVBAR -->

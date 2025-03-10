@@ -145,27 +145,6 @@
   }
 
   /*****/
-
-  #generateButton {
-    justify-content: center;
-    display: flex;
-    flex-direction: column-reverse;
-    margin-top: 10px;
-  }
-
-  #monthDiv, #yearDiv{
-    display: contents;
-    padding: 10px;
-  }
-
-  #selectYearsMonths select {
-    width: 100%;
-  }
-  
-  #selectYearsMonths{
-    display: grid;
-  }
-
   .scrollable-table {
     overflow-y: auto;
     max-height: 800px;
