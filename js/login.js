@@ -47,85 +47,116 @@ $(document).ready(function () {
     $("#containerGenerateTimesheet").show();
   });
 
+  // Aggiungi evento per generare il timesheet al clic
   $("#generateTimesheet").click(function () {
-    $("#loader-middle").show();
-    $("#generateTimesheet").hide();
-    setTimeout(() => {
-      var tableContainer = $("#tableContainer");
-      tableContainer.empty(); // Pulisce eventuali dati precedenti
-
-      var year = 2025,
-        month = 0; // Gennaio (mese parte da 0)
-      var daysInMonth = new Date(year, month + 1, 0).getDate(); // Ottieni giorni del mese
-
-      // Crea la tabella
-      var table = $("<table>");
-      var thead = $("<thead>");
-      var headerRow = $("<tr>");
-      headerRow.append("<th>Giorno</th>");
-      headerRow.append("<th>Orario Entrata</th>");
-      headerRow.append("<th>Orario Uscita</th>");
-      headerRow.append("<th>Note</th>");
-      headerRow.append("<th>Stato</th>");
-      thead.append(headerRow);
-      table.append(thead);
-
-      var tbody = $("<tbody>");
-
-      for (var day = 1; day <= daysInMonth; day++) {
-        var dateString = `${day.toString().padStart(2, "0")}/01/2025`;
-
-        var row = $("<tr>");
-
-        // Colonna Giorno
-        row.append("<td>" + dateString + "</td>");
-
-        // Colonna Orario Entrata
-        var startTimeSelect = $("<select>");
-        for (var h = 0; h < 24; h++) {
-          var hour = h.toString().padStart(2, "0") + ":00";
-          startTimeSelect.append($("<option>").val(hour).text(hour));
-        }
-        row.append($("<td>").append(startTimeSelect));
-
-        // Colonna Orario Uscita
-        var endTimeSelect = $("<select>");
-        for (var h = 0; h < 24; h++) {
-          var hour = h.toString().padStart(2, "0") + ":00";
-          endTimeSelect.append($("<option>").val(hour).text(hour));
-        }
-        row.append($("<td>").append(endTimeSelect));
-
-        // Colonna Note (ora con larghezza maggiore)
-        var noteInput = $("<input>")
-          .attr("type", "text")
-          .addClass("note-input"); // Aggiunto il class per le note
-        row.append($("<td>").append(noteInput));
-
-        // Colonna Stato (con valore di default "lavorativo")
-        var statusSelect = $("<select>").addClass("status-select");
-        statusSelect.append($("<option>").val("lavorativo").text("Lavorativo"));
-        statusSelect.append($("<option>").val("ferie").text("Ferie"));
-        statusSelect.append($("<option>").val("malattia").text("Malattia"));
-        row.append($("<td>").append(statusSelect));
-
-        tbody.append(row);
-      }
-
-      table.append(tbody);
-      var scrollableTable = $("<div>")
-        .addClass("scrollable-table")
-        .append(table);
-      tableContainer.append(scrollableTable);
-
-      // Disabilita il pulsante per evitare rigenerazioni multiple
-      $("#generateTimesheet").show();
-      $("#generateTimesheet").prop("disabled", true);
-      $("#loader-middle").hide();
-    }, 5000);
+    var year = 2025; // Puoi sostituirlo con un valore dinamico
+    var month = 0; // Gennaio (mese parte da 0)
+    generateTimesheet(year, month); // Chiamata alla funzione per generare la tabella
   });
 
   $("#home").click(function () {
     $("#containerGenerateTimesheet").hide();
   });
+
+  $("#showTimesheet").click(function () {
+    $("#containerGenerateTimesheet").hide();
+  });
 });
+
+const generateTimesheet = (year, month) => {
+  // Mostra il loader e nasconde il pulsante "Genera"
+  $("#loader-middle").show();
+  $("#generateTimesheet").hide();
+  disableLinks(); // Disabilita i pulsanti durante la generazione
+
+  // Aggiungi un timeout per simulare il tempo di generazione (5 secondi in questo caso)
+  setTimeout(() => {
+    // Svuota e rimuovi eventuali tabelle precedenti
+    var tableContainer = $("#tableContainer");
+    tableContainer.empty(); // Pulisce qualsiasi tabella esistente
+
+    // Determina il numero di giorni nel mese
+    var daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    // Crea la tabella nuova
+    var table = $("<table>");
+    var thead = $("<thead>");
+    var headerRow = $("<tr>");
+    headerRow.append("<th>Giorno</th>");
+    headerRow.append("<th>Orario Entrata</th>");
+    headerRow.append("<th>Orario Uscita</th>");
+    headerRow.append("<th>Note</th>");
+    headerRow.append("<th>Stato</th>");
+    thead.append(headerRow);
+    table.append(thead);
+
+    var tbody = $("<tbody>");
+
+    // Ciclo per generare una riga per ogni giorno del mese
+    for (var day = 1; day <= daysInMonth; day++) {
+      var dateString = `${day.toString().padStart(2, "0")}/${(month + 1)
+        .toString()
+        .padStart(2, "0")}/${year}`;
+
+      var row = $("<tr>");
+
+      // Colonna Giorno
+      row.append("<td>" + dateString + "</td>");
+
+      // Colonna Orario Entrata
+      var startTimeSelect = $("<select>");
+      for (var h = 0; h < 24; h++) {
+        var hour = h.toString().padStart(2, "0") + ":00";
+        startTimeSelect.append($("<option>").val(hour).text(hour));
+      }
+      row.append($("<td>").append(startTimeSelect));
+
+      // Colonna Orario Uscita
+      var endTimeSelect = $("<select>");
+      for (var h = 0; h < 24; h++) {
+        var hour = h.toString().padStart(2, "0") + ":00";
+        endTimeSelect.append($("<option>").val(hour).text(hour));
+      }
+      row.append($("<td>").append(endTimeSelect));
+
+      // Colonna Note
+      var noteInput = $("<input>").attr("type", "text").addClass("note-input");
+      row.append($("<td>").append(noteInput));
+
+      // Colonna Stato
+      var statusSelect = $("<select>").addClass("status-select");
+      statusSelect.append($("<option>").val("lavorativo").text("Lavorativo"));
+      statusSelect.append($("<option>").val("ferie").text("Ferie"));
+      statusSelect.append($("<option>").val("malattia").text("Malattia"));
+      row.append($("<td>").append(statusSelect));
+
+      tbody.append(row);
+    }
+
+    table.append(tbody);
+    var scrollableTable = $("<div>").addClass("scrollable-table").append(table);
+    tableContainer.append(scrollableTable);
+
+    // Riabilita il pulsante di generazione del timesheet
+    $("#generateTimesheet").show();
+    $("#generateTimesheet").prop("disabled", false); // Abilita nuovamente il pulsante
+    $("#loader-middle").hide(); // Nascondi il loader
+    enableLinks(); // Riabilita i link
+  }, 5000); // Timeout di 5 secondi
+};
+
+// Funzione che disabilita i link e i pulsanti
+function disableLinks() {
+  // Disabilita tutti i pulsanti e i link
+  document.querySelectorAll("a, button").forEach(function (element) {
+    element.classList.add("disabled"); // Aggiunge la classe 'disabled'
+  });
+}
+
+// Funzione che riabilita i link e i pulsanti
+function enableLinks() {
+  // Abilita tutti i pulsanti e i link
+  document.querySelectorAll("a, button").forEach(function (element) {
+    element.classList.remove("disabled"); // Rimuove la classe 'disabled'
+  });
+}

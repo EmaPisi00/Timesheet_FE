@@ -10,6 +10,9 @@
       href="/node_modules/bootstrap/dist/css/bootstrap.min.css"
     />
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
     <!-- IMPORT JQUERY -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -57,7 +60,7 @@
       id="content"
       style="display: none"
     >
-      <div id="loader-middle" style="display: none;">
+      <div id="loader-middle" style="display: none">
         <div class="spinner-border text-primary" role="status">
           <span class="visually-hidden">Caricamento...</span>
         </div>
@@ -128,6 +131,19 @@
         >
           Genera Timesheet
         </button>
+        <div>
+          <label>Seleziona Mese</label>
+          <select>
+            <option>Gennaio</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Seleziona Anno</label>
+          <select>
+            <option>2025</option>
+          </select>
+        </div>
         <div id="tableContainer" class=""></div>
       </div>
 
@@ -141,7 +157,33 @@
       <div id="sidebar">
         <ul>
           <li><a href="#" id="home">Home</a></li>
-          <li><a href="#" id="timesheet">Timesheet</a></li>
+          <li>
+            <div class="dropdown w-100 text-white">
+              <button
+                class="btn dropdown-toggle text-white"
+                type="button"
+                data-bs-toggle="dropdown"
+                style="border: 0"
+              >
+                Timesheet
+              </button>
+              <ul
+                class="dropdown-menu"
+                style="background-color: #2c3e50; height: 115px"
+              >
+                <li>
+                  <a class="dropdown-item" href="#" id="timesheet"
+                    >Genera Timesheet</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#" id="showTimesheet"
+                    >Visualizza Timesheet</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </li>
           <li><a href="#">Contact</a></li>
         </ul>
       </div>
