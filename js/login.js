@@ -160,3 +160,4 @@ function enableLinks() {
     element.classList.remove("disabled"); // Rimuove la classe 'disabled'
   });
 }
+

@@ -31,7 +31,7 @@
 
     <!-- IMPORT SCRIPT -->
     <script src="/js/login.js"></script>
-    <script src="/js/timesheet.js"></script>
+    <script src="/js/utils/dateUtils.js"></script>
 
     <!-- Aggiungi la favicon -->
     <link
@@ -124,25 +124,31 @@
 
       <!-- TIMESHEET CARD -->
       <div class="" id="containerGenerateTimesheet" style="display: none">
-        <button
-          type="button"
-          id="generateTimesheet"
-          class="btn btn-primary btn-block w-20"
-        >
-          Genera Timesheet
-        </button>
-        <div>
-          <label>Seleziona Mese</label>
-          <select>
-            <option>Gennaio</option>
-          </select>
-        </div>
+        <div id="selectYearsMonths">
+          <!-- SELECT PER MOSTRARE I MESI DELL'ANNO -->
+          <div id="monthDiv">
+            <label>Seleziona Mese </label>
+            <select id="monthsSelect">
+              <option value="" disabled selected>Seleziona Mese</option>
+            </select>
+          </div>
 
-        <div>
-          <label>Seleziona Anno</label>
-          <select>
-            <option>2025</option>
-          </select>
+          <!-- SELECT PER MOSTRARE GLI ANNI-->
+          <div id="yearDiv">
+            <label style="margin-top: 20px;">Seleziona Anno </label>
+            <select id="yearsSelect">
+              <option value="" disabled selected>Seleziona Anno</option>
+            </select>
+          </div>
+        </div>
+        <div id="generateButton">
+          <button
+            type="button"
+            id="generateTimesheet"
+            class="btn btn-primary btn-block w-20"
+          >
+            Genera Timesheet
+          </button>
         </div>
         <div id="tableContainer" class=""></div>
       </div>

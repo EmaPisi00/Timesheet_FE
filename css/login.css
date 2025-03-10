@@ -145,14 +145,25 @@
   }
 
   /*****/
-  #containerGenerateTimesheet {
-    margin-top: 20px;
+
+  #generateButton {
+    justify-content: center;
+    display: flex;
+    flex-direction: column-reverse;
+    margin-top: 10px;
   }
 
-  #generateTimesheet {
-    margin-top: 20px;
-    font-size: 14px;
-    padding: 10px 20px;
+  #monthDiv, #yearDiv{
+    display: contents;
+    padding: 10px;
+  }
+
+  #selectYearsMonths select {
+    width: 100%;
+  }
+  
+  #selectYearsMonths{
+    display: grid;
   }
 
   .scrollable-table {
@@ -183,7 +194,7 @@
     font-size: 12px;
   }
 
-  select{
+  select {
     padding: 5px;
     font-size: 12px;
     width: 100px;
