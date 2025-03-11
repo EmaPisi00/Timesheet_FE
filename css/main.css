@@ -144,7 +144,7 @@
     padding-left: 15px;
   }
 
-  /*****/
+  /*** TABELLA AUTOGENERATE IN BASE AL MESE SELEZIONATO ***/
   .scrollable-table {
     overflow-y: auto;
     max-height: 800px;

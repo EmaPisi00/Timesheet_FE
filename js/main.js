@@ -1,5 +1,6 @@
 import { hideItem, showItem, isEmpty } from "./utils/utils.js";
 import { generateTimesheet } from "./utils/tableUtils.js";
+import { ajaxCall } from "./service/base-service.js";
 
 // SETTO IL TIMEOUT PER RITARDARE IL CARICAMENTO
 setTimeout(() => {
@@ -100,5 +101,22 @@ $(document).ready(function () {
 
   $("#showTimesheet").click(function () {
     hideItem("#containerGenerateTimesheet");
+  });
+});
+
+$(document).ready(function () {
+  $('#load').click(function () {
+    $.ajax({
+      method: "GET",
+      url: "http://localhost:8080/api/v1/user",  // URL dell'API
+      success: function(response) {
+        console.log(response); // Visualizza la risposta in console
+        $('#dati-file').html(JSON.stringify(response, null, 2)); // Mostra la risposta in formato leggibile
+      },
+      error: function(xhr, status, error) {
+        console.error("Errore:", error);
+        alert("Errore durante la richiesta.");
+      }
+    });
   });
 });
