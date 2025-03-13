@@ -8,50 +8,67 @@ setTimeout(() => {
   showItem("#content");
 }, 2000);
 
-$(document).ready(function () {
-  // Gestione del click sul pulsante di login
-  $("#loginBtn").click(async function (event) {
-    event.preventDefault(); // Prevenire il comportamento di default del form
+$(document).ready(async function () {
+  // Recupero il token dalla sessione
+  const token = localStorage.getItem("authToken");
+  var verifyToken = await userService.verifyToken(token);
 
-    // Ottieni i valori dai campi di login
-    const email = $("#email").val();
-    const password = $("#password").val();
+  console.log(verifyToken);
 
-    // Mostra il loader e nasconde il form di login
-    showItem("#loader");
+  // Se il token è valido allora eseguo direttamente il login
+  if (verifyToken) {
     hideItem("#loginCard");
+    setTimeout(() => {
+      $("#nav-icon").show().addClass("open");
+      $("#sidebar").addClass("active").show();
 
-    try {
-      // Effettua la chiamata al login usando async/await
-      const result = await userService.login(email, password); // Usa userService.login, passandogli l'email e la password
+      // Nascondi il loader
 
-      console.log(result);
+      hideItem("#loader");
+      hideItem("#loadError");
+    }, 2000);
+  } else {
+    // Gestione del click sul pulsante di login
+    $("#loginBtn").click(async function (event) {
+      event.preventDefault(); // Prevenire il comportamento di default del form
 
-      // Se il login è riuscito
-      if (result.token) {
-        // Mostra il menu hamburger e la sidebar dopo il login riuscito
-        setTimeout(() => {
-          $("#nav-icon").show().addClass("open");
-          $("#sidebar").addClass("active").show();
+      // Ottieni i valori dai campi di login
+      const email = $("#email").val();
+      const password = $("#password").val();
 
-          // Nascondi il loader
+      // Mostra il loader e nasconde il form di login
+      showItem("#loader");
+      hideItem("#loginCard");
+
+      try {
+        const result = await userService.login(email, password);
+
+        // Se il login va a buon fine
+        if (result.token) {
+          setTimeout(() => {
+            $("#nav-icon").show().addClass("open");
+            $("#sidebar").addClass("active").show();
+
+            // Nascondi il loader
+            hideItem("#loader");
+            hideItem("#loadError");
+          }, 2000);
+        } else {
+          // Se il login fallisce
+          // Nascondi il loader e mostra di nuovo il form di login
           hideItem("#loader");
-        }, 2000);
-      } else {
-        // Se il login fallisce, mostra un messaggio di errore
-        alert(result.message);
-        // Nascondi il loader e mostra di nuovo il form di login
+          showItem("#loginCard");
+          showItem("#loginError");
+        }
+      } catch (error) {
+        // Gestisci eventuali errori della chiamata AJAX
+        console.error("Errore nel login:", error);
+        showItem("#loginError");
         hideItem("#loader");
         showItem("#loginCard");
       }
-    } catch (error) {
-      // Gestisci eventuali errori della chiamata AJAX
-      console.error("Errore nel login:", error);
-      alert("Si è verificato un errore nel login");
-      hideItem("#loader");
-      showItem("#loginCard");
-    }
-  });
+    });
+  }
 
   // Gestione del click per mostrare/nascondere la password
   $("#eye-icon").click(function () {
@@ -128,32 +145,3 @@ $(document).ready(function () {
     hideItem("#containerGenerateTimesheet");
   });
 });
-
-function login() {
-  var username = $("#username").val(); // Assumiamo che ci sia un input con id 'username'
-  var password = $("#password").val(); // Assumiamo che ci sia un input con id 'password'
-
-  var data = {
-    username: username,
-    password: password,
-  };
-
-  // Chiamata AJAX per il login
-  chiamataAjax(
-    "https://tuo-backend.com/api/login", // URL del login
-    "POST", // Metodo POST per il login
-    data, // Dati da inviare
-    null, // Nessun token per la chiamata di login
-    function (response) {
-      // Successo del login, salva il token
-      localStorage.setItem("authToken", response.token);
-      console.log("Login riuscito, token:", response.token);
-
-      // Dopo il login, possiamo fare altre chiamate protette
-      chiamataApiProtetta();
-    },
-    function (xhr, status, error) {
-      console.log("Errore nel login:", error);
-    }
-  );
-}

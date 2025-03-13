@@ -1,33 +1,27 @@
-// base-service.js
-export async function ajaxCall(url, method, data, token) {
-  const options = {
-    method: method,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
+export async function ajaxCall(url, method, data = null, token = null) {
+    try {
+        const headers = {
+            "Content-Type": "application/json",
+        };
 
-  if (token) {
-    options.headers["Authorization"] = `Bearer ${token}`;
-  }
+        // Se è presente un token, aggiungilo nell'header Authorization
+        if (token) {
+            headers["Authorization"] = `Bearer ${token}`;
+        }
 
-  if (data) {
-    options.body = JSON.stringify(data);
-  }
+        const response = await fetch(url, {
+            method: method,
+            headers: headers,
+            body: data ? JSON.stringify(data) : null,
+        });
 
-  try {
-    const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error(`Errore HTTP: ${response.status}`);
+        }
 
-    // Se la risposta è ok (status 200-299)
-    if (!response.ok) {
-      throw new Error(`Errore nella chiamata: ${response.statusText}`);
+        return await response.json();
+    } catch (error) {
+        console.error("Errore nella chiamata AJAX:", error);
+        throw error;
     }
-
-    // Restituisci la risposta come JSON
-    const responseData = await response.json();
-    return responseData;
-  } catch (error) {
-    console.error("Errore durante la chiamata AJAX:", error);
-    throw error; // Rilancia l'errore per la gestione nel chiamante
-  }
 }

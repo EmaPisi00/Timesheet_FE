@@ -1,7 +1,7 @@
 import { ajaxCall } from "./base-service.js";
 import { Constant } from "../utils/constant.js";
 
-class UserService {
+export class UserService {
   constructor() {}
 
   // Funzione login con token opzionale usando async/await
@@ -20,7 +20,7 @@ class UserService {
       if (response && response.token) {
         localStorage.setItem("authToken", response.token);
         console.log("Login riuscito, token salvato.");
-        return response; // Restituisce l'oggetto della risposta
+        return response;
       } else {
         throw new Error("Token non ricevuto.");
       }
@@ -30,6 +30,29 @@ class UserService {
       return null; // Restituisce null in caso di errore
     }
   }
+
+  // Funzione per verificare la validità del token
+  async verifyToken(token) {
+    const verifyUrl = Constant.API_URL + "/user/verify"; // Endpoint per la verifica
+
+    try {
+      // Chiamata AJAX per verificare il token con il metodo POST e il token nell'header Authorization
+      const response = await ajaxCall(verifyUrl, "POST", null, token);
+      console.log(response);
+
+      if (response) {
+        console.log("Token valido.");
+        return true;
+      } else {
+        console.log("Token non valido.");
+        return false;
+      }
+    } catch (error) {
+      console.error("Errore nella verifica del token:", error);
+      return false; // Restituisce false in caso di errore
+    }
+  }
 }
 
+// Esportazione predefinita della classe
 export default new UserService();

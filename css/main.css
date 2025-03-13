@@ -205,7 +205,8 @@
 
   /** ERRORE ANNO MESE NELLA GENERAZIONE TIMESHEET **/
   #monthError,
-  #yearError {
+  #yearError,
+  #loginError {
     color: red;
     font-size: 15px;
     padding: 2px;
