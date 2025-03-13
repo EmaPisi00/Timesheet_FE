@@ -1,6 +1,6 @@
 import { hideItem, showItem, isEmpty } from "./utils/utils.js";
-import { generateTimesheet } from "./utils/tableUtils.js";
-import { ajaxCall } from "./service/base-service.js";
+import { generateTimesheet } from "./utils/table-utils.js";
+import userService from "./service/user-service.js";
 
 // SETTO IL TIMEOUT PER RITARDARE IL CARICAMENTO
 setTimeout(() => {
@@ -10,22 +10,47 @@ setTimeout(() => {
 
 $(document).ready(function () {
   // Gestione del click sul pulsante di login
-  $("#loginBtn").click(function (event) {
+  $("#loginBtn").click(async function (event) {
     event.preventDefault(); // Prevenire il comportamento di default del form
+
+    // Ottieni i valori dai campi di login
+    const email = $("#email").val();
+    const password = $("#password").val();
 
     // Mostra il loader e nasconde il form di login
     showItem("#loader");
     hideItem("#loginCard");
 
-    // Usa setTimeout per fare le modifiche dopo 2 secondi
-    setTimeout(() => {
-      // Mostra il menu hamburger e la sidebar
-      $("#nav-icon").show().addClass("open");
-      $("#sidebar").addClass("active").show();
+    try {
+      // Effettua la chiamata al login usando async/await
+      const result = await userService.login(email, password); // Usa userService.login, passandogli l'email e la password
 
-      // Nascondi il loader
+      console.log(result);
+
+      // Se il login è riuscito
+      if (result.token) {
+        // Mostra il menu hamburger e la sidebar dopo il login riuscito
+        setTimeout(() => {
+          $("#nav-icon").show().addClass("open");
+          $("#sidebar").addClass("active").show();
+
+          // Nascondi il loader
+          hideItem("#loader");
+        }, 2000);
+      } else {
+        // Se il login fallisce, mostra un messaggio di errore
+        alert(result.message);
+        // Nascondi il loader e mostra di nuovo il form di login
+        hideItem("#loader");
+        showItem("#loginCard");
+      }
+    } catch (error) {
+      // Gestisci eventuali errori della chiamata AJAX
+      console.error("Errore nel login:", error);
+      alert("Si è verificato un errore nel login");
       hideItem("#loader");
-    }, 2000);
+      showItem("#loginCard");
+    }
   });
 
   // Gestione del click per mostrare/nascondere la password
@@ -104,19 +129,31 @@ $(document).ready(function () {
   });
 });
 
-$(document).ready(function () {
-  $('#load').click(function () {
-    $.ajax({
-      method: "GET",
-      url: "http://localhost:8080/api/v1/user",  // URL dell'API
-      success: function(response) {
-        console.log(response); // Visualizza la risposta in console
-        $('#dati-file').html(JSON.stringify(response, null, 2)); // Mostra la risposta in formato leggibile
-      },
-      error: function(xhr, status, error) {
-        console.error("Errore:", error);
-        alert("Errore durante la richiesta.");
-      }
-    });
-  });
-});
+function login() {
+  var username = $("#username").val(); // Assumiamo che ci sia un input con id 'username'
+  var password = $("#password").val(); // Assumiamo che ci sia un input con id 'password'
+
+  var data = {
+    username: username,
+    password: password,
+  };
+
+  // Chiamata AJAX per il login
+  chiamataAjax(
+    "https://tuo-backend.com/api/login", // URL del login
+    "POST", // Metodo POST per il login
+    data, // Dati da inviare
+    null, // Nessun token per la chiamata di login
+    function (response) {
+      // Successo del login, salva il token
+      localStorage.setItem("authToken", response.token);
+      console.log("Login riuscito, token:", response.token);
+
+      // Dopo il login, possiamo fare altre chiamate protette
+      chiamataApiProtetta();
+    },
+    function (xhr, status, error) {
+      console.log("Errore nel login:", error);
+    }
+  );
+}

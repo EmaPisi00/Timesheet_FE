@@ -1,5 +1,5 @@
 import { hideItem, showItem, disableLinks, enableLinks } from "./utils.js";
-import { getMonthName } from "./dateUtils.js";
+import { getMonthName } from "./date-utils.js";
 
 export const generateTimesheet = (year, month) => {
   // Mostra il loader
@@ -10,10 +10,9 @@ export const generateTimesheet = (year, month) => {
   hideItem("#colSelectMonth");
   hideItem("#colSelectYear");
   hideItem("#titleTimesheet");
-
   hideItem("#tableContainer");
-
   hideItem("#colSelectYear");
+
   // Disabilito i link o pulsanti
   disableLinks();
 
