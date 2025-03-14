@@ -1,6 +1,7 @@
-import { hideItem, showItem, isEmpty } from "./utils/utils.js";
+import { hideItem, showItem, isEmpty, isTokenExpired } from "./utils/utils.js";
 import { generateTimesheet } from "./utils/table-utils.js";
 import userService from "./service/user-service.js";
+import { jwtDecode } from "jwt-decode";
 
 // SETTO IL TIMEOUT PER RITARDARE IL CARICAMENTO
 setTimeout(() => {
@@ -11,21 +12,21 @@ setTimeout(() => {
 $(document).ready(async function () {
   // Recupero il token dalla sessione
   const token = localStorage.getItem("authToken");
-  var verifyToken = await userService.verifyToken(token);
-
-  console.log(verifyToken);
+  var verifyToken = jwtDecode(token);
 
   // Se il token è valido allora eseguo direttamente il login
   if (verifyToken) {
     hideItem("#loginCard");
-    setTimeout(() => {
+    setTimeout(async () => {
       $("#nav-icon").show().addClass("open");
       $("#sidebar").addClass("active").show();
 
       // Nascondi il loader
-
       hideItem("#loader");
       hideItem("#loadError");
+
+      const userProfile = await userService.getUserProfile(token);
+      console.log(userProfile);
     }, 2000);
   } else {
     // Gestione del click sul pulsante di login
@@ -43,15 +44,20 @@ $(document).ready(async function () {
       try {
         const result = await userService.login(email, password);
 
+        var token1 = result.token;
+
         // Se il login va a buon fine
-        if (result.token) {
-          setTimeout(() => {
+        if (token1) {
+          setTimeout(async () => {
             $("#nav-icon").show().addClass("open");
             $("#sidebar").addClass("active").show();
 
             // Nascondi il loader
             hideItem("#loader");
             hideItem("#loadError");
+
+            const userProfile = await userService.getUserProfile(token1);
+            console.log(userProfile);
           }, 2000);
         } else {
           // Se il login fallisce

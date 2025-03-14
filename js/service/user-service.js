@@ -52,6 +52,28 @@ export class UserService {
       return false; // Restituisce false in caso di errore
     }
   }
+
+  // Funzione per recuperare i dati dell'utente
+  async getUserProfile(token) {
+    const verifyUrl = Constant.API_URL + "/user/get-profile"; // Endpoint per la verifica
+
+    try {
+      // Chiamata AJAX per verificare il token con il metodo POST e il token nell'header Authorization
+      const response = await ajaxCall(verifyUrl, "GET", null, token);
+      console.log(response);
+
+      if (response) {
+        console.log("Toke valido, informazioni utente");
+        return response;
+      } else {
+        console.log("Token non valido.");
+        return null;
+      }
+    } catch (error) {
+      console.error("Errore nella verifica del token:", error);
+      return null; // Restituisce false in caso di errore
+    }
+  }
 }
 
 // Esportazione predefinita della classe
