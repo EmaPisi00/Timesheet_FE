@@ -4,7 +4,7 @@ import { Constant } from "../utils/constant.js";
 export class UserService {
   constructor() {}
 
-  // Funzione login con token opzionale usando async/await
+  // Metodo login con token opzionale usando async/await
   async login(email, password) {
     const loginUrl = Constant.API_URL + "/user/login";
     const data = {
@@ -19,37 +19,30 @@ export class UserService {
       // Successo del login, salva il token
       if (response && response.token) {
         localStorage.setItem("authToken", response.token);
-        console.log("Login riuscito, token salvato.");
-        return response;
+        console.log("Login riuscito, token salvato.       " + response.token);
+        return response.token;
       } else {
         throw new Error("Token non ricevuto.");
       }
     } catch (error) {
       // Gestisci errori di rete, server o altre eccezioni
       console.error("Errore nel login:", error);
-      return null; // Restituisce null in caso di errore
+      return null; 
     }
   }
 
-  // Funzione per verificare la validità del token
+  // Metodo per verificare la validità del token
   async verifyToken(token) {
-    const verifyUrl = Constant.API_URL + "/user/verify"; // Endpoint per la verifica
+    const verifyUrl = Constant.API_URL + "/user/verify"; // Endpoint protetto
 
     try {
-      // Chiamata AJAX per verificare il token con il metodo POST e il token nell'header Authorization
       const response = await ajaxCall(verifyUrl, "POST", null, token);
-      console.log(response);
-
-      if (response) {
-        console.log("Token valido.");
-        return true;
-      } else {
-        console.log("Token non valido.");
-        return false;
-      }
+      return response;
     } catch (error) {
-      console.error("Errore nella verifica del token:", error);
-      return false; // Restituisce false in caso di errore
+      if (error.status === "403") {
+        console.error("Token non valido");
+      }
+      return false;
     }
   }
 
@@ -74,6 +67,27 @@ export class UserService {
       return null; // Restituisce false in caso di errore
     }
   }
+
+  async refreshToken(refreshToken) {
+    const refreshUrl = Constant.API_URL + "/user/refresh-token";
+    
+    try {
+      const response = await ajaxCall(refreshUrl, "POST", null, refreshToken);
+      console.log("RESPONSE REFRESH TOKEN :  " + response.token);
+      // Verifica la risposta
+      if (response && response.token) {  // Supponendo che la risposta contenga un nuovo token (ad esempio, "newToken")
+        console.log("Token rinnovato con successo:", response.token);
+        return response.token; // Restituisce il nuovo token
+      } else {
+        console.log("Errore nel rinnovo del token.");
+        return null; // Ritorna null se non c'è un nuovo token o se c'è stato un errore
+      }
+    } catch (error) {
+      console.error("Errore durante il rinnovo del token:", error);
+      return null; // Ritorna null in caso di errore
+    }
+  }
+  
 }
 
 // Esportazione predefinita della classe

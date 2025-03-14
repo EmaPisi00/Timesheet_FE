@@ -1,7 +1,6 @@
-import { hideItem, showItem, isEmpty, isTokenExpired } from "./utils/utils.js";
+import { hideItem, showItem, isEmpty } from "./utils/utils.js";
 import { generateTimesheet } from "./utils/table-utils.js";
 import userService from "./service/user-service.js";
-import { jwtDecode } from "jwt-decode";
 
 // SETTO IL TIMEOUT PER RITARDARE IL CARICAMENTO
 setTimeout(() => {
@@ -9,10 +8,95 @@ setTimeout(() => {
   showItem("#content");
 }, 2000);
 
+// Variabile per tenere traccia dell'ID del timer
+let inactivityTimeout;
+let refreshCheckTimeout; // Timeout per controllare ogni minuto
+let lastTokenRefreshTime = 0; // Tiene traccia dell'ultimo rinnovo del token
+
+// Funzione per rinnovare il token
+async function handleTokenRefresh() {
+  const refreshTokenValue = localStorage.getItem("authToken"); // Recupero il refresh token
+  
+  if (refreshTokenValue) {
+    try {
+      const newToken = await userService.refreshToken(refreshTokenValue); // Rinnovo del token
+      console.log("Nuovo token:", newToken);
+      
+      if (newToken) {
+        // Salva il nuovo token nel localStorage per l'uso futuro
+        localStorage.setItem("authToken", newToken);
+        lastTokenRefreshTime = Date.now(); // Registra l'ora dell'ultimo rinnovo
+      }
+    } catch (error) {
+      console.error("Errore durante il rinnovo del token:", error);
+    }
+  } else {
+    console.log("Nessun refresh token trovato.");
+  }
+}
+
+// Funzione per gestire l'inattività dell'utente
+function resetInactivityTimer() {
+  // Se c'era già un timer di inattività, lo cancella
+  clearTimeout(inactivityTimeout);
+
+  // Avvia un nuovo timer di inattività che eseguirà l'azione dopo 10 minuti di inattività
+  inactivityTimeout = setTimeout(() => {
+    console.log("L'utente è inattivo da un po', non rinnovo il token.");
+  }, 60 * 1000); // Imposta un timeout di 10 minuti (600000 ms) per inattività
+}
+
+// Funzione per controllare periodicamente se il token deve essere rinnovato
+function startPeriodicTokenCheck() {
+  // Esegui il controllo ogni minuto (60.000 ms)
+  refreshCheckTimeout = setInterval(() => {
+    // Verifica se è passato più di un minuto dal precedente rinnovo del token
+    const currentTime = Date.now();
+    if (currentTime - lastTokenRefreshTime > 60 * 1000) { // Se è passato più di 1 minuto dal rinnovo
+      console.log("Controllo periodico del rinnovo del token...");
+
+      const lastInteractionTime = localStorage.getItem("lastInteractionTime");
+      if (lastInteractionTime) {
+        const timeDiff = currentTime - lastInteractionTime;
+
+        // Se l'utente è inattivo da più di 10 minuti, rinnova il token
+        if (timeDiff > 60 * 1000) {
+          console.log("Utente inattivo da più di 10 minuti, rinnovo del token.");
+          handleTokenRefresh();
+        }
+      }
+    }
+  }, 60 * 1000); // Controlla ogni minuto
+}
+
+async function checkToken(token) {
+  try {
+    var result = await userService.verifyToken(token); // Aspetta che la Promise si risolva
+    return result; // Qui avrai il valore booleano true o false
+  } catch (error) {
+    console.error("Errore durante la verifica del token:", error);
+  }
+}
+
 $(document).ready(async function () {
+  $(document).on("click mousemove keydown", function () {
+
+    // Resetta il timer di inattività
+    resetInactivityTimer();
+
+    // Aggiorna l'ultima interazione nel localStorage per il controllo periodico
+    localStorage.setItem("lastInteractionTime", Date.now());
+  });
+
+  // Avvia il timer di inattività
+  resetInactivityTimer();
+
+  // Avvia il controllo periodico del rinnovo del token
+  startPeriodicTokenCheck();
+
   // Recupero il token dalla sessione
   const token = localStorage.getItem("authToken");
-  var verifyToken = jwtDecode(token);
+  var verifyToken = await checkToken(token);
 
   // Se il token è valido allora eseguo direttamente il login
   if (verifyToken) {
@@ -44,10 +128,8 @@ $(document).ready(async function () {
       try {
         const result = await userService.login(email, password);
 
-        var token1 = result.token;
-
         // Se il login va a buon fine
-        if (token1) {
+        if (!isEmpty(result)) {
           setTimeout(async () => {
             $("#nav-icon").show().addClass("open");
             $("#sidebar").addClass("active").show();
@@ -56,7 +138,7 @@ $(document).ready(async function () {
             hideItem("#loader");
             hideItem("#loadError");
 
-            const userProfile = await userService.getUserProfile(token1);
+            const userProfile = await userService.getUserProfile(result);
             console.log(userProfile);
           }, 2000);
         } else {
