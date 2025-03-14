@@ -1,25 +1,46 @@
 $(document).ready(function () {
-  // Seleziona gli elementi <select>
   const $monthsSelect = $("#monthsSelect");
   const $yearsSelect = $("#yearsSelect");
 
-  // Aggiungi i mesi
-  for (let i = 1; i <= 12; i++) {
-    const $monthOption = $("<option></option>")
-      .val(i) // Mese numerico (1-12)
-      .text(getMonthName(i));
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth() + 1; // Mese corrente (1-12)
+  const currentYear = currentDate.getFullYear();   // Anno corrente
 
-    $monthsSelect.append($monthOption);
-  }
+  // **1. Aggiungi gli anni disponibili (solo quello attuale e il precedente)**
+  const validYears = [currentYear - 1, currentYear];
 
-  // Aggiungi gli anni
-  const currentYear = new Date().getFullYear(); // Anno corrente
-  for (let year = currentYear - 1; year <= currentYear + 5; year++) {
+  validYears.forEach((year) => {
     const $yearOption = $("<option></option>").val(year).text(year);
-
     $yearsSelect.append($yearOption);
+  });
+
+  // **2. Funzione per aggiornare i mesi in base all'anno selezionato**
+  function updateMonths() {
+    const selectedYear = parseInt($yearsSelect.val(), 10);
+
+    // Svuota la lista dei mesi prima di aggiornarla
+    $monthsSelect.empty();
+
+    // Calcola il mese massimo selezionabile (se l'anno è quello attuale, limita ai mesi fino al corrente)
+    const maxMonth = selectedYear === currentYear ? currentMonth : 12;
+
+    for (let i = 1; i <= maxMonth; i++) {
+      const $monthOption = $("<option></option>")
+        .val(i)
+        .text(getMonthName(i));
+
+      $monthsSelect.append($monthOption);
+    }
   }
+
+  // **3. Imposta l'anno corrente come predefinito e aggiorna i mesi**
+  $yearsSelect.val(currentYear);
+  updateMonths();
+
+  // **4. Quando cambia l'anno, aggiorna i mesi disponibili**
+  $yearsSelect.change(updateMonths);
 });
+
 
 // Funzione per ottenere il nome del mese dato un numero (1-12)
 export function getMonthName(monthNumber) {
