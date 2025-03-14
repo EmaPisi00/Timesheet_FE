@@ -19,7 +19,7 @@ export class UserService {
       // Successo del login, salva il token
       if (response && response.token) {
         localStorage.setItem("authToken", response.token);
-        console.log("Login riuscito, token salvato.       " + response.token);
+        console.log("Login riuscito, token salvato!");
         return response.token;
       } else {
         throw new Error("Token non ricevuto.");
@@ -27,7 +27,7 @@ export class UserService {
     } catch (error) {
       // Gestisci errori di rete, server o altre eccezioni
       console.error("Errore nel login:", error);
-      return null; 
+      return null;
     }
   }
 
@@ -39,9 +39,6 @@ export class UserService {
       const response = await ajaxCall(verifyUrl, "POST", null, token);
       return response;
     } catch (error) {
-      if (error.status === "403") {
-        console.error("Token non valido");
-      }
       return false;
     }
   }
@@ -56,7 +53,7 @@ export class UserService {
       console.log(response);
 
       if (response) {
-        console.log("Toke valido, informazioni utente");
+        console.log("Token valido, informazioni utente");
         return response;
       } else {
         console.log("Token non valido.");
@@ -70,24 +67,15 @@ export class UserService {
 
   async refreshToken(refreshToken) {
     const refreshUrl = Constant.API_URL + "/user/refresh-token";
-    
+
     try {
       const response = await ajaxCall(refreshUrl, "POST", null, refreshToken);
-      console.log("RESPONSE REFRESH TOKEN :  " + response.token);
-      // Verifica la risposta
-      if (response && response.token) {  // Supponendo che la risposta contenga un nuovo token (ad esempio, "newToken")
-        console.log("Token rinnovato con successo:", response.token);
-        return response.token; // Restituisce il nuovo token
-      } else {
-        console.log("Errore nel rinnovo del token.");
-        return null; // Ritorna null se non c'è un nuovo token o se c'è stato un errore
-      }
+      return response.token;
     } catch (error) {
       console.error("Errore durante il rinnovo del token:", error);
       return null; // Ritorna null in caso di errore
     }
   }
-  
 }
 
 // Esportazione predefinita della classe
