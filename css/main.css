@@ -153,18 +153,6 @@
     margin-top: 20px;
   }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  th,
-  td {
-    padding: 12px;
-    border: 1px solid #ddd;
-    text-align: center;
-  }
-
   .note-input {
     width: 100%;
     /* Allargato input per note */
@@ -182,27 +170,6 @@
     width: 100%;
   }
 
-  /*IMPOSTO LA LARGHEZZA DELLE COLONNE*/
-  table td:nth-child(1) {
-    width: 160px;
-  }
-
-  table td:nth-child(2) {
-    width: 100px;
-  }
-
-  table td:nth-child(3) {
-    width: 100px;
-  }
-
-  table td:nth-child(4) {
-    width: 500px;
-  }
-
-  table td:nth-child(5) {
-    width: 160px;
-  }
-
   /** ERRORE ANNO MESE NELLA GENERAZIONE TIMESHEET **/
   #monthError,
   #yearError,
@@ -212,3 +179,64 @@
     padding: 2px;
     display: none;
   }
+
+  /* Tabella con intestazione e righe personalizzate */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: black;
+  }
+
+  table th {
+    background-color: #007bff;
+    /* Colore blu per l'intestazione */
+    color: white;
+    /* Colore del testo in bianco */
+    padding: 12px 15px;
+    text-align: left;
+  }
+
+  table td {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    /* Bordo grigio chiaro per le celle */
+  }
+
+  table tr:nth-child(even) {
+    background-color: #f2f2f2;
+    /* Colore grigio chiaro per le righe pari */
+  }
+
+  table tr:nth-child(odd) {
+    background-color: #ffffff;
+    /* Colore bianco per le righe dispari */
+  }
+
+  /* Rende più visibile l'intestazione */
+  table th,
+  table td {
+    text-align: center;
+  }
+
+
+    /*IMPOSTO LA LARGHEZZA DELLE COLONNE*/
+    table td:nth-child(1) {
+      width: 160px;
+    }
+  
+    table td:nth-child(2) {
+      width: 100px;
+    }
+  
+    table td:nth-child(3) {
+      width: 100px;
+    }
+  
+    table td:nth-child(4) {
+      width: 500px;
+    }
+  
+    table td:nth-child(5) {
+      width: 160px;
+    }
+  

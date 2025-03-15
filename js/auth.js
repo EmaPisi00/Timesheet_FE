@@ -1,5 +1,5 @@
 import userService from "./service/user-service.js";
-import { hideItem, showItem } from "./utils/utils.js";
+import { hideItem, isEmpty, showItem } from "./utils/utils.js";
 
 // Variabile per tenere traccia dell'ID del timer
 let inactivityTimeout;
@@ -12,9 +12,8 @@ let lastTokenRefreshTime = 0;
 
 // Funzione per rinnovare il token
 async function handleTokenRefresh() {
-
   // Recupero il token
-  const refreshTokenValue = localStorage.getItem("authToken"); 
+  const refreshTokenValue = localStorage.getItem("authToken");
 
   if (refreshTokenValue) {
     try {
@@ -39,26 +38,22 @@ async function handleTokenRefresh() {
 
 // Funzione per gestire l'inattività dell'utente
 export function resetInactivityTimer() {
-
-  // Se c'era già un timer di inattività, lo cancella
   clearTimeout(inactivityTimeout);
 
-  // Avvia un nuovo timer di inattività che eseguirà l'azione dopo 10 minuti di inattività
   inactivityTimeout = setTimeout(() => {
-    console.log("L'utente è inattivo da un po', non rinnovo il token.");
-  }, 60 * 1000 * 10); // Imposta un timeout di 10 minuti (600000 ms) per inattività
+    console.log("Utente disconnesso per inattività.");
+    localStorage.removeItem("authToken"); // Rimuove il token di autenticazione
+    window.location.href = "/pages/main.html"; // Reindirizza alla pagina di login
+  }, 60 * 1000 * 10);
 }
 
 // Funzione per controllare periodicamente se il token deve essere rinnovato
 export function startPeriodicTokenCheck() {
-
   // Esegui il controllo ogni minuto (60.000 ms)
   refreshCheckTimeout = setInterval(() => {
-  
     // Verifica se è passato più di un minuto dal precedente rinnovo del token
     const currentTime = Date.now();
     if (currentTime - lastTokenRefreshTime > 60 * 1000) {
-  
       // Se è passato più di 1 minuto dal rinnovo
       console.log("Controllo periodico del rinnovo del token...");
 
@@ -79,12 +74,16 @@ export function startPeriodicTokenCheck() {
 }
 
 // Funzione che richiama il metodo di verifica del token
-export async function checkToken(token) {
-  try {
-    return await userService.verifyToken(token);
-  } catch (error) {
-    console.error("Errore durante la verifica del token:", error);
-    return false;
+export async function checkToken() {
+  // Recupero il token
+  const token = localStorage.getItem("authToken");
+  if (!isEmpty(token)) {
+    try {
+      return await userService.verifyToken(token);
+    } catch (error) {
+      console.error("Errore durante la verifica del token:", error);
+      return false;
+    }
   }
 }
 

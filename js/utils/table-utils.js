@@ -1,7 +1,7 @@
 import { hideItem, showItem, disableLinks, enableLinks } from "./utils.js";
 import { getMonthName } from "./date-utils.js";
 
-export const generateTimesheet = (year, month) => {
+export const generateTimesheet = (year, month, daysData) => {
   // Mostra il loader
   showItem("#loader-middle");
 
@@ -11,7 +11,6 @@ export const generateTimesheet = (year, month) => {
   hideItem("#colSelectYear");
   hideItem("#titleTimesheet");
   hideItem("#tableContainer");
-  hideItem("#colSelectYear");
 
   // Disabilito i link o pulsanti
   disableLinks();
@@ -24,18 +23,24 @@ export const generateTimesheet = (year, month) => {
     // Determina il numero di giorni nel mese
     const daysInMonth = new Date(year, month, 0).getDate();
 
-    // Creazione della tabella con classi Bootstrap
-    const table = $("<table>").addClass(
-      "table table-bordered table-striped table-hover"
-    );
+    // Creazione della tabella senza Bootstrap
+    const table = $("<table>").css({
+      width: "100%",
+      borderCollapse: "collapse",
+      border: "1px solid #ccc",
+    });
 
-    const thead = $("<thead>").addClass("table-primary text-center");
+    const thead = $("<thead>").css({
+      backgroundColor: "#f0f0f0", // Intestazione grigia chiara
+      color: "black", // Testo grigio scuro
+      textAlign: "center",
+    });
     const headerRow = $("<tr>");
-    headerRow.append("<th>Giorno</th>");
-    headerRow.append("<th>Orario Entrata</th>");
-    headerRow.append("<th>Orario Uscita</th>");
-    headerRow.append("<th>Note</th>");
-    headerRow.append("<th>Stato</th>");
+    headerRow.append("<th style='padding: 12px 15px;'>Giorno</th>");
+    headerRow.append("<th style='padding: 12px 15px;'>Orario Entrata</th>");
+    headerRow.append("<th style='padding: 12px 15px;'>Orario Uscita</th>");
+    headerRow.append("<th style='padding: 12px 15px;'>Note</th>");
+    headerRow.append("<th style='padding: 12px 15px;'>Stato</th>");
     thead.append(headerRow);
     table.append(thead);
 
@@ -45,32 +50,69 @@ export const generateTimesheet = (year, month) => {
     for (let day = 1; day <= daysInMonth; day++) {
       const dateString = `${day} ${getMonthName(month)} ${year}`;
 
-      const row = $("<tr>").addClass("text-center align-middle");
+      // Trova i dati per il giorno corrente
+      const dayData = daysData.find(
+        (d) =>
+          d.workDay ===
+          `${year}-${month.toString().padStart(2, "0")}-${day
+            .toString()
+            .padStart(2, "0")}`
+      );
+
+      const row = $("<tr>").css({
+        textAlign: "center",
+        verticalAlign: "middle",
+      });
 
       // Colonna Giorno
       row.append(`<td><strong>${dateString}</strong></td>`);
 
       // Colonna Orario Entrata
-      const startTimeSelect = $("<select>").addClass("form-select");
+      const startTimeSelect = $("<select>").addClass("form-select").css({
+        padding: "5px",
+        fontSize: "14px",
+        width: "100px",
+      });
       for (let h = 0; h < 24; h++) {
         const hour = `${h.toString().padStart(2, "0")}:00`;
         startTimeSelect.append($("<option>").val(hour).text(hour));
       }
+      // Imposta il valore di entrata
+      if (dayData) {
+        const formattedEntryTime = dayData.entryTime.substring(0, 5);
+        startTimeSelect.val(formattedEntryTime);
+      }
+
       row.append($("<td>").append(startTimeSelect));
 
       // Colonna Orario Uscita
-      const endTimeSelect = $("<select>").addClass("form-select");
+      const endTimeSelect = $("<select>").addClass("form-select").css({
+        padding: "5px",
+        fontSize: "14px",
+        width: "100px",
+      });
       for (let h = 0; h < 24; h++) {
         const hour = `${h.toString().padStart(2, "0")}:00`;
         endTimeSelect.append($("<option>").val(hour).text(hour));
       }
+      // Imposta il valore di uscita
+      if (dayData) {
+        const formattedExitTime = dayData.exitTime.substring(0, 5);
+        endTimeSelect.val(formattedExitTime);
+      }
+
       row.append($("<td>").append(endTimeSelect));
 
       // Colonna Note
       const noteInput = $("<input>")
         .attr("type", "text")
         .addClass("form-control note-input")
-        .attr("placeholder", "Aggiungi una nota...");
+        .attr("placeholder", "Aggiungi una nota...")
+        .css({
+          width: "100%",
+          padding: "5px",
+          fontSize: "14px",
+        });
       row.append($("<td>").append(noteInput));
 
       // Colonna Stato
@@ -78,7 +120,39 @@ export const generateTimesheet = (year, month) => {
       statusSelect.append($("<option>").val("lavorativo").text("Lavorativo"));
       statusSelect.append($("<option>").val("ferie").text("Ferie"));
       statusSelect.append($("<option>").val("malattia").text("Malattia"));
+
       row.append($("<td>").append(statusSelect));
+
+      // Logica di colorazione
+      if (dayData) {
+        const entryHour = parseInt(dayData.entryTime.split(":")[0]);
+        const exitHour = parseInt(dayData.exitTime.split(":")[0]);
+        const entryMinutes = parseInt(dayData.entryTime.split(":")[1]);
+        const exitMinutes = parseInt(dayData.exitTime.split(":")[1]);
+
+        const entryTimeInMinutes = entryHour * 60 + entryMinutes;
+        const exitTimeInMinutes = exitHour * 60 + exitMinutes;
+        const workedMinutes = exitTimeInMinutes - entryTimeInMinutes;
+        const workedHours = workedMinutes / 60;
+
+        // Calcolo della differenza in ore
+        if (workedHours >= 8) {
+          row.css("background-color", "#f9f9f9"); // Righe lavorative: grigio chiaro
+        } else if (workedHours >= 8) {
+          row.css("background-color", "#007bff").css("color", "white"); // Blu per straordinari
+        } else if (workedHours >= 4 && workedHours < 8) {
+          row.css("background-color", "#ffeb3b"); // Giallo per permesso
+        } else if (workedHours < 4 || exitTimeInMinutes <= entryTimeInMinutes) {
+          row.css("background-color", "#f44336").css("color", "white"); // Rosso per uscita anomala
+        }
+      }
+
+      // Colora di rosso per sabato e domenica
+      const date = new Date(`${year}-${month}-${day}`);
+      if (date.getDay() === 6 || date.getDay() === 0) {
+        // Sabato o Domenica
+        row.css("background-color", "#f44336").css("color", "white"); // Rosso per sabato/domenica
+      }
 
       tbody.append(row);
     }
@@ -86,9 +160,17 @@ export const generateTimesheet = (year, month) => {
     // Append il tbody alla tabella
     table.append(tbody);
 
-    // Div scrollabile per la tabella con Bootstrap
+    // Div scrollabile per la tabella
     const scrollableTable = $("<div>")
-      .addClass("scrollable-table mt-4 border rounded p-3 bg-light shadow-sm")
+      .addClass("scrollable-table")
+      .css({
+        maxHeight: "600px",
+        overflowY: "auto",
+        marginTop: "20px",
+        border: "1px solid #ccc",
+        borderRadius: "5px",
+        padding: "15px",
+      })
       .append(table);
 
     // Aggiungi la tabella al container
@@ -117,5 +199,86 @@ export const generateTimesheet = (year, month) => {
     // Setto nuovamente le select su default
     $("#monthsSelect").prop("selectedIndex", 0);
     $("#yearsSelect").prop("selectedIndex", 0);
+    // Aggiungi la funzionalità per modifiche live
+    $(document).on("change", ".form-select", function () {
+      const row = $(this).closest("tr");
+      updateRowColor(row);
+    });
   }, 2000);
+};
+
+// Funzione per aggiornare il colore della riga in base ai valori selezionati
+const updateRowColor = (row) => {
+  const startTime = row.find(".form-select").eq(0).val(); // Orario entrata
+  const endTime = row.find(".form-select").eq(1).val(); // Orario uscita
+  const status = row.find(".form-select").eq(2).val(); // Stato
+
+  const entryHour = parseInt(startTime.split(":")[0]);
+  const exitHour = parseInt(endTime.split(":")[0]);
+  const entryMinutes = parseInt(startTime.split(":")[1]);
+  const exitMinutes = parseInt(endTime.split(":")[1]);
+
+  const entryTimeInMinutes = entryHour * 60 + entryMinutes;
+  const exitTimeInMinutes = exitHour * 60 + exitMinutes;
+  const workedMinutes = exitTimeInMinutes - entryTimeInMinutes;
+  const workedHours = workedMinutes / 60;
+
+  // Log di debug per vedere i valori
+  console.log(`Entry: ${startTime}, Exit: ${endTime}`);
+  console.log(
+    `Entry Time (in minutes): ${entryTimeInMinutes}, Exit Time (in minutes): ${exitTimeInMinutes}`
+  );
+  console.log(`Worked Minutes: ${workedMinutes}, Worked Hours: ${workedHours}`);
+
+  if (entryHour >= 9 && exitHour <= 8) {
+    row.css("background-color", "#d3f9d8"); // Verde chiaro per un giorno lavorativo
+    console.log("Lavorativo");
+  } else if (workedHours >= 8) {
+    row.css("background-color", "#007bff").css("color", "white"); // Blu per straordinari
+    console.log("Straordinario");
+  } else if (workedHours >= 4 && workedHours < 8) {
+    row.css("background-color", "#ffeb3b"); // Giallo per permesso
+    console.log("Permesso");
+  } else if (workedHours < 4 || exitTimeInMinutes <= entryTimeInMinutes) {
+    row.css("background-color", "#f44336").css("color", "white"); // Rosso per uscita anomala
+    console.log("Uscita anomala");
+  }
+
+  // Log per sabato/domenica
+  const date = new Date(row.find("td").first().text());
+  if (date.getDay() === 6 || date.getDay() === 0) {
+    // Sabato o Domenica
+    row.css("background-color", "#f44336").css("color", "white"); // Rosso per sabato/domenica
+    console.log("Sabato o Domenica");
+  }
+};
+
+// Funzione per generare una piccola legenda dei colori
+export const generateColorLegend = () => {
+  const legend = $("<div>").css({
+    display: "flex",
+    justifyContent: "space-between",
+    padding: "10px",
+    fontSize: "14px",
+  });
+
+  const legendItems = [
+    { color: "#d3f9d8", text: "Lavorativo" },
+    { color: "#007bff", text: "Straordinario" },
+    { color: "#ffeb3b", text: "Permesso" },
+    { color: "#f44336", text: "Uscita Anomala" },
+  ];
+
+  legendItems.forEach((item) => {
+    const colorBox = $("<div>").css({
+      width: "20px",
+      height: "20px",
+      backgroundColor: item.color,
+      borderRadius: "5px",
+    });
+
+    legend.append(colorBox).append(item.text);
+  });
+
+  return legend;
 };

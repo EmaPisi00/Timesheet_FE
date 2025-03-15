@@ -28,9 +28,7 @@ $(document).ready(async function () {
   resetInactivityTimer();
   startPeriodicTokenCheck();
 
-  // Controllo token
-  const token = localStorage.getItem("authToken");
-  if (await checkToken(token)) {
+  if (await checkToken()) {
     showAuthenticatedUI();
   } else {
     $("#loginBtn").click(async function (event) {

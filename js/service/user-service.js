@@ -1,5 +1,6 @@
 import { ajaxCall } from "./base-service.js";
 import { Constant } from "../utils/constant.js";
+import { isEmpty } from "../utils/utils.js";
 
 export class UserService {
   constructor() {}
@@ -44,29 +45,32 @@ export class UserService {
   }
 
   // Funzione per recuperare i dati dell'utente
-  async getUserProfile(token) {
-    const verifyUrl = Constant.API_URL + "/user/get-profile"; // Endpoint per la verifica
+  async getUserProfile() {
+    const verifyUrl = Constant.API_URL + "/user/getProfile"; // Endpoint per la verifica
+    const token = sessionStorage.getItem("authToken");
 
-    try {
-      // Chiamata AJAX per verificare il token con il metodo POST e il token nell'header Authorization
-      const response = await ajaxCall(verifyUrl, "GET", null, token);
-      console.log(response);
+    if (!isEmpty(token)) {
+      try {
+        // Chiamata AJAX per verificare il token con il metodo POST e il token nell'header Authorization
+        const response = await ajaxCall(verifyUrl, "GET", null, token);
+        console.log(response);
 
-      if (response) {
-        console.log("Token valido, informazioni utente");
-        return response;
-      } else {
-        console.log("Token non valido.");
-        return null;
+        if (response) {
+          console.log("Token valido, informazioni utente");
+          return response;
+        } else {
+          console.log("Token non valido.");
+          return null;
+        }
+      } catch (error) {
+        console.error("Errore nella verifica del token:", error);
+        return null; // Restituisce false in caso di errore
       }
-    } catch (error) {
-      console.error("Errore nella verifica del token:", error);
-      return null; // Restituisce false in caso di errore
     }
   }
 
   async refreshToken(refreshToken) {
-    const refreshUrl = Constant.API_URL + "/user/refresh-token";
+    const refreshUrl = Constant.API_URL + "/user/refreshToken";
 
     try {
       const response = await ajaxCall(refreshUrl, "POST", null, refreshToken);
