@@ -1,5 +1,12 @@
-import { hideItem, showItem, disableLinks, enableLinks } from "./utils.js";
+import {
+  hideItem,
+  showItem,
+  disableLinks,
+  enableLinks,
+  isEmpty,
+} from "./utils.js";
 import { getMonthName } from "./date-utils.js";
+import { OptionStatusDayArray } from "./constant.js";
 
 export const generateTimesheet = (year, month, daysData) => {
   // Mostra il loader
@@ -24,11 +31,7 @@ export const generateTimesheet = (year, month, daysData) => {
     const daysInMonth = new Date(year, month, 0).getDate();
 
     // Creazione della tabella senza Bootstrap
-    const table = $("<table>").css({
-      width: "100%",
-      borderCollapse: "collapse",
-      border: "1px solid #ccc",
-    });
+    const table = $("<table>");
 
     const thead = $("<thead>").css({
       backgroundColor: "#f0f0f0", // Intestazione grigia chiara
@@ -107,19 +110,25 @@ export const generateTimesheet = (year, month, daysData) => {
       const noteInput = $("<input>")
         .attr("type", "text")
         .addClass("form-control note-input")
-        .attr("placeholder", "Aggiungi una nota...")
-        .css({
-          width: "100%",
-          padding: "5px",
-          fontSize: "14px",
-        });
+        .attr("placeholder", "Aggiungi una nota...");
       row.append($("<td>").append(noteInput));
 
       // Colonna Stato
       const statusSelect = $("<select>").addClass("form-select status-select");
-      statusSelect.append($("<option>").val("lavorativo").text("Lavorativo"));
-      statusSelect.append($("<option>").val("ferie").text("Ferie"));
-      statusSelect.append($("<option>").val("malattia").text("Malattia"));
+
+      // Aggiungi le opzioni tradotte dall'enum
+      OptionStatusDayArray.forEach((option) => {
+          const optionElement = $("<option>").val(option.value).text(option.label);
+          
+          // Se l'opzione corrisponde al valore di `dayData.statusDayEnum`, imposta `selected`
+          if (option.value === dayData.statusDayEnum) {
+              optionElement.prop("selected", true);
+          }
+      
+          statusSelect.append(optionElement); // Aggiungi l'opzione
+      });
+      
+      
 
       row.append($("<td>").append(statusSelect));
 
@@ -163,14 +172,6 @@ export const generateTimesheet = (year, month, daysData) => {
     // Div scrollabile per la tabella
     const scrollableTable = $("<div>")
       .addClass("scrollable-table")
-      .css({
-        maxHeight: "600px",
-        overflowY: "auto",
-        marginTop: "20px",
-        border: "1px solid #ccc",
-        borderRadius: "5px",
-        padding: "15px",
-      })
       .append(table);
 
     // Aggiungi la tabella al container
@@ -191,7 +192,7 @@ export const generateTimesheet = (year, month, daysData) => {
     hideItem("#loader-middle");
 
     // Aggiungo margine-top per evitare che il titolo venga spinto troppo in alto
-    $("#containerTitleSelect").css("margin-top", "5%");
+    $("#containerTitleSelect").css("margin-top", "30%");
 
     // Riabilito i bottoni dopo la generazione della tabella
     enableLinks();
@@ -230,18 +231,14 @@ const updateRowColor = (row) => {
   );
   console.log(`Worked Minutes: ${workedMinutes}, Worked Hours: ${workedHours}`);
 
-  if (entryHour >= 9 && exitHour <= 8) {
-    row.css("background-color", "#d3f9d8"); // Verde chiaro per un giorno lavorativo
-    console.log("Lavorativo");
-  } else if (workedHours >= 8) {
+  if (entryHour === 9) {
+    row.css("background-color", "#white"); // Verde chiaro per un giorno lavorativo
+  } else if (workedHours > 9) {
     row.css("background-color", "#007bff").css("color", "white"); // Blu per straordinari
-    console.log("Straordinario");
   } else if (workedHours >= 4 && workedHours < 8) {
     row.css("background-color", "#ffeb3b"); // Giallo per permesso
-    console.log("Permesso");
   } else if (workedHours < 4 || exitTimeInMinutes <= entryTimeInMinutes) {
     row.css("background-color", "#f44336").css("color", "white"); // Rosso per uscita anomala
-    console.log("Uscita anomala");
   }
 
   // Log per sabato/domenica
