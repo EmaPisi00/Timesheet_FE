@@ -18,12 +18,15 @@ export const generateTimesheet = (year, month, daysData) => {
   hideItem("#colSelectYear");
   hideItem("#titleTimesheet");
   hideItem("#tableContainer");
+  hideItem("#buttonLegend");
+  hideItem("#legendContainer");
 
   // Disabilito i link o pulsanti
   disableLinks();
 
   // Inserisco un timeout per ritardare la generazione
   setTimeout(() => {
+
     const tableContainer = $("#tableContainer");
     tableContainer.empty(); // Pulisce qualsiasi tabella esistente
 
@@ -118,17 +121,17 @@ export const generateTimesheet = (year, month, daysData) => {
 
       // Aggiungi le opzioni tradotte dall'enum
       OptionStatusDayArray.forEach((option) => {
-          const optionElement = $("<option>").val(option.value).text(option.label);
-          
-          // Se l'opzione corrisponde al valore di `dayData.statusDayEnum`, imposta `selected`
-          if (option.value === dayData.statusDayEnum) {
-              optionElement.prop("selected", true);
-          }
-      
-          statusSelect.append(optionElement); // Aggiungi l'opzione
+        const optionElement = $("<option>")
+          .val(option.value)
+          .text(option.label);
+
+        // Se l'opzione corrisponde al valore di `dayData.statusDayEnum`, imposta `selected`
+        if (option.value === dayData.statusDayEnum) {
+          optionElement.prop("selected", true);
+        }
+
+        statusSelect.append(optionElement); // Aggiungi l'opzione
       });
-      
-      
 
       row.append($("<td>").append(statusSelect));
 
@@ -182,6 +185,8 @@ export const generateTimesheet = (year, month, daysData) => {
     showItem("#colSelectMonth");
     showItem("#colSelectYear");
     showItem("#tableContainer");
+    showItem("#buttonLegend");
+    showItem("#legendContainer");
 
     // Mostro il titolo del timesheet con mese + anno
     $("#titleTimesheet")
@@ -192,7 +197,7 @@ export const generateTimesheet = (year, month, daysData) => {
     hideItem("#loader-middle");
 
     // Aggiungo margine-top per evitare che il titolo venga spinto troppo in alto
-    $("#containerTitleSelect").css("margin-top", "30%");
+    $("#containerTitleSelect").css("margin-top", "40%");
 
     // Riabilito i bottoni dopo la generazione della tabella
     enableLinks();
@@ -248,34 +253,4 @@ const updateRowColor = (row) => {
     row.css("background-color", "#f44336").css("color", "white"); // Rosso per sabato/domenica
     console.log("Sabato o Domenica");
   }
-};
-
-// Funzione per generare una piccola legenda dei colori
-export const generateColorLegend = () => {
-  const legend = $("<div>").css({
-    display: "flex",
-    justifyContent: "space-between",
-    padding: "10px",
-    fontSize: "14px",
-  });
-
-  const legendItems = [
-    { color: "#d3f9d8", text: "Lavorativo" },
-    { color: "#007bff", text: "Straordinario" },
-    { color: "#ffeb3b", text: "Permesso" },
-    { color: "#f44336", text: "Uscita Anomala" },
-  ];
-
-  legendItems.forEach((item) => {
-    const colorBox = $("<div>").css({
-      width: "20px",
-      height: "20px",
-      backgroundColor: item.color,
-      borderRadius: "5px",
-    });
-
-    legend.append(colorBox).append(item.text);
-  });
-
-  return legend;
 };

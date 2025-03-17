@@ -21,9 +21,26 @@ export function setupUI() {
     );
   });
 
-  $("#home, #showTimesheet").click(() =>
-    hideItem("#containerGenerateTimesheet")
-  );
+ // Gestione Mostra/Nascondi Legenda con jQuery
+$("#toggleLegend").click(function() {
+  let legendContainer = $("#legendContainer");
+  let toggleButton = $("#toggleLegend");
+
+  // Alterna la classe 'show' per la legenda
+  legendContainer.toggleClass("show");
+
+  // Cambia la freccia e il testo del tooltip
+  if (legendContainer.hasClass("show")) {
+    toggleButton.find('img').attr('src', '/assets/images/down-long-solid.svg'); // Cambia la freccia quando la legenda è visibile
+    toggleButton.attr('data-bs-original-title', 'Nascondi'); // Modifica il tooltip
+  } else {
+    toggleButton.find('img').attr('src', '/assets/images/up-long-solid.svg'); // Ritorna la freccia iniziale
+    toggleButton.attr('data-bs-original-title', 'Mostra'); // Modifica il tooltip
+  }
+
+  // Rende visibile il nuovo tooltip
+  toggleButton.tooltip('dispose').tooltip();
+});
 }
 
 export function showAuthenticatedUI() {

@@ -16,6 +16,7 @@ setTimeout(() => {
 }, 2000);
 
 $(document).ready(async function () {
+  $('[data-bs-toggle="tooltip"]').tooltip(); // Inizializza tutti i tooltips  
   setupUI();
   setupTimesheet();
 

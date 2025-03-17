@@ -1,17 +1,3 @@
-  /* Stile per il loader */
-  #loader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-  }
-
   /* Applica il font Roboto a tutto il corpo della pagina */
   body {
     font-family: 'Poppins', sans-serif;
@@ -48,7 +34,22 @@
     cursor: pointer;
   }
 
-  /*** HAMBURGER MENU ***/
+
+  /* Stile per il loader */
+  #loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+
+  /*** HAMBURGER MENU (START) ***/
   #nav-icon {
     width: 50px;
     height: 40px;
@@ -100,7 +101,10 @@
     transform: translateY(-10px) rotate(-45deg);
   }
 
-  /* SIDEBAR */
+  /*** HAMBURGER MENU (END) ***/
+
+
+  /* SIDEBAR (START)*/
   #sidebar {
     position: fixed;
     top: 0;
@@ -117,7 +121,6 @@
 
   #sidebar.active {
     left: 0;
-    /* La sidebar è visibile */
   }
 
   #sidebar ul {
@@ -144,7 +147,44 @@
     padding-left: 15px;
   }
 
-  /*** TABELLA AUTOGENERATE IN BASE AL MESE SELEZIONATO ***/
+  /* SIDEBAR (END)*/
+
+
+  /** ERRORE ANNO MESE NELLA GENERAZIONE TIMESHEET **/
+  #monthError,
+  #yearError,
+  #loginError {
+    color: red;
+    font-size: 15px;
+    padding: 2px;
+    display: none;
+  }
+
+  /* Tabella di generazione del timesheet (START) */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: black;
+    border: 1px solid black;
+  }
+
+  table th {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    padding: 12px 15px;
+    text-align: left;
+  }
+
+  table td {
+    padding: 10px 15px;
+  }
+
+  /* Rende più visibile l'intestazione */
+  table th,
+  table td {
+    text-align: center;
+  }
+
   .scrollable-table {
     max-height: 900px;
     overflow-y: scroll;
@@ -172,72 +212,150 @@
     width: 100%;
   }
 
-  /** ERRORE ANNO MESE NELLA GENERAZIONE TIMESHEET **/
-  #monthError,
-  #yearError,
-  #loginError {
-    color: red;
-    font-size: 15px;
-    padding: 2px;
-    display: none;
-  }
 
-  /* Tabella con intestazione e righe personalizzate */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: black;
-  }
-
-  table th {
-    background-color: #007bff;
-    /* Colore blu per l'intestazione */
-    color: white;
-    /* Colore del testo in bianco */
-    padding: 12px 15px;
-    text-align: left;
-  }
-
-  table td {
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    /* Bordo grigio chiaro per le celle */
-  }
-
-  table tr:nth-child(even) {
-    background-color: #f2f2f2;
-    /* Colore grigio chiaro per le righe pari */
-  }
-
-  table tr:nth-child(odd) {
-    background-color: #ffffff;
-    /* Colore bianco per le righe dispari */
-  }
-
-  /* Rende più visibile l'intestazione */
-  table th,
-  table td {
-    text-align: center;
-  }
-
-
-  /*IMPOSTO LA LARGHEZZA DELLE COLONNE*/
+  /*IMPOSTO LA LARGHEZZA DELLE COLONNE della tabella*/
   table td:nth-child(1) {
-    width: 160px;
+    width: 180px;
+    /*GIORNO*/
   }
 
   table td:nth-child(2) {
-    width: 100px;
+    width: 150px;
+    /*ORARIO ENTRATA*/
   }
 
   table td:nth-child(3) {
     width: 100px;
+    /*ORARIO USCITA*/
   }
 
   table td:nth-child(4) {
     width: 500px;
+    /*NOTE*/
   }
 
   table td:nth-child(5) {
     width: 200px;
+    /*STATO*/
   }
+
+  /* Tabella di generazione del timesheet (END) */
+
+  /* Legenda per la visualizzazione dei colori (START) */
+  .legend-box {
+    border: 2px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* Singoli elementi della legenda */
+  .legend-box {
+    border: 2px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 20px;
+  }
+
+  /* Singoli elementi della legenda */
+  .legend-box {
+    display: flex;
+    justify-content: center;
+    /* Centra i colori sulla stessa riga */
+    gap: 20px;
+    /* Spazio tra i colori */
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background: #f9f9f9;
+  }
+
+  /* Singoli elementi della legenda */
+  .legend-container {
+    padding: 30px;
+    border-radius: 10px;
+    /* Bordo arrotondato */
+    display: flex;
+    justify-content: center;
+    /* Allinea orizzontalmente al centro */
+    align-items: center;
+    /* Allinea verticalmente al centro */
+    gap: 50px;
+    /* Distanza tra gli item */
+    margin-bottom: 10px;
+  }
+
+  /* Ogni item della legenda (colori + testo) */
+  /* Stili forniti */
+  /* Stile per il bottone (mostrare solo la freccia senza bordi) */
+  .btn-toggle {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .legend-container {
+    max-height: 0;
+    /* Inizialmente la legenda è nascosta */
+    opacity: 0;
+    transition: max-height 0.5s ease, opacity 0.5s ease;
+    /* Transizione fluida */
+  }
+
+  .legend-container.show {
+    max-height: 500px;
+    /* Aumenta l'altezza per mostrare il contenuto */
+    opacity: 1;
+    /* Rende visibile il contenuto */
+  }
+
+  /* Stile per gli item della legenda */
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+  }
+
+  .color-box {
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    border: 1px solid #6b6868;
+  }
+
+  .color-box-white {
+    background-color: #ffffff;
+  }
+
+  .color-box-red {
+    background-color: #ff4d4d;
+  }
+
+  .color-box-blue {
+    background-color: #4d94ff;
+  }
+
+  .color-box-yellow {
+    background-color: #ffeb3b;
+  }
+
+  .legend-item span {
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+    margin-left: 5px;
+  }
+
+  /* Legenda per la visualizzazione dei colori (END) */
+
+
+  

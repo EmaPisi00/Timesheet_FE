@@ -134,49 +134,99 @@
             <span class="visually-hidden">Caricamento...</span>
           </div>
         </div>
-        <div class="row justify-content-center" id="containerTitleSelect">
-          <div class="col-md-6">
-            <form>
-              <h3
-                class="text-center mb-4"
-                style="display: none"
-                id="titleTimesheet"
-              ></h3>
-              <div class="row">
-                <!-- Primo Select -->
-                <div class="col-6 mb-3" id="colSelectMonth">
-                  <label for="selectMonth" class="form-label"
-                    >Seleziona un mese</label
-                  >
-                  <select class="form-select" id="monthsSelect">
-                    <option selected disabled>Seleziona un mese</option>
-                  </select>
-                  <p id="monthError">Errore! Inserire il mese</p>
+
+        <div class="container">
+          <div class="row justify-content-center" id="containerTitleSelect">
+            <!-- Form -->
+            <div class="col-md-6">
+              <form>
+                <h3 class="text-center" id="titleTimesheet">Timesheet</h3>
+                <div class="row">
+                  <!-- Primo Select -->
+                  <div class="col-6" id="colSelectMonth">
+                    <label for="selectMonth" class="form-label"
+                      >Seleziona un mese</label
+                    >
+                    <select class="form-select" id="monthsSelect">
+                      <option selected disabled>Seleziona un mese</option>
+                    </select>
+                    <p id="monthError" class="text-danger">
+                      Errore! Inserire il mese
+                    </p>
+                  </div>
+
+                  <!-- Secondo Select -->
+                  <div class="col-6" id="colSelectYear">
+                    <label for="selectYear" class="form-label"
+                      >Seleziona un anno</label
+                    >
+                    <select class="form-select" id="yearsSelect">
+                      <option selected disabled>Seleziona un anno</option>
+                    </select>
+                    <p id="yearError" class="text-danger">
+                      Errore! Inserire l'anno
+                    </p>
+                  </div>
                 </div>
 
-                <!-- Secondo Select -->
-                <div class="col-6 mb-3" id="colSelectYear">
-                  <label for="selectYear" class="form-label"
-                    >Seleziona un anno</label
+                <!-- Legenda (posizionata sotto il form e centrata) -->
+                <div class="container mt-5">
+                  <div
+                    class="row justify-content-center"
+                    id="containerTitleSelect"
                   >
-                  <select class="form-select" id="yearsSelect">
-                    <option selected disabled>Seleziona un anno</option>
-                  </select>
-                  <p id="yearError">Errore! Inserire l'anno</p>
-                </div>
-              </div>
+                    <!-- Form -->
+                    <div class="col-md-6">
+                      <form>
+                        <!-- Bottone Mostra/Nascondi Legenda -->
+                        <div class="text-center" style="display: none" id="buttonLegend">
+                          <button type="button" id="toggleLegend" class="btn-toggle" data-bs-toggle="tooltip" title="Mostra" >
+                            <img
+                              src="/assets/images/up-long-solid.svg"
+                              alt="Freccia"
+                              width="20"
+                              height="20"
+                            />
+                          </button>
+                        </div>
 
-              <!-- Bottone -->
-              <div class="text-center">
-                <button
-                  type="button"
-                  id="generateTimesheet"
-                  class="btn btn-primary btn-block"
-                >
-                  Genera Timesheet
-                </button>
-              </div>
-            </form>
+                        <!-- Contenitore della Legenda -->
+                        <div class="legend-container" id="legendContainer">
+                          <!-- Legenda con i colori -->
+                          <div class="legend-item">
+                            <div class="color-box color-box-white"></div>
+                            <span>Default</span>
+                          </div>
+                          <div class="legend-item">
+                            <div class="color-box color-box-red"></div>
+                            <span>Errore</span>
+                          </div>
+                          <div class="legend-item">
+                            <div class="color-box color-box-blue"></div>
+                            <span>Straordinario</span>
+                          </div>
+                          <div class="legend-item">
+                            <div class="color-box color-box-yellow"></div>
+                            <span>Permesso</span>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Bottone Genera Timesheet -->
+                <div class="text-center mb-3">
+                  <button
+                    type="button"
+                    id="generateTimesheet"
+                    class="btn btn-primary btn-block"
+                  >
+                    Genera Timesheet
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
 

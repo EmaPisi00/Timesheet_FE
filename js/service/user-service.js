@@ -28,24 +28,41 @@ export class UserService {
     } catch (error) {
       // Gestisci errori di rete, server o altre eccezioni
       console.error("Errore nel login:", error);
+      window.location.href = "/pages/main.html"; // Reindirizza alla pagina di login
       return null;
     }
   }
 
   // Metodo per verificare la validità del token
   async verifyToken(token) {
-    const verifyUrl = Constant.API_URL + "/user/verify"; // Endpoint protetto
+    if (localStorage.getItem("redirected")) {
+      localStorage.removeItem("redirected");
+      return false;
+    }
+
+    const verifyUrl = Constant.API_URL + "/user/verify";
 
     try {
       const response = await ajaxCall(verifyUrl, "POST", null, token);
+      localStorage.removeItem("redirected"); // Se il token è valido, rimuovi il flag
       return response;
     } catch (error) {
+      console.error("Verifica token fallita:", error);
+      localStorage.setItem("redirected", "true");
+      window.location.href = "/pages/main.html";
       return false;
     }
   }
 
   // Funzione per recuperare i dati dell'utente
   async getUserProfile() {
+
+    if (localStorage.getItem("redirected")) {
+      localStorage.removeItem("redirected");
+      return false;
+    }
+
+
     const verifyUrl = Constant.API_URL + "/user/getProfile"; // Endpoint per la verifica
     const token = sessionStorage.getItem("authToken");
 
@@ -63,8 +80,10 @@ export class UserService {
           return null;
         }
       } catch (error) {
-        console.error("Errore nella verifica del token:", error);
-        return null; // Restituisce false in caso di errore
+        console.error("Verifica token fallita:", error);
+        localStorage.setItem("redirected", "true");
+        window.location.href = "/pages/main.html";
+        return null;
       }
     }
   }
