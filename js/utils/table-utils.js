@@ -8,25 +8,21 @@ import {
 import { getMonthName } from "./date-utils.js";
 import { OptionStatusDayArray } from "./constant.js";
 
-export const generateTimesheet = (year, month, daysData) => {
+export const generateTimesheet = (year, month, request) => {
+  // Prendo dall'oggetto della richiesta solo la lista delle presenze
+  let daysData = request.presenceList;
+
   // Mostra il loader
   showItem("#loader-middle");
 
-  // Nasconde il pulsante "Genera" e le select
-  hideItem("#generateTimesheet");
-  hideItem("#colSelectMonth");
-  hideItem("#colSelectYear");
-  hideItem("#titleTimesheet");
-  hideItem("#tableContainer");
-  hideItem("#buttonLegend");
-  hideItem("#legendContainer");
+  // Nasconde tutti i button o altro durante il caricamento
+  hideItemsBeforeLoadTable();
 
   // Disabilito i link o pulsanti
   disableLinks();
 
   // Inserisco un timeout per ritardare la generazione
   setTimeout(() => {
-
     const tableContainer = $("#tableContainer");
     tableContainer.empty(); // Pulisce qualsiasi tabella esistente
 
@@ -111,10 +107,22 @@ export const generateTimesheet = (year, month, daysData) => {
 
       // Colonna Note
       const noteInput = $("<input>")
-        .attr("type", "text")
-        .addClass("form-control note-input")
-        .attr("placeholder", "Aggiungi una nota...");
-      row.append($("<td>").append(noteInput));
+      .attr("type", "text")
+      .addClass("form-control note-input")
+      .attr("placeholder", "Aggiungi una nota...")
+      .on("click", function () {
+        // Rendi l'input modificabile se cliccato
+        $(this).prop("readonly", false); // Rendi l'input editabile
+      });
+    
+    // Aggiungi il campo note al <td>
+    row.append($("<td>").append(noteInput));
+    
+    // Se esiste una descrizione, la imposti come valore del campo input
+    if (!isEmpty(dayData.description)) {
+      noteInput.val(dayData.description).prop("readonly", true); // Imposta il valore, rendendo l'input non modificabile
+    }
+    
 
       // Colonna Stato
       const statusSelect = $("<select>").addClass("form-select status-select");
@@ -181,12 +189,7 @@ export const generateTimesheet = (year, month, daysData) => {
     tableContainer.append(scrollableTable);
 
     // Riabilita i pulsanti e mostra il titolo
-    showItem("#generateTimesheet");
-    showItem("#colSelectMonth");
-    showItem("#colSelectYear");
-    showItem("#tableContainer");
-    showItem("#buttonLegend");
-    showItem("#legendContainer");
+    showItemsAfterLoadTable();
 
     // Mostro il titolo del timesheet con mese + anno
     $("#titleTimesheet")
@@ -211,6 +214,40 @@ export const generateTimesheet = (year, month, daysData) => {
       updateRowColor(row);
     });
   }, 2000);
+};
+
+// Funzione per estrarre i dati dalla tabella
+export const extractPresenceData = (year, month) => {
+  let presenceList = [];
+
+  $("#tableContainer table tbody tr").each(function () {
+    const row = $(this);
+    const day = row.find("td:first").text().split(" ")[0]; // Estrai il giorno dal primo td
+    const workDay = `${year}-${month
+      .toString()
+      .padStart(2, "0")}-${day.padStart(2, "0")}`;
+
+    const entryTime = row.find("td:eq(1) select").val() + ":00"; // Prendi il valore della select ingresso
+    const exitTime = row.find("td:eq(2) select").val() + ":00"; // Prendi il valore della select uscita
+    const description = row.find("td:eq(3) input").val() || null; // Prendi il valore dell'input note
+    const statusDayEnum = row.find("td:eq(4) select").val(); // Prendi il valore della select stato
+
+    let presenceDto = {
+      description: description,
+      entryTime: entryTime,
+      exitTime: exitTime,
+      holiday: statusDayEnum === "HOLIDAY",
+      illnessed: statusDayEnum === "ILLNESS",
+      smartWorking: statusDayEnum === "SMART_WORKING",
+      statusDayEnum: statusDayEnum,
+      statusHoursEnum: "NORMAL_WORKING", // Modifica se necessario
+      workDay: workDay,
+    };
+
+    presenceList.push(presenceDto);
+  });
+
+  return presenceList;
 };
 
 // Funzione per aggiornare il colore della riga in base ai valori selezionati
@@ -254,3 +291,24 @@ const updateRowColor = (row) => {
     console.log("Sabato o Domenica");
   }
 };
+
+function showItemsAfterLoadTable() {
+  showItem("#generateTimesheet");
+  showItem("#colSelectMonth");
+  showItem("#colSelectYear");
+  showItem("#tableContainer");
+  showItem("#buttonLegend");
+  showItem("#legendContainer");
+  showItem("#saveTimesheet");
+}
+
+function hideItemsBeforeLoadTable() {
+  hideItem("#generateTimesheet");
+  hideItem("#colSelectMonth");
+  hideItem("#colSelectYear");
+  hideItem("#titleTimesheet");
+  hideItem("#tableContainer");
+  hideItem("#buttonLegend");
+  hideItem("#legendContainer");
+  hideItem("#saveTimesheet");
+}

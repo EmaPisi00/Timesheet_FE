@@ -192,7 +192,7 @@
     border: 2px solid #ccc;
     border-radius: 5px;
     padding: 20px;
-    margin-bottom: 150px;
+    margin-bottom: 100px;
   }
 
   .note-input {
@@ -358,4 +358,6 @@
   /* Legenda per la visualizzazione dei colori (END) */
 
 
-  
+  #saveTimesheet{
+    margin-bottom: 20px;
+  }

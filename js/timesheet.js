@@ -1,14 +1,18 @@
 import { isEmpty, showItem, hideItem } from "./utils/utils.js";
-import { generateTimesheet } from "./utils/table-utils.js";
+import { generateTimesheet, extractPresenceData } from "./utils/table-utils.js";
 import timesheetService from "./service/timesheet-service.js";
 import userService from "./service/user-service.js";
+
+let response = null;
+let month = 0;
+let year = 0;
 
 export function setupTimesheet() {
   $("#timesheet").click(() => $("#containerGenerateTimesheet").show());
 
   $("#generateTimesheet").click(async () => {
-    let month = parseInt($("#monthsSelect").val(), 10);
-    let year = parseInt($("#yearsSelect").val(), 10);
+    month = parseInt($("#monthsSelect").val(), 10);
+    year = parseInt($("#yearsSelect").val(), 10);
 
     if (isEmpty(month) || isNaN(month)) {
       showItem("#monthError");
@@ -21,7 +25,7 @@ export function setupTimesheet() {
     } else hideItem("#yearError");
 
     const userProfile = await userService.getUserProfile();
-    const response =
+    response =
       await timesheetService.generateTimesheetByMonthAndYearAndEmployee(
         month,
         year,
@@ -32,7 +36,7 @@ export function setupTimesheet() {
       alert("Errore timesheet esistente");
     } else {
       console.log(response);
-      generateTimesheet(year, month, response.presenceList);
+      generateTimesheet(year, month, response);
     }
   });
 
@@ -41,3 +45,16 @@ export function setupTimesheet() {
     if (!isEmpty($("#yearsSelect").val())) hideItem("#yearError");
   });
 }
+
+$("#saveTimesheet").click(async () => {
+  const presenceData = extractPresenceData(year, month);
+
+  let timesheetRequestDto = {
+    timesheetDto: response.timesheetDto,
+    presenceList: presenceData,
+  };
+
+  const risposta = timesheetService.saveTimesheet(timesheetRequestDto);
+
+  console.log(risposta);
+});

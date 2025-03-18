@@ -1,6 +1,6 @@
 import { ajaxCall } from "./base-service.js";
 import { Constant } from "../utils/constant.js";
-import { isEmpty } from "../utils/utils.js";
+import { isEmpty, showToast } from "../utils/utils.js";
 
 export class UserService {
   constructor() {}
@@ -20,7 +20,7 @@ export class UserService {
       // Successo del login, salva il token
       if (response && response.token) {
         localStorage.setItem("authToken", response.token);
-        console.log("Login riuscito, token salvato!");
+        showToast("Login effetuato con successo", "bg-success");
         return response.token;
       } else {
         throw new Error("Token non ricevuto.");
@@ -29,7 +29,9 @@ export class UserService {
       // Gestisci errori di rete, server o altre eccezioni
       console.error("Errore nel login:", error);
       window.location.href = "/pages/main.html"; // Reindirizza alla pagina di login
-      return null;
+
+      // Mostra il Toast di errore
+      showToast("Si è verificato un errore. Riprova il login.", "bg-danger");
     }
   }
 
@@ -49,19 +51,20 @@ export class UserService {
     } catch (error) {
       console.error("Verifica token fallita:", error);
       localStorage.setItem("redirected", "true");
+      localStorage.removeItem("authToken");
       window.location.href = "/pages/main.html";
-      return false;
+
+      // Mostra il Toast di errore
+      showToast("Si è verificato un errore. Riprova il login.", "bg-danger");
     }
   }
 
   // Funzione per recuperare i dati dell'utente
   async getUserProfile() {
-
     if (localStorage.getItem("redirected")) {
       localStorage.removeItem("redirected");
       return false;
     }
-
 
     const verifyUrl = Constant.API_URL + "/user/getProfile"; // Endpoint per la verifica
     const token = sessionStorage.getItem("authToken");
@@ -82,8 +85,11 @@ export class UserService {
       } catch (error) {
         console.error("Verifica token fallita:", error);
         localStorage.setItem("redirected", "true");
+        localStorage.removeItem("authToken");
         window.location.href = "/pages/main.html";
-        return null;
+
+        // Mostra il Toast di errore
+        showToast("Si è verificato un errore. Riprova il login.", "bg-danger");
       }
     }
   }
