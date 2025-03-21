@@ -1,77 +1,57 @@
 import userService from "../../service/user-service.js";
-import { hideItem, isEmpty, showItem } from "../../utils/utils.js";
+import { hideItem, showItem } from "../../utils/utils.js";
 
-// Variabile per tenere traccia dell'ID del timer
-let inactivityTimeout;
+export const checkTime = (
+  startTime,
+  endTime,
+  oneMinuteLeft,
+  lastLoggedMinute
+) => {
+  let currentTime = Date.now();
+  let timeLeft = endTime - currentTime;
 
-// Timeout per controllare ogni minuto
-let refreshCheckTimeout;
+  // Convertiamo il tempo rimanente in secondi e minuti
+  let secondsLeft = Math.floor(timeLeft / 1000);
+  let minutesLeft = Math.ceil(secondsLeft / 60);
 
-// Tiene traccia dell'ultimo rinnovo del token
-let lastTokenRefreshTime = 0;
-
-// Funzione per rinnovare il token
-async function handleTokenRefresh() {
-  // Recupero il token
-  const refreshTokenValue = sessionStorage.getItem("authToken");
-
-  if (refreshTokenValue) {
-    try {
-      // Richiamo l'API per refreshare il token
-      const newToken = await userService.refreshToken(refreshTokenValue);
-      console.log("Nuovo token:", newToken);
-
-      if (newToken) {
-        // Salva il nuovo token nel sessionStorage per l'uso futuro
-        sessionStorage.setItem("authToken", newToken);
-
-        // Registra l'ora dell'ultimo rinnovo
-        lastTokenRefreshTime = Date.now();
-      }
-    } catch (error) {
-      console.error("Errore durante il rinnovo del token:", error);
-    }
-  } else {
-    console.log("Nessun refresh token trovato.");
+  // Log ogni minuto
+  if (minutesLeft < lastLoggedMinute) {
+    console.log(`Mancano ${minutesLeft} minuti`);
+    lastLoggedMinute = minutesLeft;
   }
-}
 
-// Funzione per gestire l'inattività dell'utente
-export function resetInactivityTimer() {
-  clearTimeout(inactivityTimeout);
+  // Se manca meno di un minuto, attiva i listener per le interazioni
+  if (secondsLeft <= 60 && !oneMinuteLeft) {
+    console.log("Meno di 1 minuto rimasto!");
+    oneMinuteLeft = true;
 
-  inactivityTimeout = setTimeout(() => {
-    console.log("Utente disconnesso per inattività.");
-    sessionStorage.removeItem("authToken"); // Rimuove il token di autenticazione
-    window.location.href = "/pages/main.html"; // Reindirizza alla pagina di login
-  }, 60 * 1000 * 10);
-}
-
-// Funzione per controllare periodicamente se il token deve essere rinnovato
-export function startPeriodicTokenCheck() {
-  // Esegui il controllo ogni minuto (60.000 ms)
-  refreshCheckTimeout = setInterval(() => {
-    // Verifica se è passato più di un minuto dal precedente rinnovo del token
-    const currentTime = Date.now();
-    if (currentTime - lastTokenRefreshTime > 60 * 1000) {
-      // Se è passato più di 1 minuto dal rinnovo
-      console.log("Controllo periodico del rinnovo del token...");
-
-      const lastInteractionTime = sessionStorage.getItem("lastInteractionTime");
-      if (lastInteractionTime) {
-        const timeDiff = currentTime - lastInteractionTime;
-
-        // Se l'utente è inattivo da più di 10 minuti, rinnova il token
-        if (timeDiff > 60 * 1000 * 10) {
-          console.log(
-            "Utente inattivo da più di 10 minuti, rinnovo del token."
-          );
-          handleTokenRefresh();
-        }
+    // Aggiungi listener per le interazioni utente
+    $(document).on(
+      "mousemove click keydown touchstart",
+      function userInteractionHandler() {
+        console.log("L'utente ha interagito con la pagina!");
+        $(document).off(
+          "mousemove click keydown touchstart",
+          userInteractionHandler
+        );
       }
-    }
-  }, 60 * 1000); // Controlla ogni minuto
-}
+    );
+  }
+
+  if (timeLeft > 0) {
+    setTimeout(
+      () => checkTime(startTime, endTime, oneMinuteLeft, lastLoggedMinute),
+      1000
+    );
+  } else {
+    console.log("Tempo scaduto!");
+  }
+};
+
+const userInteractionHandler = () => {
+  userService.attemptTokenRefresh();
+  $(document).off("mousemove click keydown touchstart", userInteractionHandler);
+};
 
 // Funzione che richiama il metodo di verifica del token
 export async function checkToken() {
@@ -94,6 +74,7 @@ export async function login(email, password) {
     if (result) {
       const userProfile = await userService.getUserProfile();
       sessionStorage.setItem("profile", JSON.stringify(userProfile));
+      sessionStorage.setItem("startTime", Date.now());
       return true;
     } else {
       hideItem("#loader");

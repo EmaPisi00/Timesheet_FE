@@ -1,5 +1,9 @@
 import { ajaxCall } from "./base-service.js";
-import { isEmpty, showToast } from "../utils/utils.js";
+import {
+  isEmpty,
+  showToast,
+  handleUnauthorizedAccess,
+} from "../utils/utils.js";
 import { Constant } from "../utils/constant.js";
 import userService from "./user-service.js";
 
@@ -29,10 +33,13 @@ export class TimesheetService {
         console.error("Errore:", error);
 
         // richiamare verifyToken se va a buon fine fai il refresh del token altrimenti butti fuori
-        if (await userService.verifyToken()) {
-          userService.attemptTokenRefresh();
+        if (!(await userService.verifyToken())) {
+          sessionStorage.removeItem("authToken");
+          handleUnauthorizedAccess();
         }
       }
+    } else {
+      handleUnauthorizedAccess();
     }
   }
 
@@ -64,7 +71,7 @@ export class TimesheetService {
           return response.code;
         } else {
           // Mostra il Toast di successo
-          showToast("Timesheet salvato con successo!", "bg-success");
+          showToast("Timesheet salvato con successo!", "success");
 
           return response;
         }
@@ -72,8 +79,9 @@ export class TimesheetService {
         console.error("Errore", error);
 
         // richiamare verifyToken se va a buon fine fai il refresh del token altrimenti butti fuori
-        if (await userService.verifyToken()) {
-          userService.attemptTokenRefresh();
+        if (!(await userService.verifyToken())) {
+          sessionStorage.removeItem("authToken");
+          handleUnauthorizedAccess();
         }
 
         // Mostra il Toast di errore
@@ -82,6 +90,8 @@ export class TimesheetService {
           "bg-danger"
         );
       }
+    } else {
+      handleUnauthorizedAccess();
     }
   }
 
@@ -113,12 +123,12 @@ export class TimesheetService {
         console.error("Errore:", error);
 
         // richiamare verifyToken se va a buon fine fai il refresh del token altrimenti butti fuori
-        if (await userService.verifyToken()) {
-          userService.attemptTokenRefresh();
+        if (!(await userService.verifyToken())) {
+          handleUnauthorizedAccess();
         }
-        // Mostra il Toast di errore
-        showToast("Si è verificato un errore. Riprova il login.", "bg-danger");
       }
+    } else {
+      handleUnauthorizedAccess();
     }
   }
 }

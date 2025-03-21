@@ -210,7 +210,7 @@ export const generateTimesheet = (year, month, request) => {
     $("#yearsSelect").prop("selectedIndex", 0);
 
     // Mostra il Toast di successo
-    showToast("Timesheet caricato con successo!", "bg-success");
+    showToast("Timesheet caricato con successo!", "success");
 
     // Aggiungi la funzionalità per modifiche live
     $(document).on("change", ".form-select", function () {
@@ -252,48 +252,6 @@ export const extractPresenceData = (year, month) => {
   });
 
   return presenceList;
-};
-
-// Funzione per aggiornare il colore della riga in base ai valori selezionati
-const updateRowColor = (row) => {
-  const startTime = row.find(".form-select").eq(0).val(); // Orario entrata
-  const endTime = row.find(".form-select").eq(1).val(); // Orario uscita
-  const status = row.find(".form-select").eq(2).val(); // Stato
-
-  const entryHour = parseInt(startTime.split(":")[0]);
-  const exitHour = parseInt(endTime.split(":")[0]);
-  const entryMinutes = parseInt(startTime.split(":")[1]);
-  const exitMinutes = parseInt(endTime.split(":")[1]);
-
-  const entryTimeInMinutes = entryHour * 60 + entryMinutes;
-  const exitTimeInMinutes = exitHour * 60 + exitMinutes;
-  const workedMinutes = exitTimeInMinutes - entryTimeInMinutes;
-  const workedHours = workedMinutes / 60;
-
-  // Log di debug per vedere i valori
-  console.log(`Entry: ${startTime}, Exit: ${endTime}`);
-  console.log(
-    `Entry Time (in minutes): ${entryTimeInMinutes}, Exit Time (in minutes): ${exitTimeInMinutes}`
-  );
-  console.log(`Worked Minutes: ${workedMinutes}, Worked Hours: ${workedHours}`);
-
-  if (entryHour === 9) {
-    row.css("background-color", "#white"); // Verde chiaro per un giorno lavorativo
-  } else if (workedHours > 9) {
-    row.css("background-color", "#007bff").css("color", "white"); // Blu per straordinari
-  } else if (workedHours >= 4 && workedHours < 8) {
-    row.css("background-color", "#ffeb3b"); // Giallo per permesso
-  } else if (workedHours < 4 || exitTimeInMinutes <= entryTimeInMinutes) {
-    row.css("background-color", "#f44336").css("color", "white"); // Rosso per uscita anomala
-  }
-
-  // Log per sabato/domenica
-  const date = new Date(row.find("td").first().text());
-  if (date.getDay() === 6 || date.getDay() === 0) {
-    // Sabato o Domenica
-    row.css("background-color", "#f44336").css("color", "white"); // Rosso per sabato/domenica
-    console.log("Sabato o Domenica");
-  }
 };
 
 function showItemsAfterLoadTable() {

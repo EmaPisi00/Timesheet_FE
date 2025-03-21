@@ -5,7 +5,6 @@ import {
 } from "./generate-timesheet.js";
 import { showTimesheet } from "./show-timesheet.js";
 import timesheetService from "../../service/timesheet-service.js";
-import userService from "../../service/user-service.js";
 
 let responseSaveTimesheet = null;
 let month = 0;
@@ -14,8 +13,6 @@ let year = 0;
 export async function setupTimesheet() {
   const userProfileJson = sessionStorage.getItem("profile");
   const userProfile = JSON.parse(userProfileJson);
-  console.log("PROVA");
-  console.log(userProfile);
 
   // Visualizzo la pagina di generazione del timesheet
   $("#generateTimesheetHandle").click(() => {
@@ -56,7 +53,7 @@ export async function setupTimesheet() {
       presenceList: presenceData,
     };
 
-    const risposta = timesheetService.saveTimesheet(timesheetRequestDto);
+    const risposta = await timesheetService.saveTimesheet(timesheetRequestDto);
 
     console.log(risposta);
   });

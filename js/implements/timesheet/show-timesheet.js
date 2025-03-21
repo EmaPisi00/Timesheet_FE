@@ -79,7 +79,7 @@ export const showTimesheet = (timesheetRequests, employee) => {
     hideItem("#loader-show-timesheet");
 
     // Mostra il Toast di successo (dopo aver caricato la tabella)
-    showToast("Tabella caricata con successo!", "bg-success");
+    showToast("Tabella caricata con successo!", "success");
 
     // Abilita i link
     enableLinks();

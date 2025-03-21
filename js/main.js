@@ -1,11 +1,6 @@
 // Import moduli separati
 import { hideItem, showItem } from "./utils/utils.js";
-import {
-  checkToken,
-  login,
-  resetInactivityTimer,
-  startPeriodicTokenCheck,
-} from "./implements/auth/auth.js";
+import { checkToken, login, checkTime } from "./implements/auth/auth.js";
 import { setupUI, showAuthenticatedUI } from "./implements/ui/ui.js";
 import { setupTimesheet } from "./implements/timesheet/timesheet.js";
 
@@ -18,19 +13,14 @@ setTimeout(() => {
 $(document).ready(async function () {
   $('[data-bs-toggle="tooltip"]').tooltip(); // Inizializza tutti i tooltips
   setupUI();
-  setupTimesheet();
 
-  // // Gestione attività utente
-  // $(document).on("click mousemove keydown", () => {
-  //   resetInactivityTimer();
-  //   sessionStorage.setItem("lastInteractionTime", Date.now());
-  // });
-
-  // resetInactivityTimer();
-  // startPeriodicTokenCheck();
+  const startTime = sessionStorage.getItem("startTime");
+  let endTime = startTime + 10 * 60 * 1000;
+  checkTime(startTime, endTime, false, 10);
 
   if (await checkToken()) {
     showAuthenticatedUI();
+    setupTimesheet();
   } else {
     $("#loginBtn").click(async function (event) {
       event.preventDefault();
@@ -39,6 +29,7 @@ $(document).ready(async function () {
 
       if (await login(email, password)) {
         showAuthenticatedUI();
+        setupTimesheet();
       }
     });
   }

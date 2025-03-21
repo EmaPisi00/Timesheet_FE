@@ -9,7 +9,7 @@ import {
 export class UserService {
   constructor() {}
 
-  // Metodo login con gestione sicura del token
+  // Metodo login
   async login(email, password) {
     const loginUrl = Constant.API_URL + "/user/login";
     const data = { email, password };
@@ -17,11 +17,9 @@ export class UserService {
     try {
       const response = await ajaxCall(loginUrl, "POST", data, null);
 
-      console.log(response?.token || "ciao");
-
       if (response?.token) {
         sessionStorage.setItem("authToken", response.token);
-        showToast("Login effettuato con successo!", "bg-success");
+        showToast("Login effettuato con successo!", "success");
         return response.token;
       } else {
         throw new Error("Credenziali non valide o token non ricevuto.");
@@ -36,7 +34,6 @@ export class UserService {
   // Metodo per verificare la validità del token
   async verifyToken() {
     const token = sessionStorage.getItem("authToken");
-    console.log("CIAO");
     if (!token) {
       handleUnauthorizedAccess();
       return false;
@@ -45,8 +42,7 @@ export class UserService {
     const verifyUrl = Constant.API_URL + "/user/verify";
 
     try {
-      await ajaxCall(verifyUrl, "POST", null, token);
-      return true;
+      return await ajaxCall(verifyUrl, "POST", null, token);
     } catch (error) {
       console.error("Verifica token fallita:", error);
       sessionStorage.removeItem("authToken");
@@ -81,8 +77,8 @@ export class UserService {
     const profileUrl = Constant.API_URL + "/user/getProfile";
     const token = sessionStorage.getItem("authToken");
 
-    if (!token) {
-      this.handleUnauthorizedAccess();
+    if (isEmpty(token)) {
+      handleUnauthorizedAccess();
       return null;
     }
 

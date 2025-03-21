@@ -19,8 +19,6 @@ export async function ajaxCall(url, method, data = null, token = null) {
       throw new Error(`Errore HTTP: ${response.status}`);
     }
 
- 
-
     return await response.json();
   } catch (error) {
     console.error("Errore nella chiamata AJAX:", error);
