@@ -5,9 +5,9 @@ import {
   login,
   resetInactivityTimer,
   startPeriodicTokenCheck,
-} from "./auth.js";
-import { setupUI, showAuthenticatedUI } from "./ui.js";
-import { setupTimesheet } from "./timesheet.js";
+} from "./implements/auth/auth.js";
+import { setupUI, showAuthenticatedUI } from "./implements/ui/ui.js";
+import { setupTimesheet } from "./implements/timesheet/timesheet.js";
 
 // SETTO IL TIMEOUT PER IL LOADER
 setTimeout(() => {
@@ -16,18 +16,18 @@ setTimeout(() => {
 }, 2000);
 
 $(document).ready(async function () {
-  $('[data-bs-toggle="tooltip"]').tooltip(); // Inizializza tutti i tooltips  
+  $('[data-bs-toggle="tooltip"]').tooltip(); // Inizializza tutti i tooltips
   setupUI();
   setupTimesheet();
 
-  // Gestione attività utente
-  $(document).on("click mousemove keydown", () => {
-    resetInactivityTimer();
-    localStorage.setItem("lastInteractionTime", Date.now());
-  });
+  // // Gestione attività utente
+  // $(document).on("click mousemove keydown", () => {
+  //   resetInactivityTimer();
+  //   sessionStorage.setItem("lastInteractionTime", Date.now());
+  // });
 
-  resetInactivityTimer();
-  startPeriodicTokenCheck();
+  // resetInactivityTimer();
+  // startPeriodicTokenCheck();
 
   if (await checkToken()) {
     showAuthenticatedUI();

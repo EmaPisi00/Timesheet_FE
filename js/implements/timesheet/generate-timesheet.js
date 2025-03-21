@@ -4,9 +4,10 @@ import {
   disableLinks,
   enableLinks,
   isEmpty,
-} from "./utils.js";
-import { getMonthName } from "./date-utils.js";
-import { OptionStatusDayArray } from "./constant.js";
+  showToast,
+} from "../../utils/utils.js";
+import { getMonthName } from "../../utils/date-utils.js";
+import { OptionStatusDayArray } from "../../utils/constant.js";
 
 export const generateTimesheet = (year, month, request) => {
   // Prendo dall'oggetto della richiesta solo la lista delle presenze
@@ -107,22 +108,21 @@ export const generateTimesheet = (year, month, request) => {
 
       // Colonna Note
       const noteInput = $("<input>")
-      .attr("type", "text")
-      .addClass("form-control note-input")
-      .attr("placeholder", "Aggiungi una nota...")
-      .on("click", function () {
-        // Rendi l'input modificabile se cliccato
-        $(this).prop("readonly", false); // Rendi l'input editabile
-      });
-    
-    // Aggiungi il campo note al <td>
-    row.append($("<td>").append(noteInput));
-    
-    // Se esiste una descrizione, la imposti come valore del campo input
-    if (!isEmpty(dayData.description)) {
-      noteInput.val(dayData.description).prop("readonly", true); // Imposta il valore, rendendo l'input non modificabile
-    }
-    
+        .attr("type", "text")
+        .addClass("form-control note-input")
+        .attr("placeholder", "Aggiungi una nota...")
+        .on("click", function () {
+          // Rendi l'input modificabile se cliccato
+          $(this).prop("readonly", false); // Rendi l'input editabile
+        });
+
+      // Aggiungi il campo note al <td>
+      row.append($("<td>").append(noteInput));
+
+      // Se esiste una descrizione, la imposti come valore del campo input
+      if (!isEmpty(dayData.description)) {
+        noteInput.val(dayData.description).prop("readonly", true); // Imposta il valore, rendendo l'input non modificabile
+      }
 
       // Colonna Stato
       const statusSelect = $("<select>").addClass("form-select status-select");
@@ -208,6 +208,10 @@ export const generateTimesheet = (year, month, request) => {
     // Setto nuovamente le select su default
     $("#monthsSelect").prop("selectedIndex", 0);
     $("#yearsSelect").prop("selectedIndex", 0);
+
+    // Mostra il Toast di successo
+    showToast("Timesheet caricato con successo!", "bg-success");
+
     // Aggiungi la funzionalità per modifiche live
     $(document).on("change", ".form-select", function () {
       const row = $(this).closest("tr");

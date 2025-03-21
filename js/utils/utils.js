@@ -28,8 +28,8 @@ export function isEmpty(value) {
   return value === undefined || value === null || value === "";
 }
 
-export function showToast(message, toastClass) {
-  // Crea il Toast
+export async function showToast(message, toastClass) {
+  // Crea il contenitore del Toast
   const toastContainer = document.createElement("div");
   toastContainer.classList.add(
     "toast-container",
@@ -39,26 +39,60 @@ export function showToast(message, toastClass) {
     "p-3"
   );
 
+  // Crea il Toast
   const toast = document.createElement("div");
-  toast.classList.add("toast", toastClass, "fade");
+  toast.classList.add("toast", toastClass, "fade", "show");
   toast.setAttribute("role", "alert");
   toast.setAttribute("aria-live", "assertive");
   toast.setAttribute("aria-atomic", "true");
+  toast.style.backgroundColor = "#d4edda"; // Verde chiaro
+  toast.style.border = "1px solid #c3e6cb";
+  toast.style.color = "white";
+  toast.style.font = "bold";
 
+  // Corpo del Toast
   const toastBody = document.createElement("div");
   toastBody.classList.add("toast-body");
-  toastBody.innerText = message;
+  toastBody.style.display = "flex";
+  toastBody.style.justifyContent = "space-between";
+  toastBody.style.alignItems = "center";
 
+  // Testo del Toast
+  const messageSpan = document.createElement("span");
+  messageSpan.innerText = message;
+
+  // Pulsante "OK"
+  const closeButton = document.createElement("button");
+  closeButton.innerText = "OK";
+  closeButton.classList.add("btn", "btn-sm", "btn");
+  closeButton.style.color = "white";
+  closeButton.style.marginLeft = "10px"; // Spazio tra testo e pulsante
+
+  closeButton.addEventListener("click", () => {
+    bootstrapToast.hide(); // Chiude il toast manualmente
+  });
+
+  // Aggiunge gli elementi al toast
+  toastBody.appendChild(messageSpan);
+  toastBody.appendChild(closeButton);
   toast.appendChild(toastBody);
   toastContainer.appendChild(toast);
   document.body.appendChild(toastContainer);
 
-  // Mostra il Toast con una breve animazione
-  const bootstrapToast = new bootstrap.Toast(toast);
+  // Mostra il Toast con un delay specifico
+  const bootstrapToast = new bootstrap.Toast(toast, { delay: 10000 }); // 5 secondi
   bootstrapToast.show();
+}
 
-  // Rimuove il Toast dopo 5 secondi
+export function handleUnauthorizedAccess() {
+  // Evita il loop controllando se sei già sulla pagina di login
+  if (window.location.pathname.includes("main.html")) return;
+
+  sessionStorage.removeItem("authToken");
+
+  showToast("Sessione scaduta. Effettua nuovamente il login.", "bg-danger");
+
   setTimeout(() => {
-    toast.remove();
-  }, 5000);
+    window.location.href = "/pages/main.html";
+  }, 2000);
 }

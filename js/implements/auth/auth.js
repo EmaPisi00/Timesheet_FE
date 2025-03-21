@@ -1,5 +1,5 @@
-import userService from "./service/user-service.js";
-import { hideItem, isEmpty, showItem } from "./utils/utils.js";
+import userService from "../../service/user-service.js";
+import { hideItem, isEmpty, showItem } from "../../utils/utils.js";
 
 // Variabile per tenere traccia dell'ID del timer
 let inactivityTimeout;
@@ -13,7 +13,7 @@ let lastTokenRefreshTime = 0;
 // Funzione per rinnovare il token
 async function handleTokenRefresh() {
   // Recupero il token
-  const refreshTokenValue = localStorage.getItem("authToken");
+  const refreshTokenValue = sessionStorage.getItem("authToken");
 
   if (refreshTokenValue) {
     try {
@@ -22,8 +22,8 @@ async function handleTokenRefresh() {
       console.log("Nuovo token:", newToken);
 
       if (newToken) {
-        // Salva il nuovo token nel localStorage per l'uso futuro
-        localStorage.setItem("authToken", newToken);
+        // Salva il nuovo token nel sessionStorage per l'uso futuro
+        sessionStorage.setItem("authToken", newToken);
 
         // Registra l'ora dell'ultimo rinnovo
         lastTokenRefreshTime = Date.now();
@@ -42,7 +42,7 @@ export function resetInactivityTimer() {
 
   inactivityTimeout = setTimeout(() => {
     console.log("Utente disconnesso per inattività.");
-    localStorage.removeItem("authToken"); // Rimuove il token di autenticazione
+    sessionStorage.removeItem("authToken"); // Rimuove il token di autenticazione
     window.location.href = "/pages/main.html"; // Reindirizza alla pagina di login
   }, 60 * 1000 * 10);
 }
@@ -57,7 +57,7 @@ export function startPeriodicTokenCheck() {
       // Se è passato più di 1 minuto dal rinnovo
       console.log("Controllo periodico del rinnovo del token...");
 
-      const lastInteractionTime = localStorage.getItem("lastInteractionTime");
+      const lastInteractionTime = sessionStorage.getItem("lastInteractionTime");
       if (lastInteractionTime) {
         const timeDiff = currentTime - lastInteractionTime;
 
@@ -75,15 +75,11 @@ export function startPeriodicTokenCheck() {
 
 // Funzione che richiama il metodo di verifica del token
 export async function checkToken() {
-  // Recupero il token
-  const token = localStorage.getItem("authToken");
-  if (!isEmpty(token)) {
-    try {
-      return await userService.verifyToken(token);
-    } catch (error) {
-      console.error("Errore durante la verifica del token:", error);
-      return false;
-    }
+  try {
+    return await userService.verifyToken();
+  } catch (error) {
+    console.error("Errore durante la verifica del token:", error);
+    return false;
   }
 }
 
@@ -96,7 +92,8 @@ export async function login(email, password) {
     const result = await userService.login(email, password);
 
     if (result) {
-      sessionStorage.setItem("authToken", result); // Salviamo il token
+      const userProfile = await userService.getUserProfile();
+      sessionStorage.setItem("profile", JSON.stringify(userProfile));
       return true;
     } else {
       hideItem("#loader");
