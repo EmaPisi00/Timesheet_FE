@@ -1,4 +1,4 @@
-import { hideItem } from "../../utils/utils.js";
+import { hideItem, showItem } from "../../utils/utils.js";
 
 export async function setupUI() {
   $("#nav-icon").click(() => {
@@ -52,5 +52,6 @@ export function showAuthenticatedUI() {
     $("#sidebar").addClass("active").show();
     hideItem("#loader");
     hideItem("#loadError");
+    showItem("#user-menu");
   }, 2000);
 }

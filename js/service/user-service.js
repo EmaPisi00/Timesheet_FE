@@ -74,6 +74,24 @@ export class UserService {
       return null;
     }
   }
+
+  async logout() {
+    const token = sessionStorage.getItem("authToken");
+    if (!token) {
+      handleUnauthorizedAccess();
+      return false;
+    }
+
+    const logoutUrl = Constant.API_URL + "/user/logout";
+
+    try {
+      return await ajaxCall(logoutUrl, "POST", null, token);
+    } catch (error) {
+      console.error("Verifica token fallita:", error);
+      sessionStorage.removeItem("authToken");
+      return false;
+    }
+  }
 }
 
 // Esportazione predefinita della classe

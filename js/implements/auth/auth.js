@@ -1,5 +1,5 @@
 import userService from "../../service/user-service.js";
-import { hideItem, showItem } from "../../utils/utils.js";
+import { hideItem, showItem, showToast } from "../../utils/utils.js";
 
 // Funzione che richiama il metodo di verifica del token
 export async function checkToken() {
@@ -37,4 +37,12 @@ export async function login(email, password) {
     showItem("#loginCard");
     return false;
   }
+}
+
+export async function logout() {
+  await userService.logout();
+  sessionStorage.removeItem("profile");
+  sessionStorage.removeItem("startTime");
+  sessionStorage.removeItem("authToken");
+  window.location.href = "/pages/main.html";
 }

@@ -356,8 +356,71 @@
   }
 
   /* Legenda per la visualizzazione dei colori (END) */
-
-
-  #saveTimesheet{
+  #saveTimesheet {
     margin-bottom: 20px;
+  }
+
+
+  /* Area utente*/
+  #user-menu {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  .user-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .user-icon img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+
+  .dropdown-menu {
+    background-color: white;
+    /* Sfondo bianco */
+    border: none;
+    width: 250px;
+    border: 1px solid rgba(143, 138, 138, 0.5);
+    border-radius: 5%;
+  }
+
+  .dropdown-menu .dropdown-item {
+    color: black;
+    /* Testo nero */
+  }
+
+  .dropdown-menu .dropdown-item:hover {
+    background-color: #f0f0f0;
+    /* Colore di hover grigio chiaro */
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .user-info .user-name {
+    margin-left: 10px;
+    color: black;
+    /* Nome utente in nero */
+  }
+
+  .dropdown-divider {
+    border-top: 1px solid black;
+    /* Linea nera */
+    margin: 10px auto;
+    /* Centra la linea orizzontalmente */
+    width: 90%;
+    /* Imposta la larghezza al 50% */
   }

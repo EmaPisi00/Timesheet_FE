@@ -1,6 +1,6 @@
 // Import moduli separati
 import { hideItem, showItem } from "./utils/utils.js";
-import { checkToken, login } from "./implements/auth/auth.js";
+import { checkToken, login, logout } from "./implements/auth/auth.js";
 import { setupUI, showAuthenticatedUI } from "./implements/ui/ui.js";
 import { setupTimesheet } from "./implements/timesheet/timesheet.js";
 
@@ -29,4 +29,9 @@ $(document).ready(async function () {
       }
     });
   }
+
+  // Operazione di logout
+  $("#logout").click(() => {
+    logout();
+  });
 });

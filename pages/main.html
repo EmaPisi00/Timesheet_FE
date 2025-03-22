@@ -285,7 +285,7 @@
 
       <div id="sidebar">
         <ul>
-          <li><a href="#" id="home">Home</a></li>
+          <li><a href="#" id="home" class="text-white">Home</a></li>
           <li>
             <div class="dropdown w-100 text-white">
               <button
@@ -301,19 +301,62 @@
                 style="background-color: #2c3e50; height: 115px"
               >
                 <li>
-                  <a class="dropdown-item" href="#" id="generateTimesheetHandle"
+                  <a
+                    class="dropdown-item text-white"
+                    href="#"
+                    id="generateTimesheetHandle"
                     >Genera Timesheet</a
                   >
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#" id="showAllTimesheetHandle"
+                  <a
+                    class="dropdown-item text-white"
+                    href="#"
+                    id="showAllTimesheetHandle"
                     >Visualizza Timesheet</a
                   >
                 </li>
               </ul>
             </div>
           </li>
-          <li><a href="#">Contact</a></li>
+          <li><a href="#" class="text-white">Contact</a></li>
+        </ul>
+      </div>
+
+      <div id="user-menu" class="dropdown" style="display: none">
+        <div class="user-icon" data-bs-toggle="dropdown">
+          <!-- Qui mostriamo l'icona se l'immagine non è presente -->
+          <img
+            id="user-img"
+            src=""
+            onerror="this.style.display='none'; document.getElementById('user-icon').style.display='flex';"
+          />
+          <!-- Icona di fallback se l'immagine non esiste -->
+          <i
+            id="user-icon"
+            class="fa-solid fa-file-image"
+            style="display: none; color: #fff"
+          ></i>
+        </div>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li class="user-info">
+            <img
+              id="user-info-img"
+              src=""
+              onerror="this.style.display='none'; document.getElementById('user-info-icon').style.display='flex';"
+            />
+            <i
+              id="user-info-icon"
+              class="fa-solid fa-file-image"
+              style="display: none; color: #000"
+            ></i>
+            <span class="user-name" id="username"></span>
+          </li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <a class="dropdown-item" href="#" id="userArea">Area Utente</a>
+          </li>
+          <li><a class="dropdown-item" href="#" id="logout">Logout</a></li>
         </ul>
       </div>
     </div>
