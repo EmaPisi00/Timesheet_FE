@@ -1,6 +1,6 @@
 // Import moduli separati
 import { hideItem, showItem } from "./utils/utils.js";
-import { checkToken, login, checkTime } from "./implements/auth/auth.js";
+import { checkToken, login } from "./implements/auth/auth.js";
 import { setupUI, showAuthenticatedUI } from "./implements/ui/ui.js";
 import { setupTimesheet } from "./implements/timesheet/timesheet.js";
 
@@ -13,10 +13,6 @@ setTimeout(() => {
 $(document).ready(async function () {
   $('[data-bs-toggle="tooltip"]').tooltip(); // Inizializza tutti i tooltips
   setupUI();
-
-  const startTime = sessionStorage.getItem("startTime");
-  let endTime = startTime + 10 * 60 * 1000;
-  checkTime(startTime, endTime, false, 10);
 
   if (await checkToken()) {
     showAuthenticatedUI();

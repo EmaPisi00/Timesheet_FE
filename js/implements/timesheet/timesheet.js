@@ -1,4 +1,9 @@
-import { isEmpty, showItem, hideItem } from "../../utils/utils.js";
+import {
+  isEmpty,
+  showItem,
+  hideItem,
+  disableLinks,
+} from "../../utils/utils.js";
 import {
   generateTimesheet,
   extractPresenceData,
@@ -6,11 +11,17 @@ import {
 import { showTimesheet } from "./show-timesheet.js";
 import timesheetService from "../../service/timesheet-service.js";
 
+// Oggetto di risposta per la generazione del timesheet del mese corrente
 let responseSaveTimesheet = null;
+
+// Mese scelto
 let month = 0;
+
+// Anno scelto
 let year = 0;
 
 export async function setupTimesheet() {
+  // Recupero il profilo dell'utente
   const userProfileJson = sessionStorage.getItem("profile");
   const userProfile = JSON.parse(userProfileJson);
 
@@ -25,41 +36,61 @@ export async function setupTimesheet() {
     showItem("#showTimesheet");
     hideItem("#containerGenerateTimesheet");
 
+    // Costruisco un oggetto Pageable per la paginazione
     const pageable = {
       page: 0, // Numero della pagina (indice zero-based)
       size: 10, // Numero di elementi per pagina
       sort: "",
     };
 
+    // Mostro il loader
+    showItem("#loader-show-timesheet");
+
+    // Nascondo la tabella ed il titolo
+    hideItem("#datatableTimesheet");
+    hideItem("#titleShowTimesheet");
+
+    // Salva il tempo di inizio
+    const startTime = performance.now();
+
+    // Chiamata a BE per recuperare tutti i timesheet in base all'utente
     const responseShowTimesheet = await timesheetService.findAllByEmployee(
       pageable,
       userProfile.uuidEmployee
     );
 
-    console.log(responseShowTimesheet.content);
-    console.log(userProfile);
+    // Salva il tempo di fine chiamata
+    const endTime = performance.now();
 
+    // Tempo impiegato in millisecondi
+    const elapsedTime = endTime - startTime;
+
+    // Se la chiamata è andata a buon fine e c'è almeno un elemento lo mostro con un ritardo calcolato
     if (!isEmpty(responseShowTimesheet.content)) {
-      showTimesheet(responseShowTimesheet.content, userProfile);
+      setTimeout(() => {
+        showTimesheet(responseShowTimesheet.content, userProfile);
+      }, elapsedTime);
     }
   });
 
   // Salvo o aggiorno il timesheet a DB
   $("#saveTimesheet").click(async () => {
+    // Estraggo una lista di presenze in base a mese e anno
     const presenceData = extractPresenceData(year, month);
 
+    // Creo un oggetto da dare in input alla chiamata per salvare a DB
     let timesheetRequestDto = {
       timesheetDto: responseSaveTimesheet.timesheetDto,
       presenceList: presenceData,
     };
 
-    const risposta = await timesheetService.saveTimesheet(timesheetRequestDto);
-
-    console.log(risposta);
+    // Eseguo una chiamata a DB per salvare o aggiornare il timesheet
+    await timesheetService.saveTimesheet(timesheetRequestDto);
   });
 
   // Genero dinamicamente la tabella del timesheet dopo aver scelto mese ed anno
   $("#generateTimesheet").click(async () => {
+    // Ricavo il valore di mese e anno dalla select
     month = parseInt($("#monthsSelect").val(), 10);
     year = parseInt($("#yearsSelect").val(), 10);
 
@@ -73,18 +104,47 @@ export async function setupTimesheet() {
       return;
     } else hideItem("#yearError");
 
-    console.log(userProfile);
-    responseSaveTimesheet =
-      await timesheetService.generateTimesheetByMonthAndYearAndEmployee(
-        month,
-        year,
-        userProfile.uuidEmployee
-      );
+    // Mostra il loader prima di iniziare
+    showItem("#loader-middle");
 
-    if (responseSaveTimesheet === 400) {
-      alert("Errore timesheet esistente");
-    } else {
-      generateTimesheet(year, month, responseSaveTimesheet);
+    // Nasconde tutti i button o altro durante il caricamento
+    hideItemsBeforeLoadTable();
+
+    // Disabilito i link o pulsanti
+    disableLinks();
+
+    // Salva il tempo di inizio
+    const startTime = performance.now();
+
+    // Faccio la chiamata a BE per generare o recuperare il timesheet (in base a se esiste già a DB o no)
+    try {
+      const responseSaveTimesheet =
+        await timesheetService.generateTimesheetByMonthAndYearAndEmployee(
+          month,
+          year,
+          userProfile.uuidEmployee
+        );
+
+      // Salva il tempo di fine chiamata
+      const endTime = performance.now();
+
+      // Tempo impiegato in millisecondi
+      const elapsedTime = endTime - startTime;
+
+      // Se la response della mia chiamata è vuota do un errore altrimenti mostro la tabella con il ritardo calcolato
+      if (isEmpty(responseSaveTimesheet)) {
+        alert("Errore timesheet esistente");
+        hideItem("#loader-middle");
+      } else {
+        setTimeout(() => {
+          generateTimesheet(year, month, responseSaveTimesheet);
+          hideItem("#loader-middle");
+        }, elapsedTime);
+      }
+    } catch (error) {
+      console.error("Errore nella generazione del timesheet:", error);
+      alert("Si è verificato un errore durante la generazione del timesheet.");
+      hideItem("#loader-middle");
     }
   });
 
@@ -92,4 +152,16 @@ export async function setupTimesheet() {
     if (!isEmpty($("#monthsSelect").val())) hideItem("#monthError");
     if (!isEmpty($("#yearsSelect").val())) hideItem("#yearError");
   });
+}
+
+// Funzione che permette di nascondere tutti gli item prima del caricamento del timesheet
+function hideItemsBeforeLoadTable() {
+  hideItem("#generateTimesheet");
+  hideItem("#colSelectMonth");
+  hideItem("#colSelectYear");
+  hideItem("#titleTimesheet");
+  hideItem("#tableContainer");
+  hideItem("#buttonLegend");
+  hideItem("#legendContainer");
+  hideItem("#saveTimesheet");
 }

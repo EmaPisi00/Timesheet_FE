@@ -50,28 +50,6 @@ export class UserService {
     }
   }
 
-  // Metodo per rinnovare il token
-  async attemptTokenRefresh() {
-    const refreshToken = sessionStorage.getItem("authToken");
-    if (!refreshToken) return false;
-
-    const refreshUrl = Constant.API_URL + "/user/refreshToken";
-
-    try {
-      const response = await ajaxCall(refreshUrl, "POST", { refreshToken });
-
-      if (response?.token) {
-        sessionStorage.setItem("authToken", response.token);
-        return true;
-      } else {
-        throw new Error("Rinnovo del token fallito.");
-      }
-    } catch (error) {
-      console.error("Errore durante il rinnovo del token:", error);
-      return false;
-    }
-  }
-
   // Metodo per ottenere i dati dell'utente
   async getUserProfile() {
     const profileUrl = Constant.API_URL + "/user/getProfile";
