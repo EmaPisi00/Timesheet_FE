@@ -10,6 +10,7 @@ import {
 } from "./generate-timesheet.js";
 import { showTimesheet } from "./show-timesheet.js";
 import timesheetService from "../../service/timesheet-service.js";
+import { getProfile } from "../auth/auth.js";
 
 // Oggetto di risposta per la generazione del timesheet del mese corrente
 let responseSaveTimesheet = null;
@@ -21,9 +22,7 @@ let month = 0;
 let year = 0;
 
 export async function setupTimesheet() {
-  // Recupero il profilo dell'utente
-  const userProfileJson = sessionStorage.getItem("profile");
-  const userProfile = JSON.parse(userProfileJson);
+  const userProfile = getProfile();
 
   // Visualizzo la pagina di generazione del timesheet
   $("#generateTimesheetHandle").click(() => {

@@ -1,4 +1,5 @@
 import { hideItem, showItem } from "../../utils/utils.js";
+import { getProfile } from "../auth/auth.js";
 
 export async function setupUI() {
   $("#nav-icon").click(() => {
@@ -53,5 +54,9 @@ export function showAuthenticatedUI() {
     hideItem("#loader");
     hideItem("#loadError");
     showItem("#user-menu");
+
+    const userProfile = getProfile();
+    console.log(userProfile);
+    $("#username").text(userProfile.name + " " + userProfile.surname);
   }, 2000);
 }

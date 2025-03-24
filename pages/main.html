@@ -21,7 +21,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <!-- IMPORT FILE .CSS-->
+    <link rel="stylesheet" href="/css/loader.css" />
     <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/hamburger.css" />
 
     <!-- IMPORT FONT -->
     <link
@@ -340,16 +342,18 @@
         </div>
         <ul class="dropdown-menu dropdown-menu-end">
           <li class="user-info">
-            <img
-              id="user-info-img"
-              src=""
-              onerror="this.style.display='none'; document.getElementById('user-info-icon').style.display='flex';"
-            />
-            <i
-              id="user-info-icon"
-              class="fa-solid fa-file-image"
-              style="display: none; color: #000"
-            ></i>
+            <div class="user-img-container">
+              <img
+                id="user-info-img"
+                src=""
+                onerror="this.style.display='none'; document.getElementById('user-info-icon').style.display='flex';"
+              />
+              <i
+                id="user-info-icon"
+                class="fa-solid fa-file-image"
+                style="display: none; color: #000"
+              ></i>
+            </div>
             <span class="user-name" id="username"></span>
           </li>
           <li><hr class="dropdown-divider" /></li>

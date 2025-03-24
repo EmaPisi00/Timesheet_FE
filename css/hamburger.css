@@ -1,0 +1,98 @@
+/*** HAMBURGER MENU (START) ***/
+#nav-icon {
+    width: 50px;
+    height: 40px;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1002;
+    padding: 10px;
+    transition: all 0.3s ease;
+}
+
+#nav-icon span {
+    display: block;
+    position: absolute;
+    height: 5px;
+    width: 35px;
+    background: black;
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Posizione iniziale delle linee */
+#nav-icon span:nth-child(1) {
+    top: 8px;
+}
+
+#nav-icon span:nth-child(2) {
+    top: 18px;
+}
+
+#nav-icon span:nth-child(3) {
+    top: 28px;
+}
+
+/* Animazione della "X" (inversione dell'animazione) */
+#nav-icon.open span:nth-child(1) {
+    transform: translateY(10px) rotate(45deg);
+}
+
+#nav-icon.open span:nth-child(2) {
+    opacity: 0;
+}
+
+#nav-icon.open span:nth-child(3) {
+    transform: translateY(-10px) rotate(-45deg);
+}
+
+/*** HAMBURGER MENU (END) ***/
+
+/* SIDEBAR (START)*/
+#sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background: #2c3e50;
+    padding: 70px 20px 20px;
+    /* Padding-top maggiore per lasciare spazio al bottone */
+    transition: left 0.3s ease-in-out;
+    box-shadow: 5px 0 10px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+#sidebar.active {
+    left: 0;
+}
+
+#sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+#sidebar ul li {
+    margin-bottom: 12px;
+}
+
+#sidebar a {
+    display: block;
+    padding: 12px;
+    font-size: 18px;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+#sidebar a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    padding-left: 15px;
+}
+
+/* SIDEBAR (END)*/

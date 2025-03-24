@@ -46,3 +46,11 @@ export async function logout() {
   sessionStorage.removeItem("authToken");
   window.location.href = "/pages/main.html";
 }
+
+// Recupero il profilo dell'utente
+export function getProfile() {
+  const userProfileJson = sessionStorage.getItem("profile");
+  const userProfile = JSON.parse(userProfileJson);
+  console.log(userProfile);
+  return userProfile;
+}
