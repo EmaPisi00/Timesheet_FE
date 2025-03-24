@@ -14,8 +14,8 @@ export async function checkToken() {
 // Funzione di login
 export async function login(email, password) {
   try {
-    showItem("#loader");
-    hideItem("#loginCard");
+    showItem("#loaderSpinner");
+    hideItem("#loginCardContainer");
 
     const result = await userService.login(email, password);
 
@@ -25,16 +25,16 @@ export async function login(email, password) {
       sessionStorage.setItem("startTime", Date.now());
       return true;
     } else {
-      hideItem("#loader");
-      showItem("#loginCard");
-      showItem("#loginError");
+      hideItem("#loaderSpinner");
+      showItem("#loginCardContainer");
+      showItem("#loginErrorMessage");
       return false;
     }
   } catch (error) {
     console.error("Errore nel login:", error);
-    showItem("#loginError");
-    hideItem("#loader");
-    showItem("#loginCard");
+    showItem("#loginErrorMessage");
+    hideItem("#loaderSpinner");
+    showItem("#loginCardContainer");
     return false;
   }
 }
