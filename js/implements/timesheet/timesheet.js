@@ -135,10 +135,13 @@ export async function setupTimesheet() {
         alert("Errore timesheet esistente");
         hideItem("#loader-middle");
       } else {
-        setTimeout(() => {
-          generateTimesheet(year, month, responseSaveTimesheet);
-          hideItem("#loader-middle");
-        }, elapsedTime);
+        setTimeout(
+          () => {
+            generateTimesheet(year, month, responseSaveTimesheet);
+            hideItem("#loader-middle");
+          },
+          elapsedTime > 2 ? elapsedTime : 2000
+        );
       }
     } catch (error) {
       console.error("Errore nella generazione del timesheet:", error);

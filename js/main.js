@@ -6,8 +6,8 @@ import { setupTimesheet } from "./implements/timesheet/timesheet.js";
 
 // SETTO IL TIMEOUT PER IL LOADER
 setTimeout(() => {
-  hideItem("#loader");
-  showItem("#content");
+  hideItem("#loadingSpinner");
+  showItem("#mainContent");
 }, 2000);
 
 $(document).ready(async function () {

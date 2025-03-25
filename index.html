@@ -26,7 +26,7 @@
   </head>
   <body>
     <!-- Loader -->
-    <div id="loader">
+    <div id="loadingSpinner">
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Caricamento...</span>
       </div>
@@ -44,7 +44,7 @@
   <script>
     // Simula un caricamento di 3 secondi
     setTimeout(() => {
-      $("#loader").hide(); // Nasconde il loader
+      $("#loadingSpinner").hide(); // Nasconde il loader
       $("#content").show(); // Mostra il contenuto
     }, 2000);
   </script>

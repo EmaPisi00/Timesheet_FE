@@ -2,20 +2,19 @@ import { hideItem, showItem, isEmpty } from "../../utils/utils.js";
 import { getProfile } from "../auth/auth.js";
 
 export async function setupUI() {
-  initInitialsUsername();
   $("#nav-icon").click(() => {
     $("#nav-icon").toggleClass("open");
     $("#sidebar").toggleClass("active");
   });
 
-  $("#eye-icon").click(() => {
+  $("#togglePasswordIcon").click(() => {
     let passwordField = $("#password");
     passwordField.attr(
       "type",
       passwordField.attr("type") === "password" ? "text" : "password"
     );
 
-    $("#eye-icon").attr(
+    $("#togglePasswordIcon").attr(
       "src",
       passwordField.attr("type") === "password"
         ? "/assets/images/eye-icon.png"
@@ -48,11 +47,12 @@ export async function setupUI() {
 }
 
 export function showAuthenticatedUI() {
-  hideItem("#loginCard");
+  initInitialsUsername();
+  hideItem("#loginCardContainer");
   setTimeout(() => {
     $("#nav-icon").show().addClass("open");
     $("#sidebar").addClass("active").show();
-    hideItem("#loader");
+    hideItem("#loadingSpinner");
     hideItem("#loadError");
     showItem("#user-menu");
 
@@ -62,8 +62,11 @@ export function showAuthenticatedUI() {
   }, 2000);
 }
 
-function initInitialsUsername() {
+export function initInitialsUsername() {
   var userProfile = getProfile();
+  console.log("User");
+  console.log(userProfile);
+  console.log("End User");
   if (!isEmpty(userProfile)) {
     var fullName = userProfile.name.concat(" ").concat(userProfile.surname); // Nome utente
     $("#username").text(fullName);

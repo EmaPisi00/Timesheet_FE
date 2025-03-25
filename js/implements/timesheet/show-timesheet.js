@@ -4,6 +4,7 @@ import {
   showItem,
   hideItem,
   showToast,
+  isEmpty,
 } from "../../utils/utils.js";
 import { getMonthName } from "../../utils/date-utils.js";
 import timesheetService from "../../service/timesheet-service.js";
@@ -30,12 +31,10 @@ export const showTimesheet = (timesheetRequests, employee) => {
   // Se ci sono timesheetRequests, procedo con la creazione della tabella
   let tableHTML =
     '<table class="table table-striped"><thead><tr>' +
-    '<th style="width: 10%;">Nome</th>' +
-    '<th style="width: 10%;">Cognome</th>' +
     '<th style="width: 5%;">Mese</th>' +
     '<th style="width: 5%;">Anno</th>' +
     '<th style="width: 10%;">Totale Ore Lavorate</th>' +
-    '<th style="width: 20%;">Azioni</th>' +
+    '<th style="width: 50%;">Azioni</th>' +
     "</tr></thead><tbody>";
 
   // Itera su tutti i timesheetRequests
@@ -51,8 +50,6 @@ export const showTimesheet = (timesheetRequests, employee) => {
 
     // Dati per la riga (ad esempio, per un singolo dipendente)
     const data = {
-      nome: employee.name,
-      cognome: employee.surname,
       mese: getMonthName(monthRequest),
       anno: yearRequest,
       totaleOreLavorate: totalHours,
@@ -82,7 +79,7 @@ export const showTimesheet = (timesheetRequests, employee) => {
                   data-month="${monthRequest}" 
                   data-year="${yearRequest}" 
                   title="${action.title}"
-                  style="margin-right: 15px; vertical-align: middle;">
+                  style="margin-right: 30px; vertical-align: middle;">
             <i class="${action.icon}" style="font-size: 16px; color: #333;"></i>
           </button>
         `;
@@ -136,12 +133,22 @@ async function handleActionClick(action, month, year) {
         );
 
       if (responseSaveTimesheet === 400) {
-        alert("Errore timesheet esistente");
+        showToast(
+          "Timesheet Bloccato, non è più possibile modificare il mese di " +
+            getMonthName(month) +
+            " per l'anno " +
+            year,
+          "bg-danger"
+        );
       } else {
-        hideItem("#datatableTimesheet");
-        showItem("#containerGenerateTimesheet");
-        hideItem("#showTimesheet");
-        generateTimesheet(year, month, responseSaveTimesheet);
+        if (!isEmpty(responseSaveTimesheet)) {
+          if (!isEmpty(responseSaveTimesheet.timesheetDto)) {
+            hideItem("#datatableTimesheet");
+            showItem("#containerGenerateTimesheet");
+            hideItem("#showTimesheet");
+            generateTimesheet(year, month, responseSaveTimesheet);
+          }
+        }
       }
       break;
     case "view":

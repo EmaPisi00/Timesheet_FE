@@ -54,7 +54,7 @@
   </head>
   <body>
     <!-- Loader -->
-    <div id="loader">
+    <div id="loadingSpinner">
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Caricamento...</span>
       </div>
@@ -63,20 +63,20 @@
     <!-- Content -->
     <div
       class="container d-flex justify-content-center align-items-center vh-100"
-      id="content"
+      id="mainContent"
       style="display: none"
     >
       <div
         class="card p-4"
         style="max-width: 400px; width: 100%; border-radius: 8px"
-        id="loginCard"
+        id="loginCardContainer"
       >
         <h3 class="mb-4">Log-in</h3>
         <form id="loginForm">
           <!-- Assicurati che il form abbia l'ID "loginForm" -->
           <!-- Username -->
           <div class="form-group mb-4">
-            <label for="E-mail" class="mb-2">E-mail</label>
+            <label for="email" class="mb-2">E-mail</label>
             <input
               type="text"
               class="form-control"
@@ -100,7 +100,7 @@
             <img
               src="/assets/images/eye-icon.png"
               alt="Mostra/Nascondi"
-              id="eye-icon"
+              id="togglePasswordIcon"
               class="position-absolute"
               style="top: 55%; right: 10px; cursor: pointer"
               onclick=""

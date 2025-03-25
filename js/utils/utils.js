@@ -93,7 +93,7 @@ export async function showToast(message, toastClass) {
   bootstrapToast.show();
 
   // Rimuove il toast dopo 5 secondi
-  setTimeout(() => $toast.remove(), 5000);
+  setTimeout(() => $toast.remove(), 8000);
 }
 
 export function handleUnauthorizedAccess() {
