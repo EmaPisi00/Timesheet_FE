@@ -34,4 +34,9 @@ $(document).ready(async function () {
   $("#logout").click(() => {
     logout();
   });
+
+  // Previene la chiusura automatica del dropdown quando si clicca all'interno
+  $(".dropdown-menu-user").click(function (event) {
+    event.stopPropagation();
+  });
 });

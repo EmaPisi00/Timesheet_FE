@@ -1,5 +1,11 @@
 import userService from "../../service/user-service.js";
-import { hideItem, showItem, showToast } from "../../utils/utils.js";
+import {
+  handleUnauthorizedAccess,
+  hideItem,
+  isEmpty,
+  showItem,
+  showToast,
+} from "../../utils/utils.js";
 
 // Funzione che richiama il metodo di verifica del token
 export async function checkToken() {
@@ -49,8 +55,13 @@ export async function logout() {
 
 // Recupero il profilo dell'utente
 export function getProfile() {
-  const userProfileJson = sessionStorage.getItem("profile");
-  const userProfile = JSON.parse(userProfileJson);
-  console.log(userProfile);
-  return userProfile;
+  const token = sessionStorage.getItem("authToken");
+  if (!isEmpty(token)) {
+    const userProfileJson = sessionStorage.getItem("profile");
+    const userProfile = JSON.parse(userProfileJson);
+    console.log(userProfile);
+    return userProfile;
+  }
+
+  handleUnauthorizedAccess();
 }

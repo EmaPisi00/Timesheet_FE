@@ -117,7 +117,7 @@ export async function setupTimesheet() {
 
     // Faccio la chiamata a BE per generare o recuperare il timesheet (in base a se esiste già a DB o no)
     try {
-      const responseSaveTimesheet =
+      responseSaveTimesheet =
         await timesheetService.generateTimesheetByMonthAndYearAndEmployee(
           month,
           year,
