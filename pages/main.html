@@ -4,54 +4,54 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
-
-    <!-- Import Bootstrap -->
+    <!-- IMPORT BOOTSTRAP -->
     <link
       rel="stylesheet"
       href="/node_modules/bootstrap/dist/css/bootstrap.min.css"
     />
+
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Import jQuery -->
+    <!-- IMPORT JQUERY -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- Import Bootstrap Popper -->
+    <!-- IMPORT BOOTSTRAP POPPERS/CORE -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- Import CSS -->
+    <!-- IMPORT FILE .CSS-->
     <link rel="stylesheet" href="/css/loader.css" />
     <link rel="stylesheet" href="/css/main.css" />
     <link rel="stylesheet" href="/css/hamburger.css" />
     <link rel="stylesheet" href="/css/timesheet.css" />
     <link rel="stylesheet" href="/css/user-area.css" />
 
-    <!-- Import Google Fonts -->
+    <!-- IMPORT FONT -->
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
 
-    <!-- Import Scripts -->
+    <!-- IMPORT SCRIPT -->
     <script type="module" src="/js/main.js"></script>
     <script type="module" src="/js/service/user-service.js"></script>
     <script type="module" src="/js/implements/timesheet/timesheet.js"></script>
     <script type="module" src="/js/implements/auth/auth.js"></script>
 
-    <!-- Favicon -->
+    <!-- Aggiungi la favicon -->
     <link
       rel="icon"
       href="/assets/images/calendar-check-regular.svg"
       type="image/png"
     />
 
-    <!-- Font Awesome -->
+    <!-- Include Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
   </head>
-
   <body>
     <!-- Loader -->
     <div id="loadingSpinner">
@@ -66,10 +66,15 @@
       id="mainContent"
       style="display: none"
     >
-      <div class="card login-card">
+      <div
+        class="card p-4"
+        style="max-width: 400px; width: 100%; border-radius: 8px"
+        id="loginCardContainer"
+      >
         <h3 class="mb-4">Log-in</h3>
         <form id="loginForm">
-          <!-- Email -->
+          <!-- Assicurati che il form abbia l'ID "loginForm" -->
+          <!-- Username -->
           <div class="form-group mb-4">
             <label for="email" class="mb-2">E-mail</label>
             <input
@@ -91,11 +96,14 @@
               placeholder="Inserisci la tua password"
               required
             />
+            <!-- Icona occhio per mostrare/nascondere la password -->
             <img
               src="/assets/images/eye-icon.png"
               alt="Mostra/Nascondi"
-              id="togglePassword"
-              class="eye-icon"
+              id="togglePasswordIcon"
+              class="position-absolute"
+              style="top: 55%; right: 10px; cursor: pointer"
+              onclick=""
             />
           </div>
 
@@ -104,84 +112,267 @@
             <a href="#" class="small">Password Dimenticata?</a>
           </div>
 
-          <!-- Messaggio di errore -->
-          <p id="loginErrorMessage" class="error-message">
-            Errore! E-mail o Password Errata
-          </p>
+          <div class="form-group">
+            <p id="loginErrorMessage">Errore! E-mail o Password Errata</p>
+          </div>
 
           <!-- Bottone di login -->
-          <button type="submit" class="btn btn-primary w-100" id="loginButton">
+          <button
+            type="submit"
+            class="btn btn-primary btn-block w-100"
+            id="loginButton"
+          >
             Accedi
           </button>
         </form>
       </div>
-    </div>
 
-    <!-- NAVBAR -->
-    <div id="menu-toggle" style="display: none">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-    <nav id="sidebar">
-      <ul>
-        <li><a href="#" id="homeLink" class="text-white">Home</a></li>
-        <li>
-          <div class="dropdown w-100">
-            <button
-              class="btn dropdown-toggle text-white"
-              type="button"
-              data-bs-toggle="dropdown"
-            >
-              Timesheet
-            </button>
-            <ul class="dropdown-menu bg-dark">
-              <li>
-                <a
-                  class="dropdown-item text-white"
-                  href="#"
-                  id="generateTimesheetBtn"
-                  >Genera Timesheet</a
-                >
-              </li>
-              <li>
-                <a
-                  class="dropdown-item text-white"
-                  href="#"
-                  id="showAllTimesheetBtn"
-                  >Visualizza Timesheet</a
-                >
-              </li>
-            </ul>
+      <!-- GENERAZIONE TIMESHEET -->
+      <div class="container mt-5" id="timesheetContainer" style="display: none">
+        <!-- Loader di caricamento -->
+        <div id="loader-middle" class="text-center" style="display: none">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Caricamento...</span>
           </div>
-        </li>
-        <li><a href="#" class="text-white">Contatti</a></li>
-      </ul>
-    </nav>
+        </div>
 
-    <!-- Area Utente -->
-    <div id="userMenu" class="dropdown" style="display: block">
-      <div class="user-icon" data-bs-toggle="dropdown">
-        <div id="profileInitials" class="profile-image"></div>
-        <img id="userImage" style="display: none" />
-      </div>
-      <ul class="dropdown-menu dropdown-menu-end">
-        <li class="user-info">
-          <div class="user-details">
-            <div class="user-img-container">
-              <div id="profileInitialsDropdown" class="profile-image"></div>
-              <img id="userImageDropdown" class="user-img" />
+        <div class="container">
+          <div class="row justify-content-center" id="timesheetTitleContainer">
+            <!-- Form -->
+            <div class="col-md-6">
+              <form>
+                <h3 class="text-center" id="titleTimesheet">Timesheet</h3>
+                <div class="row">
+                  <!-- Primo Select -->
+                  <div class="col-6" id="colSelectMonth">
+                    <label for="selectMonth" class="form-label"
+                      >Seleziona un mese</label
+                    >
+                    <select class="form-select" id="selectMonthDropdown">
+                      <option selected disabled>Seleziona un mese</option>
+                    </select>
+                    <p id="monthErrorMessage" class="text-danger">
+                      Errore! Inserire il mese
+                    </p>
+                  </div>
+
+                  <!-- Secondo Select -->
+                  <div class="col-6" id="colSelectYear">
+                    <label for="selectYear" class="form-label"
+                      >Seleziona un anno</label
+                    >
+                    <select class="form-select" id="selectYearDropdown">
+                      <option selected disabled>Seleziona un anno</option>
+                    </select>
+                    <p id="yearErrorMessage" class="text-danger">
+                      Errore! Inserire l'anno
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Legenda (posizionata sotto il form e centrata) -->
+                <div class="container mt-5">
+                  <div
+                    class="row justify-content-center"
+                    id="containerTitleSelect"
+                  >
+                    <!-- Form -->
+                    <div class="col-md-6">
+                      <form>
+                        <!-- Bottone Mostra/Nascondi Legenda -->
+                        <div
+                          class="text-center"
+                          style="display: none"
+                          id="buttonLegend"
+                        >
+                          <button
+                            type="button"
+                            id="toggleLegend"
+                            class="btn-toggle"
+                            data-bs-toggle="tooltip"
+                            title="Mostra"
+                          >
+                            <img
+                              src="/assets/images/up-long-solid.svg"
+                              alt="Freccia"
+                              width="20"
+                              height="20"
+                            />
+                          </button>
+                        </div>
+
+                        <!-- Contenitore della Legenda -->
+                        <div
+                          class="legend-container"
+                          id="timesheetLegendContainer"
+                        >
+                          <!-- Legenda con i colori -->
+                          <div class="legend-item">
+                            <div class="color-box color-box-white"></div>
+                            <span>Default</span>
+                          </div>
+                          <div class="legend-item">
+                            <div class="color-box color-box-red"></div>
+                            <span>Errore</span>
+                          </div>
+                          <div class="legend-item">
+                            <div class="color-box color-box-blue"></div>
+                            <span>Straordinario</span>
+                          </div>
+                          <div class="legend-item">
+                            <div class="color-box color-box-yellow"></div>
+                            <span>Permesso</span>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Bottone Genera Timesheet -->
+                <div class="text-center mb-3">
+                  <button
+                    type="button"
+                    id="generateTimesheetButton"
+                    class="btn btn-primary btn-block"
+                  >
+                    Carica Timesheet
+                  </button>
+                </div>
+              </form>
             </div>
-            <span class="user-name" id="userName">Mario Rossi</span>
           </div>
-        </li>
-        <li><hr class="dropdown-divider" /></li>
-        <li>
-          <a class="dropdown-item" href="#" id="userAreaBtn">Area Utente</a>
-        </li>
-        <li><a class="dropdown-item" href="#" id="logoutBtn">Logout</a></li>
-      </ul>
+        </div>
+
+        <!-- Tabella timesheet del mese scelto -->
+        <div id="timesheetTableContainer" class="mt-4"></div>
+
+        <!-- Button che salva/aggiorna il timesheet a DB -->
+        <div class="text-center">
+          <button
+            type="button"
+            id="saveTimesheetButton"
+            class="btn btn-primary btn-block"
+            style="display: none"
+          >
+            Salva Timesheet
+          </button>
+        </div>
+      </div>
+
+      <!-- Sezione che mostra la tabella con tutti i timesheet per utente -->
+      <div
+        class="container mt-5"
+        id="showTimesheetContainer"
+        style="display: none"
+      >
+        <!-- Loader di caricamento-->
+        <div
+          id="loadingShowTimesheet"
+          class="text-center"
+          style="display: none"
+        >
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Caricamento...</span>
+          </div>
+        </div>
+        <h3
+          class="text-center"
+          id="timesheetHistoryTitle"
+          style="display: none"
+        >
+          Storico Timesheet
+        </h3>
+        <!-- Datatable dei timesheet -->
+        <div id="timesheetDataTable" class="mt-4"></div>
+      </div>
+
+      <!-- NAVBAR -->
+      <div id="menuIcon" style="display: none">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <div id="sideMenu">
+        <ul>
+          <li><a href="#" id="homeLink" class="text-white">Home</a></li>
+          <li>
+            <div class="dropdown w-100 text-white">
+              <button
+                class="btn dropdown-toggle text-white"
+                type="button"
+                data-bs-toggle="dropdown"
+                style="border: 0"
+              >
+                Timesheet
+              </button>
+              <ul
+                class="dropdown-menu"
+                style="background-color: #2c3e50; height: 115px"
+              >
+                <li>
+                  <a
+                    class="dropdown-item text-white"
+                    href="#"
+                    id="generateTimesheetLink"
+                    >Genera Timesheet</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item text-white"
+                    href="#"
+                    id="showTimesheetLink"
+                    >Visualizza Timesheet</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li><a href="#" class="text-white">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Area Utente -->
+      <div id="userMenuDropdown" class="dropdown" style="display: none">
+        <div class="user-icon" data-bs-toggle="dropdown">
+          <!-- Qui mostriamo l'icona se l'immagine non è presente -->
+          <img
+            id="userProfileImage"
+            src=""
+            onerror="this.style.display='none'; document.getElementById('user-icon').style.display='flex';"
+          />
+          <!-- Icona di fallback se l'immagine non esiste -->
+          <i
+            id="user-icon"
+            class="fa-solid fa-file-image"
+            style="display: none; color: #fff"
+          ></i>
+        </div>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li class="user-info">
+            <div class="user-img-container">
+              <img
+                id="user-info-img"
+                src=""
+                onerror="this.style.display='none'; document.getElementById('user-info-icon').style.display='flex';"
+              />
+              <i
+                id="user-info-icon"
+                class="fa-solid fa-file-image"
+                style="display: none; color: #000"
+              ></i>
+            </div>
+            <span class="user-name" id="username"></span>
+          </li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <a class="dropdown-item" href="#" id="userArea">Area Utente</a>
+          </li>
+          <li><a class="dropdown-item" href="#" id="logout">Logout</a></li>
+        </ul>
+      </div>
     </div>
   </body>
 </html>

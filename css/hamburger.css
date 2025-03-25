@@ -1,5 +1,5 @@
 /*** HAMBURGER MENU (START) ***/
-#nav-icon {
+#menuIcon {
     width: 50px;
     height: 40px;
     position: fixed;
@@ -14,7 +14,7 @@
     transition: all 0.3s ease;
 }
 
-#nav-icon span {
+#menuIcon span {
     display: block;
     position: absolute;
     height: 5px;
@@ -25,35 +25,35 @@
 }
 
 /* Posizione iniziale delle linee */
-#nav-icon span:nth-child(1) {
+#menuIcon span:nth-child(1) {
     top: 8px;
 }
 
-#nav-icon span:nth-child(2) {
+#menuIcon span:nth-child(2) {
     top: 18px;
 }
 
-#nav-icon span:nth-child(3) {
+#menuIcon span:nth-child(3) {
     top: 28px;
 }
 
 /* Animazione della "X" (inversione dell'animazione) */
-#nav-icon.open span:nth-child(1) {
+#menuIcon.open span:nth-child(1) {
     transform: translateY(10px) rotate(45deg);
 }
 
-#nav-icon.open span:nth-child(2) {
+#menuIcon.open span:nth-child(2) {
     opacity: 0;
 }
 
-#nav-icon.open span:nth-child(3) {
+#menuIcon.open span:nth-child(3) {
     transform: translateY(-10px) rotate(-45deg);
 }
 
 /*** HAMBURGER MENU (END) ***/
 
-/* SIDEBAR (START)*/
-#sidebar {
+/* sideMenu (START)*/
+#sideMenu {
     position: fixed;
     top: 0;
     left: -250px;
@@ -67,21 +67,21 @@
     color: white;
 }
 
-#sidebar.active {
+#sideMenu.active {
     left: 0;
 }
 
-#sidebar ul {
+#sideMenu ul {
     list-style: none;
     padding: 0;
     margin-top: 20px;
 }
 
-#sidebar ul li {
+#sideMenu ul li {
     margin-bottom: 12px;
 }
 
-#sidebar a {
+#sideMenu a {
     display: block;
     padding: 12px;
     font-size: 18px;
@@ -90,9 +90,9 @@
     border-radius: 5px;
 }
 
-#sidebar a:hover {
+#sideMenu a:hover {
     background: rgba(255, 255, 255, 0.2);
     padding-left: 15px;
 }
 
-/* SIDEBAR (END)*/
+/* sideMenu (END)*/

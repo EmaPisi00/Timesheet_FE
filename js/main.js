@@ -35,17 +35,3 @@ $(document).ready(async function () {
     logout();
   });
 });
-
-$(document).ready(function () {
-  $("#generateProfile").click(function () {
-    var fullName = "Mario Rossi";
-
-    var words = fullName.split(" ");
-    var initials =
-      words.length > 1
-        ? words[0].charAt(0).toUpperCase() + words[1].charAt(0).toUpperCase()
-        : words[0].charAt(0).toUpperCase();
-
-    $("#profileImage").text(initials);
-  });
-});

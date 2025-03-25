@@ -35,8 +35,8 @@
   }
 
   /** ERRORE ANNO MESE NELLA GENERAZIONE TIMESHEET **/
-  #monthError,
-  #yearError,
+  #monthErrorMessage,
+  #yearErrorMessage,
   #loginErrorMessage {
     color: red;
     font-size: 15px;

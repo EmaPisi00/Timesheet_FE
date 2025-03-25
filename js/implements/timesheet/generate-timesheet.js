@@ -1,7 +1,6 @@
 import {
   hideItem,
   showItem,
-  disableLinks,
   enableLinks,
   isEmpty,
   showToast,
@@ -14,7 +13,7 @@ export const generateTimesheet = (year, month, request) => {
   let daysData = request.presenceList;
 
   // Genero la tabella
-  const tableContainer = $("#tableContainer");
+  const tableContainer = $("#timesheetTableContainer");
   tableContainer.empty(); // Pulisce qualsiasi tabella esistente
 
   // Determina il numero di giorni nel mese
@@ -186,14 +185,14 @@ export const generateTimesheet = (year, month, request) => {
   hideItem("#loader-middle");
 
   // Aggiungo margine-top per evitare che il titolo venga spinto troppo in alto
-  $("#containerTitleSelect").css("margin-top", "40%");
+  $("#timesheetTitleContainer").css("margin-top", "40%");
 
   // Riabilito i bottoni dopo la generazione della tabella
   enableLinks();
 
   // Setto nuovamente le select su default
-  $("#monthsSelect").prop("selectedIndex", 0);
-  $("#yearsSelect").prop("selectedIndex", 0);
+  $("#selectMonthDropdown").prop("selectedIndex", 0);
+  $("#selectYearDropdown").prop("selectedIndex", 0);
 
   // Mostra il Toast di successo
   showToast("Timesheet caricato con successo!", "success");
@@ -240,11 +239,11 @@ export const extractPresenceData = (year, month) => {
 };
 
 function showItemsAfterLoadTable() {
-  showItem("#generateTimesheet");
+  showItem("#generateTimesheetButton");
   showItem("#colSelectMonth");
   showItem("#colSelectYear");
-  showItem("#tableContainer");
+  showItem("#timesheetTableContainer");
   showItem("#buttonLegend");
-  showItem("#legendContainer");
-  showItem("#saveTimesheet");
+  showItem("#timesheetLegendContainer");
+  showItem("#saveTimesheetButton");
 }

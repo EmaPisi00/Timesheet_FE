@@ -25,15 +25,15 @@ export async function setupTimesheet() {
   const userProfile = getProfile();
 
   // Visualizzo la pagina di generazione del timesheet
-  $("#generateTimesheetHandle").click(() => {
-    showItem("#containerGenerateTimesheet");
-    hideItem("#showTimesheet");
+  $("#generateTimesheetLink").click(() => {
+    showItem("#timesheetContainer");
+    hideItem("#showTimesheetContainer");
   });
 
   // Visualizzo la tabella di tutti i timesheet salvati a DB
-  $("#showAllTimesheetHandle").click(async () => {
-    showItem("#showTimesheet");
-    hideItem("#containerGenerateTimesheet");
+  $("#showTimesheetLink").click(async () => {
+    showItem("#showTimesheetContainer");
+    hideItem("#timesheetContainer");
 
     // Costruisco un oggetto Pageable per la paginazione
     const pageable = {
@@ -43,11 +43,11 @@ export async function setupTimesheet() {
     };
 
     // Mostro il loader
-    showItem("#loader-show-timesheet");
+    showItem("#loadingShowTimesheet");
 
     // Nascondo la tabella ed il titolo
-    hideItem("#datatableTimesheet");
-    hideItem("#titleShowTimesheet");
+    hideItem("#timesheetDataTable");
+    hideItem("#timesheetHistoryTitle");
 
     // Salva il tempo di inizio
     const startTime = performance.now();
@@ -73,7 +73,7 @@ export async function setupTimesheet() {
   });
 
   // Salvo o aggiorno il timesheet a DB
-  $("#saveTimesheet").click(async () => {
+  $("#saveTimesheetButton").click(async () => {
     // Estraggo una lista di presenze in base a mese e anno
     const presenceData = extractPresenceData(year, month);
 
@@ -88,20 +88,20 @@ export async function setupTimesheet() {
   });
 
   // Genero dinamicamente la tabella del timesheet dopo aver scelto mese ed anno
-  $("#generateTimesheet").click(async () => {
+  $("#generateTimesheetButton").click(async () => {
     // Ricavo il valore di mese e anno dalla select
-    month = parseInt($("#monthsSelect").val(), 10);
-    year = parseInt($("#yearsSelect").val(), 10);
+    month = parseInt($("#selectMonthDropdown").val(), 10);
+    year = parseInt($("#selectYearDropdown").val(), 10);
 
     if (isEmpty(month) || isNaN(month)) {
-      showItem("#monthError");
+      showItem("#monthErrorMessage");
       return;
-    } else hideItem("#monthError");
+    } else hideItem("#monthErrorMessage");
 
     if (isEmpty(year) || isNaN(year)) {
-      showItem("#yearError");
+      showItem("#yearErrorMessage");
       return;
-    } else hideItem("#yearError");
+    } else hideItem("#yearErrorMessage");
 
     // Mostra il loader prima di iniziare
     showItem("#loader-middle");
@@ -147,20 +147,21 @@ export async function setupTimesheet() {
     }
   });
 
-  $("#monthsSelect, #yearsSelect").change(() => {
-    if (!isEmpty($("#monthsSelect").val())) hideItem("#monthError");
-    if (!isEmpty($("#yearsSelect").val())) hideItem("#yearError");
+  $("#selectMonthDropdown, #selectYearDropdown").change(() => {
+    if (!isEmpty($("#selectMonthDropdown").val()))
+      hideItem("#monthErrorMessage");
+    if (!isEmpty($("#selectYearDropdown").val())) hideItem("#yearErrorMessage");
   });
 }
 
 // Funzione che permette di nascondere tutti gli item prima del caricamento del timesheet
 function hideItemsBeforeLoadTable() {
-  hideItem("#generateTimesheet");
+  hideItem("#generateTimesheetButton");
   hideItem("#colSelectMonth");
   hideItem("#colSelectYear");
   hideItem("#titleTimesheet");
-  hideItem("#tableContainer");
+  hideItem("#timesheetTableContainer");
   hideItem("#buttonLegend");
-  hideItem("#legendContainer");
-  hideItem("#saveTimesheet");
+  hideItem("#timesheetLegendContainer");
+  hideItem("#saveTimesheetButton");
 }

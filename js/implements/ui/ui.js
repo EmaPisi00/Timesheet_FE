@@ -1,21 +1,21 @@
-import { hideItem, showItem } from "../../utils/utils.js";
+import { hideItem, isEmpty, showItem } from "../../utils/utils.js";
 import { getProfile } from "../auth/auth.js";
 
 export async function setupUI() {
   initInitialsUsername();
-  $("#nav-icon").click(() => {
-    $("#nav-icon").toggleClass("open");
-    $("#sidebar").toggleClass("active");
+  $("#menuIcon").click(() => {
+    $("#menuIcon").toggleClass("open");
+    $("#sideMenu").toggleClass("active");
   });
 
-  $("#eye-icon").click(() => {
+  $("#togglePasswordIcon").click(() => {
     let passwordField = $("#password");
     passwordField.attr(
       "type",
       passwordField.attr("type") === "password" ? "text" : "password"
     );
 
-    $("#togglePasswordIcon	").attr(
+    $("#togglePasswordIcon").attr(
       "src",
       passwordField.attr("type") === "password"
         ? "/assets/images/eye-icon.png"
@@ -25,7 +25,7 @@ export async function setupUI() {
 
   // Gestione Mostra/Nascondi Legenda con jQuery
   $("#toggleLegend").click(function () {
-    let legendContainer = $("#legendContainer");
+    let legendContainer = $("#timesheetLegendContainer");
     let toggleButton = $("#toggleLegend");
 
     // Alterna la classe 'show' per la legenda
@@ -54,10 +54,9 @@ export async function setupUI() {
 export function showAuthenticatedUI() {
   hideItem("#loginCardContainer");
   setTimeout(() => {
-    $("#nav-icon").show().addClass("open");
-    $("#sidebar").addClass("active").show();
-    hideItem("#loader");
-    hideItem("#loadError");
+    $("#menuIcon").show().addClass("open");
+    $("#sideMenu").addClass("active").show();
+    hideItem("#loadingSpinner");
     showItem("#user-menu");
 
     const userProfile = getProfile();
@@ -68,34 +67,36 @@ export function showAuthenticatedUI() {
 
 function initInitialsUsername() {
   var userProfile = getProfile();
-  var fullName = userProfile.name.concat(" ").concat(userProfile.surname); // Nome utente
-  $("#username").text(fullName);
+  if (!isEmpty(userProfile)) {
+    var fullName = userProfile.name.concat(" ").concat(userProfile.surname); // Nome utente
+    $("#username").text(fullName);
 
-  function getInitials(name) {
-    var words = name.split(" ");
-    return words.length > 1
-      ? words[0].charAt(0).toUpperCase() + words[1].charAt(0).toUpperCase()
-      : words[0].charAt(0).toUpperCase();
+    function getInitials(name) {
+      var words = name.split(" ");
+      return words.length > 1
+        ? words[0].charAt(0).toUpperCase() + words[1].charAt(0).toUpperCase()
+        : words[0].charAt(0).toUpperCase();
+    }
+
+    // Imposta le iniziali come immagine predefinita
+    var initials = getInitials(fullName);
+    $("#profileImage").text(initials);
+    $("#profileImageDropdown").text(initials);
+
+    // Controlla se l'immagine esiste, altrimenti lascia le iniziali
+    $("#user-img").on("load", function () {
+      $(this).show();
+      $("#profileImage").hide();
+    });
+
+    $("#user-info-img").on("load", function () {
+      $(this).show();
+      $("#profileImageDropdown").hide();
+    });
+
+    // Previene la chiusura automatica del dropdown quando si clicca all'interno
+    $(".dropdown-menu").click(function (event) {
+      event.stopPropagation();
+    });
   }
-
-  // Imposta le iniziali come immagine predefinita
-  var initials = getInitials(fullName);
-  $("#profileImage").text(initials);
-  $("#profileImageDropdown").text(initials);
-
-  // Controlla se l'immagine esiste, altrimenti lascia le iniziali
-  $("#user-img").on("load", function () {
-    $(this).show();
-    $("#profileImage").hide();
-  });
-
-  $("#user-info-img").on("load", function () {
-    $(this).show();
-    $("#profileImageDropdown").hide();
-  });
-
-  // Previene la chiusura automatica del dropdown quando si clicca all'interno
-  $(".dropdown-menu").click(function (event) {
-    event.stopPropagation();
-  });
 }

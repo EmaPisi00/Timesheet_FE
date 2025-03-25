@@ -1,5 +1,4 @@
 import {
-  disableLinks,
   enableLinks,
   showItem,
   hideItem,
@@ -10,19 +9,19 @@ import timesheetService from "../../service/timesheet-service.js";
 import { generateTimesheet } from "./generate-timesheet.js";
 export const showTimesheet = (timesheetRequests, employee) => {
   // Seleziono l'elemento della datatable
-  const datatableTimesheet = $("#datatableTimesheet");
+  const timesheetDataTable = $("#timesheetDataTable");
 
   if (timesheetRequests.length === 0) {
     // Se non ci sono timesheetRequests, mostro il messaggio "Nessun risultato trovato"
-    datatableTimesheet.html(
+    timesheetDataTable.html(
       '<div class="alert alert-warning">Nessun risultato trovato.</div>'
     );
 
     // Nascondi il loader se presente
-    hideItem("#loader-show-timesheet");
+    hideItem("#loadingShowTimesheet");
 
     // Mostra il titolo se necessario
-    showItem("#titleShowTimesheet");
+    showItem("#timesheetHistoryTitle");
 
     return; // Esco dalla funzione perché non c'è nulla da mostrare
   }
@@ -95,13 +94,13 @@ export const showTimesheet = (timesheetRequests, employee) => {
 
   tableHTML += "</tbody></table>";
 
-  // Inserisci il contenuto HTML generato nella div #datatableTimesheet
-  datatableTimesheet.html(tableHTML);
+  // Inserisci il contenuto HTML generato nella div #timesheetDataTable
+  timesheetDataTable.html(tableHTML);
 
   // Nascondi il loader e mostra la tabella
-  hideItem("#loader-show-timesheet");
-  showItem("#datatableTimesheet");
-  showItem("#titleShowTimesheet");
+  hideItem("#loadingShowTimesheet");
+  showItem("#timesheetDataTable");
+  showItem("#timesheetHistoryTitle");
 
   // Mostra il Toast di successo (dopo aver caricato la tabella)
   showToast("Tabella caricata con successo!", "success");
@@ -138,9 +137,9 @@ async function handleActionClick(action, month, year) {
       if (responseSaveTimesheet === 400) {
         alert("Errore timesheet esistente");
       } else {
-        hideItem("#datatableTimesheet");
-        showItem("#containerGenerateTimesheet");
-        hideItem("#showTimesheet");
+        hideItem("#timesheetDataTable");
+        showItem("#timesheetContainer");
+        hideItem("#showTimesheetContainer");
         generateTimesheet(year, month, responseSaveTimesheet);
       }
       break;
