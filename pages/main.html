@@ -335,36 +335,30 @@
       </div>
 
       <!-- Area Utente -->
-      <div id="userMenuDropdown" class="dropdown" style="display: none">
+      <div id="user-menu" class="dropdown" style="display: none">
         <div class="user-icon" data-bs-toggle="dropdown">
-          <!-- Qui mostriamo l'icona se l'immagine non è presente -->
-          <img
-            id="userProfileImage"
-            src=""
-            onerror="this.style.display='none'; document.getElementById('user-icon').style.display='flex';"
-          />
-          <!-- Icona di fallback se l'immagine non esiste -->
-          <i
-            id="user-icon"
-            class="fa-solid fa-file-image"
-            style="display: none; color: #fff"
-          ></i>
+          <!-- Iniziali profilo (default) -->
+          <div id="profileImage" class="profile-image"></div>
+          <!-- Immagine profilo (sovrascrive solo se esiste) -->
+          <img id="user-img" style="display: none" />
         </div>
-        <ul class="dropdown-menu dropdown-menu-end">
+        <ul
+          class="dropdown-menu dropdown-menu-user"
+          data-bs-auto-close="outside"
+        >
           <li class="user-info">
-            <div class="user-img-container">
-              <img
-                id="user-info-img"
-                src=""
-                onerror="this.style.display='none'; document.getElementById('user-info-icon').style.display='flex';"
-              />
-              <i
-                id="user-info-icon"
-                class="fa-solid fa-file-image"
-                style="display: none; color: #000"
-              ></i>
+            <div class="user-details">
+              <div class="user-img-container">
+                <!-- Iniziali nel dropdown (default) -->
+                <div id="profileImageDropdown" class="profile-image"></div>
+                <!-- Immagine nel dropdown (se esiste) -->
+                <img
+                  id="user-info-img"
+                  style="width: 40px; height: 40px; display: none"
+                />
+              </div>
+              <span class="user-name" id="username">Mario Rossi</span>
             </div>
-            <span class="user-name" id="username"></span>
           </li>
           <li><hr class="dropdown-divider" /></li>
           <li>

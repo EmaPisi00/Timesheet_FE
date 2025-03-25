@@ -1,4 +1,4 @@
-import { hideItem, isEmpty, showItem } from "../../utils/utils.js";
+import { hideItem, showItem, isEmpty } from "../../utils/utils.js";
 import { getProfile } from "../auth/auth.js";
 
 export async function setupUI() {
