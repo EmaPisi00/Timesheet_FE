@@ -9,6 +9,8 @@ export async function ajaxCall(url, method, data = null, token = null) {
       headers["Authorization"] = `Bearer ${token}`;
     }
 
+    console.log("URL richiesta:", url);
+
     // Esegui la richiesta
     const response = await fetch(url, {
       method: method,
@@ -31,6 +33,11 @@ export async function ajaxCall(url, method, data = null, token = null) {
     return JSON.parse(text);
   } catch (error) {
     console.error("Errore nella chiamata AJAX:", error);
+    // Log dettagliato dell'errore
+    if (error instanceof TypeError) {
+      console.error("Tipo di errore:", error.message);
+      console.error("Verifica la connessione o la configurazione dell'URL.");
+    }
     throw error; // Rilancio l'errore per gestirlo a livello superiore
   }
 }

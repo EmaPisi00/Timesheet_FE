@@ -199,9 +199,6 @@ export const generateTimesheet = (year, month, request) => {
   $("#monthsSelect").prop("selectedIndex", 0);
   $("#yearsSelect").prop("selectedIndex", 0);
 
-  // Mostra il Toast di successo
-  showToast("Timesheet caricato con successo!", "success");
-
   // Aggiungi la funzionalità per modifiche live
   $(document).on("change", ".form-select", function () {
     const row = $(this).closest("tr");

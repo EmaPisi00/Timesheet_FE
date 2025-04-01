@@ -68,15 +68,43 @@ function generateRow(data, timesheetRequest) {
   });
 
   row += '<td class="actions" id="actionsShowTimesheet">';
+
   const actions = [
     { icon: "fas fa-edit", title: "Modifica", action: "edit" },
     { icon: "fas fa-eye", title: "Visualizza Dettaglio", action: "view" },
     { icon: "fas fa-trash-alt", title: "Cancellazione", action: "delete" },
-    { icon: "fas fa-lock", title: "Blocca", action: "block" },
-    { icon: "fas fa-download", title: "Download", action: "download" },
+    {
+      icon: "fas fa-lock",
+      title: "Blocca",
+      action: "block",
+      disableIfLocked: true,
+    },
+    {
+      icon: "fas fa-download",
+      title: "Download",
+      action: "download",
+      enableIfLocked: true,
+    },
   ];
 
   $.each(actions, function (index, action) {
+    let isDisabled = false;
+    let iconColor = "color: #333;";
+
+    // Controllo se l'azione è "block" e il timesheet è bloccato
+    if (action.disableIfLocked && timesheetRequest.locked) {
+      isDisabled = true;
+      iconColor = "color: #ccc; cursor: not-allowed;";
+    }
+
+    // Controllo se l'azione è "download" e il timesheet NON è bloccato
+    if (action.enableIfLocked && !timesheetRequest.locked) {
+      isDisabled = true;
+      iconColor = "color: #ccc; cursor: not-allowed;";
+    }
+
+    const disabledAttr = isDisabled ? "disabled" : "";
+
     row += `
       <button class="btn btn-link p-0 border-0 shadow-none btn-action"  
               data-action="${action.action}" 
@@ -84,8 +112,9 @@ function generateRow(data, timesheetRequest) {
               data-year="${timesheetRequest.year}" 
               data-uuid="${timesheetRequest.uuid}" 
               title="${action.title}" 
-              style="margin-right: 20px; ">
-        <i class="${action.icon}" id="iconsActionsShowTimesheet"></i>
+              style="margin-right: 20px;" 
+              ${disabledAttr}>
+        <i class="${action.icon}" id="iconsActionsShowTimesheet" style="font-size: 16px; ${iconColor}"></i>
       </button>
     `;
   });

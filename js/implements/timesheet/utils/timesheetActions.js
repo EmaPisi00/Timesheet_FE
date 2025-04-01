@@ -1,4 +1,4 @@
-import { showDeleteModal } from "../../../components/modal.js";
+import { showConfirmationModal } from "../../../components/modal.js";
 import { getProfile } from "../../auth/auth.js";
 import { hideItem, showItem } from "../../../utils/utils.js";
 import { generateTimesheet } from "../generate-timesheet.js";
@@ -16,7 +16,7 @@ export async function handleActionClick(action, month, year, uuid) {
       deleteTimesheet(month, year, uuid);
       break;
     case "block":
-      alert(`Il timesheet di ${month}/${year} è stato bloccato`);
+      blockTimesheet(month, year, uuid);
       break;
     case "download":
       alert(`Download del timesheet per ${month}/${year} avviato`);
@@ -55,5 +55,9 @@ async function editTimesheet(month, year) {
 
 // Funzione che permette di eliminare un timesheet
 async function deleteTimesheet(month, year, uuid) {
-  showDeleteModal(month, year, uuid);
+  showConfirmationModal("delete", month, year, uuid); // Per eliminare il timesheet
+}
+
+async function blockTimesheet(month, year, uuid) {
+  showConfirmationModal("block", month, year, uuid); // Per bloccare il timesheet
 }

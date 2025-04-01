@@ -142,6 +142,34 @@ export class TimesheetService {
       try {
         // Chiamata AJAX usando async/await (GET request)
         await ajaxCall(url, "DELETE", null, token);
+        return true;
+      } catch (error) {
+        console.error("Errore:", error);
+
+        // richiamare verifyToken se va a buon fine fai il refresh del token altrimenti butti fuori
+        if (!(await userService.verifyToken())) {
+          handleUnauthorizedAccess();
+        }
+      }
+    } else {
+      handleUnauthorizedAccess();
+    }
+  }
+
+  async blockTimesheet(uuid) {
+    const token = sessionStorage.getItem("authToken");
+
+    if (!isEmpty(token)) {
+      // Costruisce l'URL con i parametri di paginazione
+      const url = `${Constant.API_URL}/timesheet/block/` + uuid;
+
+      try {
+        // Chiamata AJAX usando async/await (GET request)
+        const response = await ajaxCall(url, "PATCH", null, token);
+
+        if (!isEmpty(response)) {
+          return response;
+        }
       } catch (error) {
         console.error("Errore:", error);
 
