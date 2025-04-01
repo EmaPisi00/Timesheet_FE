@@ -29,11 +29,15 @@ export const generateTimesheet = (year, month, request) => {
     textAlign: "center",
   });
   const headerRow = $("<tr>");
-  headerRow.append("<th style='padding: 12px 15px;'>Giorno</th>");
-  headerRow.append("<th style='padding: 12px 15px;'>Orario Entrata</th>");
-  headerRow.append("<th style='padding: 12px 15px;'>Orario Uscita</th>");
-  headerRow.append("<th style='padding: 12px 15px;'>Note</th>");
-  headerRow.append("<th style='padding: 12px 15px;'>Stato</th>");
+  headerRow.append("<th style='padding: 12px 15px; width: 180px;'>Giorno</th>");
+  headerRow.append(
+    "<th style='padding: 12px 15px; width: 150px;'>Orario Entrata</th>"
+  );
+  headerRow.append(
+    "<th style='padding: 12px 15px;  width: 100px;'>Orario Uscita</th>"
+  );
+  headerRow.append("<th style='padding: 12px 15px; width: 500px;'>Note</th>");
+  headerRow.append("<th style='padding: 12px 15px; width: 200px;'>Stato</th>");
   thead.append(headerRow);
   table.append(thead);
 

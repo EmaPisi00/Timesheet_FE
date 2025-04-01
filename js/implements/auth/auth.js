@@ -1,11 +1,10 @@
-import userService from "../../service/user-service.js";
 import {
   handleUnauthorizedAccess,
   hideItem,
   isEmpty,
   showItem,
-  showToast,
 } from "../../utils/utils.js";
+import userService from "../../service/user-service.js";
 
 // Funzione che richiama il metodo di verifica del token
 export async function checkToken() {

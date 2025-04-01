@@ -39,7 +39,7 @@ export async function setupTimesheet() {
     const pageable = {
       page: 0, // Numero della pagina (indice zero-based)
       size: 10, // Numero di elementi per pagina
-      sort: "",
+      sort: "year,asc",
     };
 
     // Mostro il loader
@@ -67,7 +67,11 @@ export async function setupTimesheet() {
     // Se la chiamata è andata a buon fine e c'è almeno un elemento lo mostro con un ritardo calcolato
     if (!isEmpty(responseShowTimesheet.content)) {
       setTimeout(() => {
-        showTimesheet(responseShowTimesheet.content, userProfile);
+        showTimesheet(
+          responseShowTimesheet.content,
+          userProfile,
+          responseShowTimesheet
+        );
       }, elapsedTime);
     }
   });

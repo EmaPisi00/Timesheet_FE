@@ -51,32 +51,6 @@ select {
 }
 
 
-/*IMPOSTO LA LARGHEZZA DELLE COLONNE della tabella*/
-table td:nth-child(1) {
-    width: 180px;
-    /*GIORNO*/
-}
-
-table td:nth-child(2) {
-    width: 150px;
-    /*ORARIO ENTRATA*/
-}
-
-table td:nth-child(3) {
-    width: 100px;
-    /*ORARIO USCITA*/
-}
-
-table td:nth-child(4) {
-    width: 500px;
-    /*NOTE*/
-}
-
-table td:nth-child(5) {
-    width: 200px;
-    /*STATO*/
-}
-
 /* Tabella di generazione del timesheet (END) */
 
 
