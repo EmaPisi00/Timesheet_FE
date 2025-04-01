@@ -58,7 +58,6 @@ export function getProfile() {
   if (!isEmpty(token)) {
     const userProfileJson = sessionStorage.getItem("profile");
     const userProfile = JSON.parse(userProfileJson);
-    console.log(userProfile);
     return userProfile;
   }
 

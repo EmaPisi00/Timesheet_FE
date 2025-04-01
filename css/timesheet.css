@@ -50,10 +50,6 @@ select {
     width: 100%;
 }
 
-
-/* Tabella di generazione del timesheet (END) */
-
-
 /* Legenda per la visualizzazione dei colori (START) */
 .legend-box {
     border: 2px solid #ccc;
@@ -171,4 +167,27 @@ select {
 /* Legenda per la visualizzazione dei colori (END) */
 #saveTimesheet {
     margin-bottom: 20px;
+}
+
+/* Modifica Tabella di visualizzazione dei timesheet*/
+#datatableTimesheet {
+    min-height: 75vh;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#datatableTimesheet td {
+    padding: 20px;
+    font-size: 17px;
+}
+
+#actionsShowTimesheet {
+    vertical-align: middle;
+    text-align: center;
+}
+
+#iconsActionsShowTimesheet {
+    font-size: 18px;
+    color: #333;
 }

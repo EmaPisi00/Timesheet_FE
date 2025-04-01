@@ -57,16 +57,12 @@ export function showAuthenticatedUI() {
     showItem("#user-menu");
 
     const userProfile = getProfile();
-    console.log(userProfile);
     $("#username").text(userProfile.name + " " + userProfile.surname);
   }, 2000);
 }
 
 export function initInitialsUsername() {
   var userProfile = getProfile();
-  console.log("User");
-  console.log(userProfile);
-  console.log("End User");
   if (!isEmpty(userProfile)) {
     var fullName = userProfile.name.concat(" ").concat(userProfile.surname); // Nome utente
     $("#username").text(fullName);
