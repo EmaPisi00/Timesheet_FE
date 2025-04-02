@@ -51,120 +51,44 @@ select {
 }
 
 /* Legenda per la visualizzazione dei colori (START) */
-.legend-box {
-    border: 2px solid #ccc;
-    padding: 15px;
-    border-radius: 8px;
-    background: #f9f9f9;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-/* Singoli elementi della legenda */
-.legend-box {
-    border: 2px solid #ccc;
-    padding: 10px;
-    border-radius: 8px;
-    background: #f9f9f9;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+/* Legenda */
+#tableContainer .legend {
     margin-top: 20px;
-}
-
-/* Singoli elementi della legenda */
-.legend-box {
-    display: flex;
-    justify-content: center;
-    /* Centra i colori sulla stessa riga */
-    gap: 20px;
-    /* Spazio tra i colori */
     padding: 10px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    background: #f9f9f9;
-}
-
-/* Singoli elementi della legenda */
-.legend-container {
-    padding: 30px;
-    border-radius: 10px;
-    /* Bordo arrotondato */
-    display: flex;
-    justify-content: center;
-    /* Allinea orizzontalmente al centro */
-    align-items: center;
-    /* Allinea verticalmente al centro */
-    gap: 50px;
-    /* Distanza tra gli item */
-    margin-bottom: 10px;
-}
-
-/* Ogni item della legenda (colori + testo) */
-/* Stili forniti */
-/* Stile per il bottone (mostrare solo la freccia senza bordi) */
-.btn-toggle {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-}
-
-.legend-container {
-    max-height: 0;
-    /* Inizialmente la legenda è nascosta */
-    opacity: 0;
-    transition: max-height 0.5s ease, opacity 0.5s ease;
-    /* Transizione fluida */
-}
-
-.legend-container.show {
-    max-height: 500px;
-    /* Aumenta l'altezza per mostrare il contenuto */
-    opacity: 1;
-    /* Rende visibile il contenuto */
-}
-
-/* Stile per gli item della legenda */
-.legend-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 500;
-}
-
-.color-box {
-    width: 30px;
-    height: 30px;
+    border: 1px solid #ddd;
     border-radius: 5px;
-    border: 1px solid #6b6868;
-}
-
-.color-box-white {
-    background-color: #ffffff;
-}
-
-.color-box-red {
-    background-color: #ff4d4d;
-}
-
-.color-box-blue {
-    background-color: #4d94ff;
-}
-
-.color-box-yellow {
-    background-color: #ffeb3b;
-}
-
-.legend-item span {
+    background-color: #f9f9f9;
     font-size: 14px;
-    color: #333;
-    font-weight: bold;
-    margin-left: 5px;
+    /* Ridotto la dimensione del font nella legenda */
 }
 
-/* Legenda per la visualizzazione dei colori (END) */
+#tableContainer .legend-item {
+    padding: 4px 6px;
+    /* Ridotto padding */
+    margin: 4px;
+    border-radius: 4px;
+    font-size: 13px;
+    /* Ridotto la dimensione del font */
+}
+
+#tableContainer .legend-item.normal-hours {
+    background-color: #d4edda;
+}
+
+#tableContainer .legend-item.overtime-hours {
+    background-color: #007bff;
+    color: white;
+}
+
+#tableContainer .legend-item.permission-hours {
+    background-color: #fff3cd;
+}
+
+#tableContainer .legend-item.anomalous-hours {
+    background-color: #f8d7da;
+    color: white;
+}
+
 #saveTimesheet {
     margin-bottom: 20px;
 }
