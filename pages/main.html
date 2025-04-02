@@ -140,6 +140,7 @@
           </div>
         </div>
 
+        <!-- Container di generazione del timesheet-->
         <div class="container">
           <div class="row justify-content-center" id="containerTitleSelect">
             <!-- Form -->
@@ -204,27 +205,6 @@
                             />
                           </button>
                         </div>
-
-                        <!-- Contenitore della Legenda -->
-                        <div class="legend-container" id="legendContainer">
-                          <!-- Legenda con i colori -->
-                          <div class="legend-item">
-                            <div class="color-box color-box-white"></div>
-                            <span>Default</span>
-                          </div>
-                          <div class="legend-item">
-                            <div class="color-box color-box-red"></div>
-                            <span>Errore</span>
-                          </div>
-                          <div class="legend-item">
-                            <div class="color-box color-box-blue"></div>
-                            <span>Straordinario</span>
-                          </div>
-                          <div class="legend-item">
-                            <div class="color-box color-box-yellow"></div>
-                            <span>Permesso</span>
-                          </div>
-                        </div>
                       </form>
                     </div>
                   </div>
@@ -246,7 +226,7 @@
         </div>
 
         <!-- Tabella timesheet del mese scelto -->
-        <div id="tableContainer" class="mt-4"></div>
+        <div id="tableContainer" class="mt-4" style="display: none"></div>
 
         <!-- Button che salva/aggiorna il timesheet a DB -->
         <div class="text-center">

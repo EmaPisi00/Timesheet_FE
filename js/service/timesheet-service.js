@@ -23,8 +23,11 @@ export class TimesheetService {
         // Chiamata AJAX usando async/await
         const response = await ajaxCall(url, "GET", null, token);
 
-        if (!isEmpty(response.code) && response.code === 400) {
+        console.log(response);
+
+        if (!isEmpty(response.code)) {
           console.log("Errore, timesheet di riferimento già esistente");
+          console.log(response.code);
           return response.code;
         } else {
           return response;
@@ -174,6 +177,38 @@ export class TimesheetService {
         console.error("Errore:", error);
 
         // richiamare verifyToken se va a buon fine fai il refresh del token altrimenti butti fuori
+        if (!(await userService.verifyToken())) {
+          handleUnauthorizedAccess();
+        }
+      }
+    } else {
+      handleUnauthorizedAccess();
+    }
+  }
+
+  async downloadTimesheet(uuid) {
+    const token = sessionStorage.getItem("authToken");
+
+    if (!isEmpty(token)) {
+      const url = `${Constant.API_URL}/timesheet/downloadExcel/` + uuid;
+
+      try {
+        // La funzione ajaxCall capisce automaticamente che è un file binario!
+        const blob = await ajaxCall(url, "GET", null, token);
+
+        // Creiamo un URL temporaneo per il download
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = downloadUrl;
+        a.download = "OrarioLavorativo.xlsx"; // Nome del file
+        document.body.appendChild(a);
+        a.click();
+
+        // Pulizia memoria
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(downloadUrl);
+      } catch (error) {
+        console.error("Errore nel download:", error);
         if (!(await userService.verifyToken())) {
           handleUnauthorizedAccess();
         }

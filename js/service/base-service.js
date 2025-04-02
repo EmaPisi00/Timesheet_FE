@@ -1,10 +1,13 @@
 export async function ajaxCall(url, method, data = null, token = null) {
   try {
-    const headers = {
-      "Content-Type": "application/json",
-    };
+    const headers = {};
 
-    // Se è presente un token, aggiungilo nell'header Authorization
+    // Se stiamo inviando JSON, aggiungi il Content-Type
+    if (data) {
+      headers["Content-Type"] = "application/json";
+    }
+
+    // Aggiungi il token di autenticazione, se presente
     if (token) {
       headers["Authorization"] = `Bearer ${token}`;
     }
@@ -18,26 +21,24 @@ export async function ajaxCall(url, method, data = null, token = null) {
       body: data ? JSON.stringify(data) : null,
     });
 
-    // Verifica se la risposta non è stata positiva (status 2xx)
+    // Se la risposta non è ok (status 2xx), lancia un errore
     if (!response.ok) {
       throw new Error(`Errore HTTP: ${response.status}`);
     }
 
-    // Se la risposta non contiene un corpo (es. per DELETE o risposte senza contenuto), ritorna void
-    const text = await response.text();
-    if (!text) {
-      return; // Risposta vuota, quindi ritorniamo `void`
-    }
+    // **Controlla il Content-Type della risposta**
+    const contentType = response.headers.get("Content-Type");
 
-    // Se la risposta contiene dati, parsifica il JSON
-    return JSON.parse(text);
+    if (contentType.includes("application/json")) {
+      // Se è JSON, parsalo e restituiscilo
+      const text = await response.text();
+      return text ? JSON.parse(text) : null;
+    } else {
+      // Se NON è JSON, trattiamolo come file binario (Blob)
+      return await response.blob();
+    }
   } catch (error) {
     console.error("Errore nella chiamata AJAX:", error);
-    // Log dettagliato dell'errore
-    if (error instanceof TypeError) {
-      console.error("Tipo di errore:", error.message);
-      console.error("Verifica la connessione o la configurazione dell'URL.");
-    }
-    throw error; // Rilancio l'errore per gestirlo a livello superiore
+    throw error;
   }
 }

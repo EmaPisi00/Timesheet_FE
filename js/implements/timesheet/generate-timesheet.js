@@ -1,11 +1,4 @@
-import {
-  hideItem,
-  showItem,
-  disableLinks,
-  enableLinks,
-  isEmpty,
-  showToast,
-} from "../../utils/utils.js";
+import { hideItem, showItem, enableLinks, isEmpty } from "../../utils/utils.js";
 import { getMonthName } from "../../utils/date-utils.js";
 import { OptionStatusDayArray } from "../../utils/constant.js";
 
@@ -16,6 +9,23 @@ export const generateTimesheet = (year, month, request) => {
   // Genero la tabella
   const tableContainer = $("#tableContainer");
   tableContainer.empty(); // Pulisce qualsiasi tabella esistente
+
+  // Legenda
+  const legend = $("<div>").addClass("legend");
+  legend.append("<strong>Legenda:</strong>");
+  legend.append(
+    "<div class='legend-item normal-hours'>Orario normale (8 ore)</div>"
+  );
+  legend.append(
+    "<div class='legend-item overtime-hours'>Straordinario (> 8 ore)</div>"
+  );
+  legend.append(
+    "<div class='legend-item permission-hours'>Permesso (4-8 ore)</div>"
+  );
+  legend.append(
+    "<div class='legend-item anomalous-hours'>Uscita anomala (< 4 ore)</div>"
+  );
+  tableContainer.append(legend);
 
   // Determina il numero di giorni nel mese
   const daysInMonth = new Date(year, month, 0).getDate();
@@ -190,7 +200,7 @@ export const generateTimesheet = (year, month, request) => {
   hideItem("#loader-middle");
 
   // Aggiungo margine-top per evitare che il titolo venga spinto troppo in alto
-  $("#containerTitleSelect").css("margin-top", "40%");
+  $("#containerTitleSelect").css("margin-top", "50%");
 
   // Riabilito i bottoni dopo la generazione della tabella
   enableLinks();
@@ -244,8 +254,7 @@ function showItemsAfterLoadTable() {
   showItem("#generateTimesheet");
   showItem("#colSelectMonth");
   showItem("#colSelectYear");
+  showItem("#titleTimesheet");
   showItem("#tableContainer");
-  showItem("#buttonLegend");
-  showItem("#legendContainer");
   showItem("#saveTimesheet");
 }

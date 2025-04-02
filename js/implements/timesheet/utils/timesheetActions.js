@@ -1,6 +1,6 @@
 import { showConfirmationModal } from "../../../components/modal.js";
 import { getProfile } from "../../auth/auth.js";
-import { hideItem, showItem } from "../../../utils/utils.js";
+import { hideItem, showItem, showToast } from "../../../utils/utils.js";
 import { generateTimesheet } from "../generate-timesheet.js";
 import timesheetService from "../../../service/timesheet-service.js";
 
@@ -19,7 +19,7 @@ export async function handleActionClick(action, month, year, uuid) {
       blockTimesheet(month, year, uuid);
       break;
     case "download":
-      alert(`Download del timesheet per ${month}/${year} avviato`);
+      dowloadTimesheet(uuid);
       break;
     default:
       alert("Azione non riconosciuta");
@@ -58,6 +58,12 @@ async function deleteTimesheet(month, year, uuid) {
   showConfirmationModal("delete", month, year, uuid); // Per eliminare il timesheet
 }
 
+// Funzione che permette di lockare il timesheet
 async function blockTimesheet(month, year, uuid) {
   showConfirmationModal("block", month, year, uuid); // Per bloccare il timesheet
+}
+
+// Funzione che permette di scaricare il timesheet
+async function dowloadTimesheet(uuid) {
+  await timesheetService.downloadTimesheet(uuid);
 }

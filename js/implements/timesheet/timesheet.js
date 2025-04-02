@@ -3,6 +3,8 @@ import {
   showItem,
   hideItem,
   disableLinks,
+  showToast,
+  enableLinks,
 } from "../../utils/utils.js";
 import {
   generateTimesheet,
@@ -135,9 +137,14 @@ export async function setupTimesheet() {
       const elapsedTime = endTime - startTime;
 
       // Se la response della mia chiamata è vuota do un errore altrimenti mostro la tabella con il ritardo calcolato
-      if (isEmpty(responseSaveTimesheet)) {
-        alert("Errore timesheet esistente");
+      if (responseSaveTimesheet === 400) {
+        showToast(
+          "Timesheet Bloccato, non è più possibile modificare il mese",
+          "bg-danger"
+        );
         hideItem("#loader-middle");
+        enableLinks();
+        showItemsAfterLoadTable();
       } else {
         setTimeout(
           () => {
@@ -149,7 +156,6 @@ export async function setupTimesheet() {
       }
     } catch (error) {
       console.error("Errore nella generazione del timesheet:", error);
-      alert("Si è verificato un errore durante la generazione del timesheet.");
       hideItem("#loader-middle");
     }
   });
@@ -167,7 +173,22 @@ function hideItemsBeforeLoadTable() {
   hideItem("#colSelectYear");
   hideItem("#titleTimesheet");
   hideItem("#tableContainer");
-  hideItem("#buttonLegend");
-  hideItem("#legendContainer");
   hideItem("#saveTimesheet");
+}
+
+function showItemsAfterLoadTable() {
+  showItem("#generateTimesheet");
+  showItem("#colSelectMonth");
+  showItem("#colSelectYear");
+  showItem("#titleTimesheet");
+
+  if ($("#saveTimesheet").is(":visible")) {
+    hideItem("#saveTimesheet");
+  }
+
+  if ($("#tableContainer").is(":visible")) {
+    hideItem("#tableContainer");
+  } else {
+    showItem("#tableContainer");
+  }
 }
