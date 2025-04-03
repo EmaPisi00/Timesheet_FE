@@ -259,7 +259,7 @@
         </h3>
 
         <!-- Datatable dei timesheet -->
-        <div id="datatableTimesheet" class="mt-4"></div>
+        <div id="datatableTimesheet" class="mt-4 table-responsive"></div>
 
         <!-- Contenitore per la paginazione -->
         <div id="paginationContainer" class="mt-4 text-center"></div>
@@ -357,11 +357,12 @@
             data-bs-target="#utenzaCard"
             style="cursor: pointer"
           >
-            <h5>Utenza</h5>
+            <h4>Utenti</h4>
           </div>
           <div class="collapse" id="utenzaCard">
             <div class="card-body">
-              <h6>Registrazione</h6>
+              <!-- Sezione Registrazione -->
+              <h5>Registrazione</h5>
               <form id="registrationForm">
                 <div class="mb-3 w-50">
                   <label for="emailRegister" class="form-label">Email</label>
@@ -395,7 +396,11 @@
                 </button>
               </form>
 
-              <h6 class="mt-4">Abbinamento Utente-Dipendente</h6>
+              <!-- Linea di separazione -->
+              <hr />
+
+              <!-- Sezione Abbinamento Utente-Dipendente -->
+              <h5 class="mt-5">Abbinamento Utente-Dipendente</h5>
               <form id="userAssignmentForm">
                 <div class="mb-3">
                   <label for="userSelect" class="form-label"
@@ -406,8 +411,12 @@
                 <button type="submit" class="btn btn-success">Abbina</button>
               </form>
 
-              <h6 class="mt-4">Dipendenti</h6>
-              <table class="table">
+              <!-- Linea di separazione -->
+              <hr />
+
+              <!-- Sezione Dipendenti -->
+              <h5 class="mt-5">Dipendenti</h5>
+              <table class="table" id="employeeTable">
                 <thead>
                   <tr>
                     <th>Nome</th>
@@ -416,34 +425,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Mario</td>
-                    <td>Rossi</td>
-                    <td>
-                      <div class="dropdown">
-                        <button
-                          class="btn btn-secondary dropdown-toggle"
-                          type="button"
-                          data-bs-toggle="dropdown"
-                        >
-                          Azioni
-                        </button>
-                        <ul class="dropdown-menu">
-                          <li>
-                            <a class="dropdown-item" href="#">Elimina Utente</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#">Modifica Dati</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#"
-                              >Visualizza Timesheet</a
-                            >
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
+                  <!-- Le righe verranno aggiunte dinamicamente -->
                 </tbody>
               </table>
             </div>
@@ -451,7 +433,7 @@
         </div>
 
         <!-- Card Timesheet -->
-        <div class="card mt-5">
+        <div class="card mt-5 mb-5">
           <div
             class="card-header"
             data-bs-toggle="collapse"

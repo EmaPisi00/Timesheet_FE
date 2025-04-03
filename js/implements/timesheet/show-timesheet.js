@@ -18,7 +18,7 @@ export const showTimesheet = (timesheetRequests, employee, pagination) => {
   }
 
   let tableHTML = `
-    <table class="table table-striped">
+    <table class="table table-hover">
       <thead>
         <tr>
           <th style="width: 15%;">Mese</th>
