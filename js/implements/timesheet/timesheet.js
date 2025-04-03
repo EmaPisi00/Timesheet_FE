@@ -30,12 +30,14 @@ export async function setupTimesheet() {
   $("#generateTimesheetHandle").click(() => {
     showItem("#containerGenerateTimesheet");
     hideItem("#showTimesheet");
+    hideItem("#containerAdminArea");
   });
 
   // Visualizzo la tabella di tutti i timesheet salvati a DB
   $("#showAllTimesheetHandle").click(async () => {
     showItem("#showTimesheet");
     hideItem("#containerGenerateTimesheet");
+    hideItem("#containerAdminArea");
 
     // Costruisco un oggetto Pageable per la paginazione
     const pageable = {
@@ -174,6 +176,7 @@ function hideItemsBeforeLoadTable() {
   hideItem("#titleTimesheet");
   hideItem("#tableContainer");
   hideItem("#saveTimesheet");
+  hideItem("#containerAdminArea");
 }
 
 function showItemsAfterLoadTable() {

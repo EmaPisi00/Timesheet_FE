@@ -79,3 +79,13 @@
 }
 
 /* Area utente (END) */
+
+#containerAdminArea {
+    display: none;
+    padding-top: 10px;
+    margin-top: 10px;
+    margin: auto;
+    /* Adatta questo valore alla larghezza del tuo menu */
+    z-index: 1;
+    position: relative;
+}

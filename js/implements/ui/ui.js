@@ -40,7 +40,21 @@ export function showAuthenticatedUI() {
 
 export function initInitialsUsername() {
   var userProfile = getProfile();
+  console.log(userProfile);
   if (!isEmpty(userProfile)) {
+    if (userProfile.role === "ADMIN") {
+      // Crea il nuovo elemento <li>
+      const newItem = $("<li>").append(
+        $("<a>")
+          .addClass("dropdown-item")
+          .attr("href", "#")
+          .attr("id", "adminArea")
+          .text("Area Admin")
+      );
+
+      // Aggiungi il nuovo elemento al menu <ul>
+      $(".dropdown-menu-user li:last-child").before(newItem);
+    }
     var fullName = userProfile.name.concat(" ").concat(userProfile.surname); // Nome utente
     $("#username").text(fullName);
 

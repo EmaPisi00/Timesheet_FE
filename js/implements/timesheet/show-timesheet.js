@@ -12,6 +12,7 @@ export const showTimesheet = (timesheetRequests, employee, pagination) => {
       '<div class="alert alert-warning">Nessun risultato trovato.</div>'
     );
     hideItem("#loader-show-timesheet");
+    showItem("#datatableTimesheet");
     showItem("#titleShowTimesheet");
     return;
   }

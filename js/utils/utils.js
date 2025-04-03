@@ -111,3 +111,31 @@ export function handleUnauthorizedAccess() {
     window.location.href = "/pages/main.html";
   }, 2000);
 }
+
+export function generateSecurePassword(length = 16) {
+  const lowerCase = "abcdefghijklmnopqrstuvwxyz";
+  const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const numbers = "0123456789";
+  const specialChars = "!@#$%^&*()-_=+[]{}|;:,.<>?";
+
+  const allChars = lowerCase + upperCase + numbers + specialChars;
+  let password = "";
+
+  // Garantiamo che la password contenga almeno un carattere di ciascun tipo
+  password += lowerCase[Math.floor(Math.random() * lowerCase.length)];
+  password += upperCase[Math.floor(Math.random() * upperCase.length)];
+  password += numbers[Math.floor(Math.random() * numbers.length)];
+  password += specialChars[Math.floor(Math.random() * specialChars.length)];
+
+  // Aggiungiamo caratteri casuali per il resto della lunghezza della password
+  for (let i = password.length; i < length; i++) {
+    password += allChars[Math.floor(Math.random() * allChars.length)];
+  }
+
+  // Mescoliamo la password per renderla più casuale
+  password = password
+    .split("")
+    .sort(() => Math.random() - 0.5)
+    .join("");
+  return password;
+}
