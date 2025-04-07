@@ -10,7 +10,7 @@ import userService from "./user-service.js";
 export class EmployeeService {
   constructor() {}
 
-  // Metodo login
+  // Metodo FindAll
   async findAll(pageable) {
     const token = sessionStorage.getItem("authToken");
 

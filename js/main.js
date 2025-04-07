@@ -1,9 +1,22 @@
 // Import moduli separati
-import { hideItem, showItem, generateSecurePassword } from "./utils/utils.js";
-import { checkToken, login, logout } from "./implements/auth/auth.js";
+import {
+  hideItem,
+  showItem,
+  generateSecurePassword,
+  isEmpty,
+} from "./utils/utils.js";
+import {
+  checkToken,
+  getProfile,
+  login,
+  logout,
+} from "./implements/auth/auth.js";
 import { setupUI, showAuthenticatedUI } from "./implements/ui/ui.js";
 import { setupTimesheet } from "./implements/timesheet/timesheet.js";
-import { loadEmployee } from "./implements/profile/admin-area.js";
+import {
+  loadEmployee,
+  loadTimesheetEmployee,
+} from "./implements/profile/admin-area.js";
 
 // SETTO IL TIMEOUT PER IL LOADER
 setTimeout(() => {
@@ -52,6 +65,7 @@ $(document).ready(async function () {
     });
 
     loadEmployee();
+    loadTimesheetEmployee();
   });
 
   // Previene la chiusura automatica del dropdown quando si clicca all'interno

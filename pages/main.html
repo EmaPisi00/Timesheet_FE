@@ -149,19 +149,6 @@
                 <h3 class="text-center" id="titleTimesheet">Timesheet</h3>
                 <div class="row">
                   <!-- Primo Select -->
-                  <div class="col-6" id="colSelectMonth">
-                    <label for="selectMonth" class="form-label"
-                      >Seleziona un mese</label
-                    >
-                    <select class="form-select" id="monthsSelect">
-                      <option selected disabled>Seleziona un mese</option>
-                    </select>
-                    <p id="monthError" class="text-danger">
-                      Errore! Inserire il mese
-                    </p>
-                  </div>
-
-                  <!-- Secondo Select -->
                   <div class="col-6" id="colSelectYear">
                     <label for="selectYear" class="form-label"
                       >Seleziona un anno</label
@@ -171,6 +158,19 @@
                     </select>
                     <p id="yearError" class="text-danger">
                       Errore! Inserire l'anno
+                    </p>
+                  </div>
+
+                  <!-- Secondo Select -->
+                  <div class="col-6" id="colSelectMonth">
+                    <label for="selectMonth" class="form-label"
+                      >Seleziona un mese</label
+                    >
+                    <select class="form-select" id="monthsSelect">
+                      <option selected disabled>Seleziona un mese</option>
+                    </select>
+                    <p id="monthError" class="text-danger">
+                      Errore! Inserire il mese
                     </p>
                   </div>
                 </div>
@@ -342,6 +342,15 @@
           <li>
             <a class="dropdown-item" href="#" id="userArea">Area Utente</a>
           </li>
+          <li>
+            <a
+              class="dropdown-item"
+              href="#"
+              style="display: none"
+              id="adminArea"
+              >Area Admin</a
+            >
+          </li>
           <li><a class="dropdown-item" href="#" id="logout">Logout</a></li>
         </ul>
       </div>
@@ -444,7 +453,7 @@
           </div>
           <div class="collapse" id="timesheetCard">
             <div class="card-body">
-              <table class="table">
+              <table class="table" id="adminTimesheetTable">
                 <thead>
                   <tr>
                     <th>Nome</th>
@@ -454,38 +463,6 @@
                     <th>Action</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>Luca</td>
-                    <td>Bianchi</td>
-                    <td>Marzo</td>
-                    <td>2024</td>
-                    <td>
-                      <div class="dropdown">
-                        <button
-                          class="btn btn-secondary dropdown-toggle"
-                          type="button"
-                          data-bs-toggle="dropdown"
-                        >
-                          Azioni
-                        </button>
-                        <ul class="dropdown-menu">
-                          <li>
-                            <a class="dropdown-item" href="#">Modifica</a>
-                          </li>
-                          <li><a class="dropdown-item" href="#">Elimina</a></li>
-                          <li><a class="dropdown-item" href="#">Blocca</a></li>
-                          <li><a class="dropdown-item" href="#">Scarica</a></li>
-                          <li>
-                            <a class="dropdown-item" href="#"
-                              >Visualizza Dettaglio</a
-                            >
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
               </table>
             </div>
           </div>

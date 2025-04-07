@@ -4,7 +4,7 @@ $(document).ready(function () {
 
   const currentDate = new Date();
   const currentMonth = currentDate.getMonth() + 1; // Mese corrente (1-12)
-  const currentYear = currentDate.getFullYear();   // Anno corrente
+  const currentYear = currentDate.getFullYear(); // Anno corrente
 
   // **1. Aggiungi gli anni disponibili (solo quello attuale e il precedente)**
   const validYears = [currentYear - 1, currentYear];
@@ -25,22 +25,15 @@ $(document).ready(function () {
     const maxMonth = selectedYear === currentYear ? currentMonth : 12;
 
     for (let i = 1; i <= maxMonth; i++) {
-      const $monthOption = $("<option></option>")
-        .val(i)
-        .text(getMonthName(i));
+      const $monthOption = $("<option></option>").val(i).text(getMonthName(i));
 
       $monthsSelect.append($monthOption);
     }
   }
 
-  // **3. Imposta l'anno corrente come predefinito e aggiorna i mesi**
-  $yearsSelect.val(currentYear);
-  updateMonths();
-
   // **4. Quando cambia l'anno, aggiorna i mesi disponibili**
   $yearsSelect.change(updateMonths);
 });
-
 
 // Funzione per ottenere il nome del mese dato un numero (1-12)
 export function getMonthName(monthNumber) {

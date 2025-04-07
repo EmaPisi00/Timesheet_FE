@@ -197,7 +197,7 @@ export const generateTimesheet = (year, month, request) => {
   hideItem("#loader-middle");
 
   // Aggiungo margine-top per evitare che il titolo venga spinto troppo in alto
-  $("#containerTitleSelect").css("margin-top", "50%");
+  $("#containerTitleSelect").css("margin-top", "65%");
 
   // Riabilito i bottoni dopo la generazione della tabella
   enableLinks();
