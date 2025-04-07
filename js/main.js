@@ -13,10 +13,7 @@ import {
 } from "./implements/auth/auth.js";
 import { setupUI, showAuthenticatedUI } from "./implements/ui/ui.js";
 import { setupTimesheet } from "./implements/timesheet/timesheet.js";
-import {
-  loadEmployee,
-  loadTimesheetEmployee,
-} from "./implements/profile/admin-area.js";
+import { setupAdminaArea } from "./implements/profile/admin-area.js";
 
 // SETTO IL TIMEOUT PER IL LOADER
 setTimeout(() => {
@@ -53,7 +50,7 @@ $(document).ready(async function () {
   $("#userArea").click(() => {});
 
   // Area Admin
-  $("#adminArea").click(() => {
+  $("#adminArea").click(async () => {
     hideItem("#containerGenerateTimesheet");
     hideItem("#showTimesheet");
     showItem("#containerAdminArea");
@@ -64,8 +61,7 @@ $(document).ready(async function () {
       $("#passwordRegister").val(securePassword); // Mostra la password nel campo di input
     });
 
-    loadEmployee();
-    loadTimesheetEmployee();
+    setupAdminaArea();
   });
 
   // Previene la chiusura automatica del dropdown quando si clicca all'interno

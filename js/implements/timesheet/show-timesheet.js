@@ -46,9 +46,13 @@ export const showTimesheet = (timesheetRequests, employee, pagination) => {
   hideItem("#loader-show-timesheet");
   showItem("#datatableTimesheet");
   showItem("#titleShowTimesheet");
-  showItem("#paginationContainer");
+  showItem("#paginationTimesheetContainer");
 
-  updatePagination(pagination);
+  updatePagination(
+    pagination,
+    "#paginationTimesheetContainer",
+    "showTimesheetUser"
+  );
   enableLinks();
 
   // Aggiungi il gestore di clic alle azioni

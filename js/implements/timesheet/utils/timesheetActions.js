@@ -45,7 +45,7 @@ async function editTimesheet(month, year) {
       if (responseSaveTimesheet && responseSaveTimesheet.timesheetDto) {
         hideItem("#datatableTimesheet");
         hideItem("#showTimesheet");
-        hideItem("#paginationContainer");
+        hideItem("#paginationTimesheetContainer");
         showItem("#containerGenerateTimesheet");
         generateTimesheet(year, month, responseSaveTimesheet);
       }

@@ -40,7 +40,6 @@ export function showAuthenticatedUI() {
 
 export function initInitialsUsername() {
   var userProfile = getProfile();
-  console.log(userProfile);
   if (!isEmpty(userProfile)) {
     if (userProfile.role === "ADMIN") {
       showItem("#adminArea");

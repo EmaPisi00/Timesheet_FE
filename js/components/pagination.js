@@ -1,17 +1,22 @@
 import { getProfile } from "../implements/auth/auth.js";
 import timesheetService from "../service/timesheet-service.js";
 import { showTimesheet } from "../implements/timesheet/show-timesheet.js";
+import {
+  loadEmployee,
+  loadTimesheetEmployee,
+} from "../implements/profile/admin-area.js";
+import employeeService from "../service/employee-service.js";
 
-export function updatePagination(pagination) {
-  const paginationContainer = $("#paginationContainer");
+export function updatePagination(pagination, tag, operation) {
+  const paginationContainer = $(tag);
 
   // Se non ci sono dati per la paginazione, esci
   if (!pagination || !pagination.totalPages || pagination.totalPages <= 1) {
-    paginationContainer.html(""); // Se c'è solo una pagina, non serve la paginazione
+    paginationContainer.html("");
     return;
   }
 
-  let paginationHTML = '<ul class="pagination justify-content-end">'; // Utilizza la classe 'justify-content-end' per allineare a destra
+  let paginationHTML = '<ul class="pagination justify-content-end">';
 
   // Link "Precedente"
   if (pagination.pageable.pageNumber > 0) {
@@ -53,12 +58,12 @@ export function updatePagination(pagination) {
   $(".page-link").on("click", function (event) {
     event.preventDefault();
     const page = $(this).data("page");
-    loadPage(page); // Carica la pagina selezionata
+    loadPage(page, operation); // Carica la pagina selezionata
   });
 }
 
 // Funzione per caricare la pagina
-export async function loadPage(page) {
+export async function loadPage(page, operation) {
   const userProfile = getProfile(); // Otteniamo il profilo utente per sapere quale dipendente caricare
   const pageable = {
     page: page, // Pagina selezionata
@@ -66,17 +71,48 @@ export async function loadPage(page) {
     sort: "", // Sort se necessario
   };
 
-  try {
-    // Carichiamo i dati del timesheet per la pagina selezionata
-    const response = await timesheetService.findAllByEmployee(
-      pageable,
-      userProfile.uuidEmployee
-    );
+  switch (operation) {
+    case "showTimesheetUser":
+      try {
+        // Carichiamo i dati del timesheet per la pagina selezionata
+        const response = await timesheetService.findAllByEmployee(
+          pageable,
+          userProfile.uuidEmployee
+        );
 
-    // Chiamata alla funzione showTimesheet per visualizzare i dati
-    showTimesheet(response.content, userProfile, response);
-  } catch (error) {
-    console.error("Errore nel caricare i dati del timesheet", error);
-    showToast("Errore nel caricare i dati. Riprova.", "bg-danger");
+        // Chiamata alla funzione showTimesheet per visualizzare i dati
+        showTimesheet(response.content, userProfile, response);
+      } catch (error) {
+        console.error("Errore nel caricare i dati del timesheet", error);
+        showToast("Errore nel caricare i dati. Riprova.", "bg-danger");
+      }
+      break;
+    case "showTimesheetAdmin":
+      try {
+        // Carichiamo i dati del timesheet per la pagina selezionata
+        const response = await timesheetService.findAll(pageable);
+
+        // Chiamata alla funzione showTimesheet per visualizzare i dati
+        loadTimesheetEmployee(response);
+      } catch (error) {
+        console.error("Errore nel caricare i dati del timesheet", error);
+        showToast("Errore nel caricare i dati. Riprova.", "bg-danger");
+      }
+      break;
+    case "showEmployeesAdmin":
+      try {
+        // Carichiamo i dati del timesheet per la pagina selezionata
+        const response = await employeeService.findAll(pageable);
+
+        // Chiamata alla funzione showTimesheet per visualizzare i dati
+        loadEmployee(response);
+      } catch (error) {
+        console.error("Errore nel caricare i dati del timesheet", error);
+        showToast("Errore nel caricare i dati. Riprova.", "bg-danger");
+      }
+      break;
+
+    default:
+      break;
   }
 }
