@@ -151,4 +151,13 @@ select {
 #iconsActionsShowTimesheet {
     font-size: 18px;
     color: #333;
+    transition: transform 0.3s ease-in-out;
+}
+
+#iconsActionsShowTimesheet:hover {
+    transform: scale(2.0);
+}
+
+#actionButtons {
+    margin-right: 20px;
 }

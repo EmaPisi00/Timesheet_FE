@@ -113,7 +113,7 @@ function generateRow(data, timesheetRequest) {
               data-year="${timesheetRequest.year}" 
               data-uuid="${timesheetRequest.uuid}" 
               title="${action.title}" 
-              style="margin-right: 20px;" 
+              id="actionButtons"
               ${disabledAttr}>
         <i class="${action.icon}" id="iconsActionsShowTimesheet" style="font-size: 16px; ${iconColor}"></i>
       </button>
