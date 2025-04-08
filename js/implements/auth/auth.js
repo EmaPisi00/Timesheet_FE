@@ -44,6 +44,7 @@ export async function login(email, password) {
   }
 }
 
+// Funzione di logout
 export async function logout() {
   await userService.logout();
   sessionStorage.removeItem("profile");
