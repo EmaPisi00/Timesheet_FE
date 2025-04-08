@@ -29,3 +29,18 @@ export const Operations = {
   SHOW_TIMESHEET_ADMIN: 2,
   SHOW_EMPLOYEES_ADMIN: 3,
 };
+
+export const ActionsAdminAreaUserCard = {
+  DELETE_USER: 1,
+  EDIT_USER: 2,
+  EDIT_ROLE_USER: 3,
+  SHOW_TIMESHEET_USER: 4,
+};
+
+export const ActionsShowTimesheet = {
+  EDIT_TIMESHEET: 1,
+  SHOW_DETAIL_TIMESHEET: 2,
+  DELETE_TIMESHEET: 3,
+  LOCK_TIMESHEET: 4,
+  DOWNLOAD_TIMESHEET: 5,
+};

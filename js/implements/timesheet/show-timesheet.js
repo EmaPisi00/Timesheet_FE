@@ -3,7 +3,7 @@ import { getMonthName } from "../../utils/date-utils.js";
 import { updatePagination } from "../../components/pagination.js";
 import { enableLinks } from "../../utils/utils.js";
 import { handleActionClick } from "./utils/timesheet-actions.js";
-import { Operations } from "../../utils/constant.js";
+import { ActionsShowTimesheet, Operations } from "../../utils/constant.js";
 
 export const showTimesheet = (timesheetRequests, employee, pagination) => {
   const datatableTimesheet = $("#datatableTimesheet");
@@ -76,19 +76,31 @@ function generateRow(data, timesheetRequest) {
   row += '<td class="actions" id="actionsShowTimesheet">';
 
   const actions = [
-    { icon: "fas fa-edit", title: "Modifica", action: "edit" },
-    { icon: "fas fa-eye", title: "Visualizza Dettaglio", action: "view" },
-    { icon: "fas fa-trash-alt", title: "Cancellazione", action: "delete" },
+    {
+      icon: "fas fa-edit",
+      title: "Modifica",
+      action: ActionsShowTimesheet.EDIT_TIMESHEET,
+    },
+    {
+      icon: "fas fa-eye",
+      title: "Visualizza Dettaglio",
+      action: ActionsShowTimesheet.SHOW_DETAIL_TIMESHEET,
+    },
+    {
+      icon: "fas fa-trash-alt",
+      title: "Cancellazione",
+      action: ActionsShowTimesheet.DELETE_TIMESHEET,
+    },
     {
       icon: "fas fa-lock",
       title: "Blocca",
-      action: "block",
+      action: ActionsShowTimesheet.LOCK_TIMESHEET,
       disableIfLocked: true,
     },
     {
       icon: "fas fa-download",
       title: "Download",
-      action: "download",
+      action: ActionsShowTimesheet.DOWNLOAD_TIMESHEET,
       enableIfLocked: true,
     },
   ];

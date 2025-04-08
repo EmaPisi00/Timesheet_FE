@@ -25,7 +25,7 @@ export class TimesheetService {
 
         if (!isEmpty(response.code)) {
           console.log("Errore, timesheet di riferimento già esistente");
-          console.log(response.code);
+          response.code;
           return response.code;
         } else {
           return response;

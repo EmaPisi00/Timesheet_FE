@@ -4,20 +4,24 @@ import timesheetService from "../../service/timesheet-service.js";
 import userService from "../../service/user-service.js";
 import { getMonthName } from "../../utils/date-utils.js";
 import { isEmpty } from "../../utils/utils.js";
-import { basePageable, Operations } from "../../utils/constant.js";
+import {
+  ActionsAdminAreaUserCard,
+  basePageable,
+  Operations,
+} from "../../utils/constant.js";
 import { handleActionClick } from "./utils/employee-actions.js";
 
 export async function setupAdminaArea() {
   // Chiamata all'API per ottenere i dati dei dipendenti
   const responseEmployee = await employeeService.findAll(basePageable);
-  console.log(responseEmployee);
+  responseEmployee;
   if (!isEmpty(responseEmployee)) {
     loadEmployee(responseEmployee);
   }
 
   // Chiamata all'API per ottenere i timesheet
   const responseTimesheet = await timesheetService.findAll(basePageable);
-  console.log(responseTimesheet);
+  responseTimesheet;
   if (!isEmpty(responseTimesheet)) {
     loadTimesheetEmployee(responseTimesheet);
   }
@@ -62,9 +66,16 @@ export async function loadEmployee(responseEmployee) {
 
   // Caricamento azioni sui dipendenti
 
-  $(".btn-action-employee").on("click", function () {
-    const uuid = $(this).data("uuid");
-    handleActionClick("delete", uuid); // Chiamata alla funzione handleActionClick
+  $(document).on("click", ".dropdown-item", function (e) {
+    e.preventDefault();
+
+    const action = $(this).data("action"); // es: 'delete', 'edit', ecc.
+    const uuid = $(this)
+      .closest(".dropdown")
+      .find(".btn-action-employee")
+      .data("uuid");
+
+    handleActionClick(action, uuid);
   });
 }
 
@@ -107,10 +118,10 @@ const createEmployeeRow = (employee) => {
                 Azioni
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" id="deleteUserFromAdmin" href="#">Elimina Utente</a></li>
-                <li><a class="dropdown-item" href="#">Modifica Dati</a></li>
-                <li><a class="dropdown-item" href="#">Visualizza Timesheet</a></li>
-                <li><a class="dropdown-item" href="#">Modifica Ruolo</a></li>
+                <li><a class="dropdown-item" data-action="${ActionsAdminAreaUserCard.DELETE_USER}" href="#">Elimina Utente</a></li>
+                <li><a class="dropdown-item" data-action="${ActionsAdminAreaUserCard.EDIT_USER}" href="#">Modifica Dati</a></li>
+                <li><a class="dropdown-item" data-action="${ActionsAdminAreaUserCard.SHOW_TIMESHEET_USER}" href="#">Visualizza Timesheet</a></li>
+               <li><a class="dropdown-item" data-action="${ActionsAdminAreaUserCard.EDIT_ROLE_USER}" href="#">Modifica Ruolo</a></li>
               </ul>
             </div>
           </td>

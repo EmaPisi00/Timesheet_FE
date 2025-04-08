@@ -3,22 +3,23 @@ import { getProfile } from "../../auth/auth.js";
 import { hideItem, showItem, showToast } from "../../../utils/utils.js";
 import { generateTimesheet } from "../generate-timesheet.js";
 import timesheetService from "../../../service/timesheet-service.js";
+import { ActionsShowTimesheet } from "../../../utils/constant.js";
 
 export async function handleActionClick(action, month, year, uuid) {
   switch (action) {
-    case "edit":
+    case 1:
       editTimesheet(month, year);
       break;
-    case "view":
+    case 2:
       alert(`Visualizzazione dettagliata del timesheet per ${month}/${year}`);
       break;
-    case "delete":
+    case 3:
       deleteTimesheet(month, year, uuid);
       break;
-    case "block":
+    case 4:
       blockTimesheet(month, year, uuid);
       break;
-    case "download":
+    case 5:
       dowloadTimesheet(uuid);
       break;
     default:
@@ -55,12 +56,22 @@ async function editTimesheet(month, year) {
 
 // Funzione che permette di eliminare un timesheet
 async function deleteTimesheet(month, year, uuid) {
-  showConfirmationModalShowTimesheet("delete", month, year, uuid); // Per eliminare il timesheet
+  showConfirmationModalShowTimesheet(
+    ActionsShowTimesheet.DELETE_TIMESHEET,
+    month,
+    year,
+    uuid
+  );
 }
 
 // Funzione che permette di lockare il timesheet
 async function blockTimesheet(month, year, uuid) {
-  showConfirmationModalShowTimesheet("block", month, year, uuid); // Per bloccare il timesheet
+  showConfirmationModalShowTimesheet(
+    ActionsShowTimesheet.LOCK_TIMESHEET,
+    month,
+    year,
+    uuid
+  );
 }
 
 // Funzione che permette di scaricare il timesheet

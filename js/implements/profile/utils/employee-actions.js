@@ -1,14 +1,18 @@
 import { showConfirmationModalEmployee } from "../../../components/modal.js";
+
 export async function handleActionClick(action, uuid) {
   switch (action) {
-    case "delete":
+    case 1:
       showConfirmationModalEmployee(action, uuid);
       break;
-    case "edit":
+    case 2:
+      alert("CLICK EDIT");
       break;
-    case "showTimesheet":
+    case 3:
+      alert("CLICK ROLE");
       break;
-    case "editRoleUser":
+    case 4:
+      alert("CLICK SHOW");
       break;
     default:
       alert("Azione non riconosciuta");

@@ -26,14 +26,14 @@ export class EmployeeService {
 
         // Se il codice di risposta è 400 (errore)
         if (!isEmpty(response.code) && response.code === 400) {
-          console.log("Errore nel recupero dei timesheet");
+          ("Errore nel recupero dei timesheet");
 
           // Mostra il Toast di errore
           showToast("Errore nel recupero dei timesheet.", "bg-danger");
 
           return response.code;
         } else {
-          console.log(response);
+          response;
           return response;
         }
       } catch (error) {
