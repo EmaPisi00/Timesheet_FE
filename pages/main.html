@@ -368,57 +368,88 @@
           >
             <h4>Utenti</h4>
           </div>
-          <div class="collapse" id="utenzaCard">
+          <div class="collapse text-center" id="utenzaCard">
             <div class="card-body">
-              <!-- Sezione Registrazione -->
-              <h5>Registrazione</h5>
-              <form id="registrationForm">
-                <div class="mb-3 w-50">
-                  <label for="emailRegister" class="form-label">Email</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="emailRegister"
-                    required
-                  />
-                </div>
-                <div class="mb-3 w-50">
-                  <label for="passwordRegister" class="form-label"
-                    >Password</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="passwordRegister"
-                    disabled
-                  />
-                </div>
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  id="generatePassword"
-                >
-                  Genera Password Sicura
-                </button>
-                <button type="submit" class="btn btn-success">
-                  Registra Utente
-                </button>
-              </form>
+              <div class="row">
+                <div class="col-12 col-lg-10 mx-auto">
+                  <!-- Sezione Registrazione -->
+                  <h5 class="text-center">Registrazione</h5>
+                  <form id="registrationForm">
+                    <!-- Email + Password -->
+                    <div class="row mb-3">
+                      <!-- Email -->
+                      <div class="col-md-6">
+                        <label for="emailRegister" class="form-label"
+                          >Email</label
+                        >
+                        <input
+                          type="email"
+                          class="form-control"
+                          id="emailRegister"
+                          required
+                        />
+                      </div>
 
-              <!-- Linea di separazione -->
-              <hr />
+                      <!-- Password + Button -->
+                      <div class="col-md-6">
+                        <label for="passwordRegister" class="form-label"
+                          >Password</label
+                        >
+                        <div class="d-flex gap-2">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="passwordRegister"
+                            disabled
+                          />
+                          <button
+                            type="button"
+                            class="btn btn-primary"
+                            id="generatePassword"
+                          >
+                            Genera
+                          </button>
+                        </div>
+                      </div>
+                    </div>
 
-              <!-- Sezione Abbinamento Utente-Dipendente -->
-              <h5 class="mt-5">Abbinamento Utente-Dipendente</h5>
-              <form id="userAssignmentForm">
-                <div class="mb-3">
-                  <label for="userSelect" class="form-label"
-                    >Seleziona Utente</label
-                  >
-                  <select class="form-select" id="userSelect"></select>
+                    <!-- Nome + Cognome -->
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label for="name" class="form-label">Nome</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="nameRegister"
+                          required
+                        />
+                      </div>
+                      <div class="col-md-6">
+                        <label for="surname" class="form-label">Cognome</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="surnameRegister"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <!-- Bottone finale -->
+                    <div class="row">
+                      <div class="col-12 text-center">
+                        <button
+                          type="submit"
+                          class="btn btn-success w-50"
+                          id="registerEmployee"
+                        >
+                          Registra Utente
+                        </button>
+                      </div>
+                    </div>
+                  </form>
                 </div>
-                <button type="submit" class="btn btn-success">Abbina</button>
-              </form>
+              </div>
 
               <!-- Linea di separazione -->
               <hr />
@@ -430,6 +461,7 @@
                   <tr>
                     <th>Nome</th>
                     <th>Cognome</th>
+                    <th>Email</th>
                     <th>Ruolo</th>
                     <th>Action</th>
                   </tr>

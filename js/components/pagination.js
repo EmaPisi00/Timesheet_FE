@@ -5,6 +5,7 @@ import {
   loadEmployee,
   loadTimesheetEmployee,
 } from "../implements/profile/admin-area.js";
+import { basePageable } from "../utils/constant.js";
 import employeeService from "../service/employee-service.js";
 
 export function updatePagination(pagination, tag, operation) {
@@ -65,18 +66,13 @@ export function updatePagination(pagination, tag, operation) {
 // Funzione per caricare la pagina
 export async function loadPage(page, operation) {
   const userProfile = getProfile(); // Otteniamo il profilo utente per sapere quale dipendente caricare
-  const pageable = {
-    page: page, // Pagina selezionata
-    size: 10, // Numero di risultati per pagina
-    sort: "", // Sort se necessario
-  };
 
   switch (operation) {
     case "showTimesheetUser":
       try {
         // Carichiamo i dati del timesheet per la pagina selezionata
         const response = await timesheetService.findAllByEmployee(
-          pageable,
+          basePageable,
           userProfile.uuidEmployee
         );
 

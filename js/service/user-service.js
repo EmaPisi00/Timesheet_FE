@@ -92,6 +92,36 @@ export class UserService {
       return false;
     }
   }
+
+  async register(employee) {
+    const token = sessionStorage.getItem("authToken");
+    if (!token) {
+      handleUnauthorizedAccess();
+      return false;
+    }
+
+    const registerUrl = Constant.API_URL + "/user/register";
+
+    try {
+      const response = await ajaxCall(registerUrl, "POST", employee, token);
+
+      if (!isEmpty(response) && response.code === 400) {
+        showToast("Errore! Inserire tutti i campi correttamente", "bg-danger");
+        return null;
+      }
+      if (!isEmpty(response) && response.code === 500) {
+        showToast("Errore! E-mail già esistente", "bg-danger");
+        return null;
+      } else {
+        showToast("Utente aggiunto con successo");
+        return response;
+      }
+    } catch (error) {
+      console.error("Verifica token fallita:", error);
+      sessionStorage.removeItem("authToken");
+      return false;
+    }
+  }
 }
 
 // Esportazione predefinita della classe

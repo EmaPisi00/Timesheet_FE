@@ -8,10 +8,18 @@ export const OptionStatusDay = {
   WORKDAY: "Lavorativo",
   HOLIDAY: "Ferie",
   ILLNESS: "Malattia",
-  SMART_WORKING: "Smart-Working"
+  SMART_WORKING: "Smart-Working",
 };
 
-export const OptionStatusDayArray = Object.entries(OptionStatusDay).map(([key, value]) => ({
-  value: key, // Nome dell'enum (es. "WORKDAY")
-  label: value // Traduzione (es. "Lavorativo")
-}));
+export const OptionStatusDayArray = Object.entries(OptionStatusDay).map(
+  ([key, value]) => ({
+    value: key, // Nome dell'enum (es. "WORKDAY")
+    label: value, // Traduzione (es. "Lavorativo")
+  })
+);
+
+export const basePageable = {
+  page: 0,
+  size: 10,
+  sort: "",
+};

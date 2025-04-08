@@ -1,21 +1,18 @@
 import { updatePagination } from "../../components/pagination.js";
 import employeeService from "../../service/employee-service.js";
 import timesheetService from "../../service/timesheet-service.js";
+import userService from "../../service/user-service.js";
 import { getMonthName } from "../../utils/date-utils.js";
+import { isEmpty } from "../../utils/utils.js";
+import { basePageable } from "../../utils/constant.js";
 
 export async function setupAdminaArea() {
-  const pageable = {
-    page: 0,
-    size: 10,
-    sort: "",
-  };
-
   // Chiamata all'API per ottenere i dati dei dipendenti
-  const responseEmployee = await employeeService.findAll(pageable);
+  const responseEmployee = await employeeService.findAll(basePageable);
   loadEmployee(responseEmployee);
 
   // Chiamata all'API per ottenere i timesheet
-  const responseTimesheet = await timesheetService.findAll(pageable);
+  const responseTimesheet = await timesheetService.findAll(basePageable);
   loadTimesheetEmployee(responseTimesheet);
 }
 
@@ -57,12 +54,37 @@ export async function loadEmployee(responseEmployee) {
   );
 }
 
+export async function registerEmployee() {
+  let email = $("#emailRegister").val();
+  let password = $("#passwordRegister").val();
+  let name = $("#nameRegister").val();
+  let surname = $("#surnameRegister").val();
+
+  const employee = {
+    email: email,
+    password: password,
+    name: name,
+    surname: surname,
+  };
+
+  const response = await userService.register(employee);
+
+  if (!isEmpty(response)) {
+    // Resetto il form in caso di inserimento
+    $("#registrationForm")[0].reset();
+
+    const responseEmployee = await employeeService.findAll(basePageable);
+    loadEmployee(responseEmployee);
+  }
+}
+
 // Funzione che crea la riga HTML per un dipendente
 const createEmployeeRow = (employee) => {
   return `
         <tr>
           <td>${employee.name}</td>
           <td>${employee.surname}</td>
+          <td>${employee.user.email}</td>
           <td>${employee.user.role}</td>
           <td>
             <div class="dropdown">

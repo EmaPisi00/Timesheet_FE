@@ -11,8 +11,9 @@ import {
   extractPresenceData,
 } from "./generate-timesheet.js";
 import { showTimesheet } from "./show-timesheet.js";
-import timesheetService from "../../service/timesheet-service.js";
 import { getProfile } from "../auth/auth.js";
+import { basePageable } from "../../utils/constant.js";
+import timesheetService from "../../service/timesheet-service.js";
 
 // Oggetto di risposta per la generazione del timesheet del mese corrente
 let responseSaveTimesheet = null;
@@ -39,13 +40,6 @@ export async function setupTimesheet() {
     hideItem("#containerGenerateTimesheet");
     hideItem("#containerAdminArea");
 
-    // Costruisco un oggetto Pageable per la paginazione
-    const pageable = {
-      page: 0, // Numero della pagina (indice zero-based)
-      size: 10, // Numero di elementi per pagina
-      sort: "year,asc",
-    };
-
     // Mostro il loader
     showItem("#loader-show-timesheet");
 
@@ -58,7 +52,7 @@ export async function setupTimesheet() {
 
     // Chiamata a BE per recuperare tutti i timesheet in base all'utente
     const responseShowTimesheet = await timesheetService.findAllByEmployee(
-      pageable,
+      basePageable,
       userProfile.uuidEmployee
     );
 

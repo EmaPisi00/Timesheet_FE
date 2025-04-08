@@ -13,7 +13,10 @@ import {
 } from "./implements/auth/auth.js";
 import { setupUI, showAuthenticatedUI } from "./implements/ui/ui.js";
 import { setupTimesheet } from "./implements/timesheet/timesheet.js";
-import { setupAdminaArea } from "./implements/profile/admin-area.js";
+import {
+  setupAdminaArea,
+  registerEmployee,
+} from "./implements/profile/admin-area.js";
 
 // SETTO IL TIMEOUT PER IL LOADER
 setTimeout(() => {
@@ -62,6 +65,11 @@ $(document).ready(async function () {
     });
 
     setupAdminaArea();
+
+    $("#registerEmployee").click(() => {
+      // Chiamata all'API per registrare un nuovo dipendente
+      registerEmployee();
+    });
   });
 
   // Previene la chiusura automatica del dropdown quando si clicca all'interno
