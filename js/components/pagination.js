@@ -5,8 +5,8 @@ import {
   loadEmployee,
   loadTimesheetEmployee,
 } from "../implements/profile/admin-area.js";
-import { basePageable } from "../utils/constant.js";
 import employeeService from "../service/employee-service.js";
+import { showToast } from "../utils/utils.js";
 
 export function updatePagination(pagination, tag, operation) {
   const paginationContainer = $(tag);
@@ -55,8 +55,8 @@ export function updatePagination(pagination, tag, operation) {
 
   sessionStorage.setItem("currentPage", pagination.pageable.pageNumber);
 
-  // Aggiungo event listener per il click sui link della paginazione
-  $(".page-link").on("click", function (event) {
+  // Con questo binding limitato al container corrente:
+  paginationContainer.find(".page-link").on("click", function (event) {
     event.preventDefault();
     const page = $(this).data("page");
     loadPage(page, operation); // Carica la pagina selezionata
@@ -67,12 +67,18 @@ export function updatePagination(pagination, tag, operation) {
 export async function loadPage(page, operation) {
   const userProfile = getProfile(); // Otteniamo il profilo utente per sapere quale dipendente caricare
 
+  const pageable = {
+    page: page,
+    size: 10,
+    sort: "",
+  };
+
   switch (operation) {
     case "showTimesheetUser":
       try {
         // Carichiamo i dati del timesheet per la pagina selezionata
         const response = await timesheetService.findAllByEmployee(
-          basePageable,
+          pageable,
           userProfile.uuidEmployee
         );
 

@@ -2,7 +2,7 @@ import { hideItem, showItem } from "../../utils/utils.js";
 import { getMonthName } from "../../utils/date-utils.js";
 import { updatePagination } from "../../components/pagination.js";
 import { enableLinks } from "../../utils/utils.js";
-import { handleActionClick } from "./utils/timesheetActions.js";
+import { handleActionClick } from "./utils/timesheet-actions.js";
 
 export const showTimesheet = (timesheetRequests, employee, pagination) => {
   const datatableTimesheet = $("#datatableTimesheet");

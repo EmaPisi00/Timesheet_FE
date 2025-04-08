@@ -9,11 +9,17 @@ import { basePageable } from "../../utils/constant.js";
 export async function setupAdminaArea() {
   // Chiamata all'API per ottenere i dati dei dipendenti
   const responseEmployee = await employeeService.findAll(basePageable);
-  loadEmployee(responseEmployee);
+  console.log(responseEmployee);
+  if (!isEmpty(responseEmployee)) {
+    loadEmployee(responseEmployee);
+  }
 
   // Chiamata all'API per ottenere i timesheet
   const responseTimesheet = await timesheetService.findAll(basePageable);
-  loadTimesheetEmployee(responseTimesheet);
+  console.log(responseTimesheet);
+  if (!isEmpty(responseTimesheet)) {
+    loadTimesheetEmployee(responseTimesheet);
+  }
 }
 
 export async function loadTimesheetEmployee(responseTimesheet) {
@@ -92,7 +98,7 @@ const createEmployeeRow = (employee) => {
                 Azioni
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Elimina Utente</a></li>
+                <li><a class="dropdown-item" id="deleteUserFromAdmin" href="#">Elimina Utente</a></li>
                 <li><a class="dropdown-item" href="#">Modifica Dati</a></li>
                 <li><a class="dropdown-item" href="#">Visualizza Timesheet</a></li>
                 <li><a class="dropdown-item" href="#">Modifica Ruolo</a></li>

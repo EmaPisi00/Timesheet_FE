@@ -46,6 +46,7 @@ export class TimesheetService {
     }
   }
 
+  // Chiamata API per salvare il timesheet
   async saveTimesheet(timesheetRequestDto) {
     const token = sessionStorage.getItem("authToken");
 
@@ -98,6 +99,7 @@ export class TimesheetService {
     }
   }
 
+  // Chiamata API per prendere tutti i timesheet appartenenti a quell'utente
   async findAllByEmployee(pageable, uuidEmployee) {
     const token = sessionStorage.getItem("authToken");
 
@@ -135,6 +137,7 @@ export class TimesheetService {
     }
   }
 
+  // Chiamata API per eliminare un timesheet
   async deleteTimesheet(uuid) {
     const token = sessionStorage.getItem("authToken");
 
@@ -159,6 +162,7 @@ export class TimesheetService {
     }
   }
 
+  // Chiamata API per bloccare un timesheet
   async blockTimesheet(uuid) {
     const token = sessionStorage.getItem("authToken");
 
@@ -186,6 +190,7 @@ export class TimesheetService {
     }
   }
 
+  // Chiamata API per scaricare un timesheet
   async downloadTimesheet(uuid) {
     const token = sessionStorage.getItem("authToken");
 
@@ -218,7 +223,7 @@ export class TimesheetService {
     }
   }
 
-  // Metodo FindAll
+  // Chiamata API per prendere tutti i timesheet a db non cancellati
   async findAll(pageable) {
     const token = sessionStorage.getItem("authToken");
 
@@ -243,6 +248,31 @@ export class TimesheetService {
         } else {
           return response;
         }
+      } catch (error) {
+        console.error("Errore:", error);
+
+        // richiamare verifyToken se va a buon fine fai il refresh del token altrimenti butti fuori
+        if (!(await userService.verifyToken())) {
+          handleUnauthorizedAccess();
+        }
+      }
+    } else {
+      handleUnauthorizedAccess();
+    }
+  }
+
+  // Chiamata API per cercare un timesheet in base a uno uuid
+  async findByUuid(uuid) {
+    const token = sessionStorage.getItem("authToken");
+
+    if (!isEmpty(token)) {
+      // Costruisce l'URL con i parametri di paginazione
+      const url = `${Constant.API_URL}/timesheet/` + uuid;
+
+      try {
+        // Chiamata AJAX usando async/await (GET request)
+        await ajaxCall(url, "GET", null, token);
+        return true;
       } catch (error) {
         console.error("Errore:", error);
 
