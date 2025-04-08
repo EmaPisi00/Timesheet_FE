@@ -23,3 +23,9 @@ export const basePageable = {
   size: 10,
   sort: "",
 };
+
+export const Operations = {
+  SHOW_TIMESHEET_USER: 1,
+  SHOW_TIMESHEET_ADMIN: 2,
+  SHOW_EMPLOYEES_ADMIN: 3,
+};

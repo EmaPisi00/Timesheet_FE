@@ -3,6 +3,7 @@ import { getMonthName } from "../../utils/date-utils.js";
 import { updatePagination } from "../../components/pagination.js";
 import { enableLinks } from "../../utils/utils.js";
 import { handleActionClick } from "./utils/timesheet-actions.js";
+import { Operations } from "../../utils/constant.js";
 
 export const showTimesheet = (timesheetRequests, employee, pagination) => {
   const datatableTimesheet = $("#datatableTimesheet");
@@ -51,7 +52,7 @@ export const showTimesheet = (timesheetRequests, employee, pagination) => {
   updatePagination(
     pagination,
     "#paginationTimesheetContainer",
-    "showTimesheetUser"
+    Operations.SHOW_TIMESHEET_USER
   );
   enableLinks();
 

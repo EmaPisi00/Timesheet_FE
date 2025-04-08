@@ -36,7 +36,7 @@ async function editTimesheet(month, year) {
         year,
         userProfile.uuidEmployee
       );
-    if (responseSaveTimesheet === 400) {
+    if (responseSaveTimesheet === 500) {
       showToast(
         "Timesheet Bloccato, non è più possibile modificare il mese",
         "bg-danger"

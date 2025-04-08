@@ -133,7 +133,7 @@ export async function setupTimesheet() {
       const elapsedTime = endTime - startTime;
 
       // Se la response della mia chiamata è vuota do un errore altrimenti mostro la tabella con il ritardo calcolato
-      if (responseSaveTimesheet === 400) {
+      if (responseSaveTimesheet === 500) {
         showToast(
           "Timesheet Bloccato, non è più possibile modificare il mese",
           "bg-danger"

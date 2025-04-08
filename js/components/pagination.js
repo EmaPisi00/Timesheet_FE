@@ -7,6 +7,7 @@ import {
 } from "../implements/profile/admin-area.js";
 import employeeService from "../service/employee-service.js";
 import { showToast } from "../utils/utils.js";
+import { Operations } from "../utils/constant.js";
 
 export function updatePagination(pagination, tag, operation) {
   const paginationContainer = $(tag);
@@ -74,7 +75,7 @@ export async function loadPage(page, operation) {
   };
 
   switch (operation) {
-    case "showTimesheetUser":
+    case Operations.SHOW_TIMESHEET_USER:
       try {
         // Carichiamo i dati del timesheet per la pagina selezionata
         const response = await timesheetService.findAllByEmployee(
@@ -89,7 +90,7 @@ export async function loadPage(page, operation) {
         showToast("Errore nel caricare i dati. Riprova.", "bg-danger");
       }
       break;
-    case "showTimesheetAdmin":
+    case Operations.SHOW_TIMESHEET_ADMIN:
       try {
         // Carichiamo i dati del timesheet per la pagina selezionata
         const response = await timesheetService.findAll(pageable);
@@ -101,7 +102,7 @@ export async function loadPage(page, operation) {
         showToast("Errore nel caricare i dati. Riprova.", "bg-danger");
       }
       break;
-    case "showEmployeesAdmin":
+    case Operations.SHOW_EMPLOYEES_ADMIN:
       try {
         // Carichiamo i dati del timesheet per la pagina selezionata
         const response = await employeeService.findAll(pageable);

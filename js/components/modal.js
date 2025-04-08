@@ -3,6 +3,7 @@ import timesheetService from "../service/timesheet-service.js";
 import { loadPage } from "./pagination.js";
 import { getMonthName } from "../utils/date-utils.js";
 import userService from "../service/user-service.js";
+import { Operations } from "../utils/constant.js";
 
 export function showConfirmationModalShowTimesheet(
   actionType,
@@ -88,7 +89,7 @@ export function showConfirmationModalShowTimesheet(
     modal.hide(); // Chiude il modal
 
     let page = sessionStorage.getItem("currentPage") || 0;
-    loadPage(page, "showTimesheetUser");
+    loadPage(page, Operations.SHOW_TIMESHEET_USER);
   });
 
   // Gestisce la chiusura della modale (clic su "Annulla", "X" o fuori)
@@ -164,7 +165,7 @@ export function showConfirmationModalEmployee(actionType, uuid) {
     modal.hide(); // Chiude il modal
 
     let page = sessionStorage.getItem("currentPage") || 0;
-    loadPage(page, "showEmployeesAdmin");
+    loadPage(page, Operations.SHOW_EMPLOYEES_ADMIN);
   });
 
   // Gestisce la chiusura della modale (clic su "Annulla", "X" o fuori)

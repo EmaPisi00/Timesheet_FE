@@ -4,7 +4,7 @@ import timesheetService from "../../service/timesheet-service.js";
 import userService from "../../service/user-service.js";
 import { getMonthName } from "../../utils/date-utils.js";
 import { isEmpty } from "../../utils/utils.js";
-import { basePageable } from "../../utils/constant.js";
+import { basePageable, Operations } from "../../utils/constant.js";
 import { handleActionClick } from "./utils/employee-actions.js";
 
 export async function setupAdminaArea() {
@@ -39,7 +39,7 @@ export async function loadTimesheetEmployee(responseTimesheet) {
   updatePagination(
     responseTimesheet,
     "#paginationTimesheetAdminContainer",
-    "showTimesheetAdmin"
+    Operations.SHOW_EMPLOYEES_ADMIN
   );
 }
 
@@ -57,7 +57,7 @@ export async function loadEmployee(responseEmployee) {
   updatePagination(
     responseEmployee,
     "#paginationEmployeeAdminContainer",
-    "showEmployeesAdmin"
+    Operations.SHOW_EMPLOYEES_ADMIN
   );
 
   // Caricamento azioni sui dipendenti

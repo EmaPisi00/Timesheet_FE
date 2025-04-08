@@ -23,8 +23,6 @@ export class TimesheetService {
         // Chiamata AJAX usando async/await
         const response = await ajaxCall(url, "GET", null, token);
 
-        console.log(response);
-
         if (!isEmpty(response.code)) {
           console.log("Errore, timesheet di riferimento già esistente");
           console.log(response.code);
