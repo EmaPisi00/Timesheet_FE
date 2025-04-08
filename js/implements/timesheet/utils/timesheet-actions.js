@@ -14,13 +14,23 @@ export async function handleActionClick(action, month, year, uuid) {
       alert(`Visualizzazione dettagliata del timesheet per ${month}/${year}`);
       break;
     case 3:
-      deleteTimesheet(month, year, uuid);
+      showConfirmationModalShowTimesheet(
+        ActionsShowTimesheet.DELETE_TIMESHEET,
+        month,
+        year,
+        uuid
+      );
       break;
     case 4:
-      blockTimesheet(month, year, uuid);
+      showConfirmationModalShowTimesheet(
+        ActionsShowTimesheet.LOCK_TIMESHEET,
+        month,
+        year,
+        uuid
+      );
       break;
     case 5:
-      dowloadTimesheet(uuid);
+      await timesheetService.downloadTimesheet(uuid);
       break;
     default:
       alert("Azione non riconosciuta");
@@ -52,29 +62,4 @@ async function editTimesheet(month, year) {
       }
     }
   }
-}
-
-// Funzione che permette di eliminare un timesheet
-async function deleteTimesheet(month, year, uuid) {
-  showConfirmationModalShowTimesheet(
-    ActionsShowTimesheet.DELETE_TIMESHEET,
-    month,
-    year,
-    uuid
-  );
-}
-
-// Funzione che permette di lockare il timesheet
-async function blockTimesheet(month, year, uuid) {
-  showConfirmationModalShowTimesheet(
-    ActionsShowTimesheet.LOCK_TIMESHEET,
-    month,
-    year,
-    uuid
-  );
-}
-
-// Funzione che permette di scaricare il timesheet
-async function dowloadTimesheet(uuid) {
-  await timesheetService.downloadTimesheet(uuid);
 }
