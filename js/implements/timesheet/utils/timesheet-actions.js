@@ -1,4 +1,4 @@
-import { showConfirmationModal } from "../../../components/modal.js";
+import { showConfirmationModalShowTimesheet } from "../../../components/modal.js";
 import { getProfile } from "../../auth/auth.js";
 import { hideItem, showItem, showToast } from "../../../utils/utils.js";
 import { generateTimesheet } from "../generate-timesheet.js";
@@ -55,12 +55,12 @@ async function editTimesheet(month, year) {
 
 // Funzione che permette di eliminare un timesheet
 async function deleteTimesheet(month, year, uuid) {
-  showConfirmationModal("delete", month, year, uuid); // Per eliminare il timesheet
+  showConfirmationModalShowTimesheet("delete", month, year, uuid); // Per eliminare il timesheet
 }
 
 // Funzione che permette di lockare il timesheet
 async function blockTimesheet(month, year, uuid) {
-  showConfirmationModal("block", month, year, uuid); // Per bloccare il timesheet
+  showConfirmationModalShowTimesheet("block", month, year, uuid); // Per bloccare il timesheet
 }
 
 // Funzione che permette di scaricare il timesheet

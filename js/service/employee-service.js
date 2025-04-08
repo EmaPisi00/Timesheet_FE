@@ -33,6 +33,7 @@ export class EmployeeService {
 
           return response.code;
         } else {
+          console.log(response);
           return response;
         }
       } catch (error) {

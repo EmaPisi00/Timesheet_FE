@@ -1,9 +1,8 @@
-import { showConfirmationModal } from "../../../components/modal";
-
-export async function handleActionClick(action, month, year, uuid) {
+import { showConfirmationModalEmployee } from "../../../components/modal.js";
+export async function handleActionClick(action, uuid) {
   switch (action) {
     case "delete":
-      showConfirmationModal(action, month, year, uuid);
+      showConfirmationModalEmployee(action, uuid);
       break;
     case "edit":
       break;

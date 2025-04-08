@@ -29,7 +29,7 @@ export async function ajaxCall(url, method, data = null, token = null) {
     // **Controlla il Content-Type della risposta**
     const contentType = response.headers.get("Content-Type");
 
-    if (contentType.includes("application/json")) {
+    if (contentType && contentType.includes("application/json")) {
       // Se è JSON, parsalo e restituiscilo
       const text = await response.text();
       return text ? JSON.parse(text) : null;

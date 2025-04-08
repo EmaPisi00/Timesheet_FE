@@ -5,6 +5,7 @@ import userService from "../../service/user-service.js";
 import { getMonthName } from "../../utils/date-utils.js";
 import { isEmpty } from "../../utils/utils.js";
 import { basePageable } from "../../utils/constant.js";
+import { handleActionClick } from "./utils/employee-actions.js";
 
 export async function setupAdminaArea() {
   // Chiamata all'API per ottenere i dati dei dipendenti
@@ -58,6 +59,13 @@ export async function loadEmployee(responseEmployee) {
     "#paginationEmployeeAdminContainer",
     "showEmployeesAdmin"
   );
+
+  // Caricamento azioni sui dipendenti
+
+  $(".btn-action-employee").on("click", function () {
+    const uuid = $(this).data("uuid");
+    handleActionClick("delete", uuid); // Chiamata alla funzione handleActionClick
+  });
 }
 
 export async function registerEmployee() {
@@ -94,7 +102,8 @@ const createEmployeeRow = (employee) => {
           <td>${employee.user.role}</td>
           <td>
             <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              <button class="btn btn-secondary dropdown-toggle btn-action-employee" type="button" data-bs-toggle="dropdown"
+                data-uuid="${employee.user.uuid}">
                 Azioni
               </button>
               <ul class="dropdown-menu">

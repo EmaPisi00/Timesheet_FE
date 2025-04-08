@@ -122,6 +122,30 @@ export class UserService {
       return false;
     }
   }
+
+  async deleteUser(uuid) {
+    const token = sessionStorage.getItem("authToken");
+
+    if (!isEmpty(token)) {
+      // Costruisce l'URL con i parametri di paginazione
+      const url = `${Constant.API_URL}/user/` + uuid;
+
+      try {
+        // Chiamata AJAX usando async/await (GET request)
+        await ajaxCall(url, "DELETE", null, token);
+        return true;
+      } catch (error) {
+        console.error("Errore:", error);
+
+        // richiamare verifyToken se va a buon fine fai il refresh del token altrimenti butti fuori
+        if (!(await this.verifyToken())) {
+          handleUnauthorizedAccess();
+        }
+      }
+    } else {
+      handleUnauthorizedAccess();
+    }
+  }
 }
 
 // Esportazione predefinita della classe
