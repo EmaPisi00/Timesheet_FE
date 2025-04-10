@@ -133,11 +133,11 @@ const createTimesheetRow = (timesheet) => {
       <td>${timesheet.surname}</td>
       <td>${getMonthName(timesheet.month)}</td>
       <td>${timesheet.year}</td>
-       <td>${
-         !timesheet.locked
-           ? `<i class="fa-solid fa-xmark"></i>`
-           : `<i class="fa-solid fa-check"></i>`
-       }</td>
+      <td>${
+        !timesheet.locked
+          ? `<i class="fa-solid fa-xmark"></i>`
+          : `<i class="fa-solid fa-check"></i>`
+      }</td>
       <td>
         <div class="dropdown">
           <button class="btn btn-secondary dropdown-toggle btn-action-timesheet" type="button" data-bs-toggle="dropdown"
@@ -152,9 +152,14 @@ const createTimesheetRow = (timesheet) => {
             <li><a class="dropdown-item dropdown-item-timesheet" data-action="${
               ActionsAdminAreaTimesheetCard.DELETE_TIMESHEET
             }" href="#">Elimina</a></li>
-            <li><a class="dropdown-item dropdown-item-timesheet" data-action="${
-              ActionsAdminAreaTimesheetCard.DOWNLOAD_TIMESHEET
-            }" href="#">Scarica</a></li>
+            <li>
+            ${
+              timesheet.locked
+                ? ` <a class="dropdown-item dropdown-item-timesheet" data-action="${ActionsAdminAreaTimesheetCard.DOWNLOAD_TIMESHEET}" href="#">Scarica</> `
+                : ""
+            }
+              </a>
+            </li>
           </ul>
         </div>
       </td>

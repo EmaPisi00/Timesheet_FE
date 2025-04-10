@@ -1,4 +1,5 @@
 import { showConfirmationModalTimesheet } from "../../../components/modal.js";
+import timesheetService from "../../../service/timesheet-service.js";
 
 export async function handleActionClickTimesheetActions(
   action,
@@ -13,7 +14,7 @@ export async function handleActionClickTimesheetActions(
       showConfirmationModalTimesheet(action, uuid, month, year, name, surname);
       break;
     case 2:
-      alert("CLICK EDIT");
+      timesheetService.downloadTimesheet(uuid);
       break;
     default:
       alert("Azione non riconosciuta");
