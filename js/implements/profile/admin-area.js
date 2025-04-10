@@ -9,6 +9,7 @@ import {
   ActionsAdminAreaUserCard,
   basePageable,
   Operations,
+  PaginationName,
 } from "../../utils/constant.js";
 import { handleActionClickEmployeeActions } from "./utils/employee-actions.js";
 import { handleActionClickTimesheetActions } from "./utils/timesheet-actions-admin.js";
@@ -39,9 +40,17 @@ export async function loadTimesheetEmployee(responseTimesheet) {
   // Pulisce la tabella (opzionale, nel caso si voglia sempre aggiornare i dati)
   tableHtml.find("tbody").empty();
 
+  // Calcola l'offset per l'indice basato sulla pagina corrente
+  const currentPage =
+    sessionStorage.getItem(PaginationName.SHOW_TIMESHEET_PAGINATION_ADMIN) || 0; // Ottieni la pagina corrente
+  const pageSize = 10; // Imposta la dimensione della pagina
+  const offset = currentPage * pageSize; // Calcola l'offset
+
   // Aggiungi tutte le righe alla tabella in una volta sola
   const rows = responseTimesheet.content
-    .map((timesheet, index) => createTimesheetRow(timesheet, index)) // Passa l'indice
+    .map((timesheet, index) =>
+      createTimesheetRow(timesheet, offset + index + 1)
+    ) // Passa l'indice
     .join("");
   // Aggiungi le righe alla tabella
   tableHtml.append(`<tbody>${rows}</tbody>`);
@@ -49,7 +58,8 @@ export async function loadTimesheetEmployee(responseTimesheet) {
   updatePagination(
     responseTimesheet,
     "#paginationTimesheetAdminContainer",
-    Operations.SHOW_TIMESHEET_ADMIN
+    Operations.SHOW_TIMESHEET_ADMIN,
+    PaginationName.SHOW_TIMESHEET_PAGINATION_ADMIN
   );
 }
 
@@ -60,16 +70,30 @@ export async function loadEmployee(responseEmployee) {
   // Pulisce la tabella (opzionale, nel caso si voglia sempre aggiornare i dati)
   tableHtml.find("tbody").empty();
 
+  // Calcola l'offset per l'indice basato sulla pagina corrente
+  const currentPage =
+    parseInt(
+      sessionStorage.getItem(PaginationName.SHOW_EMPLOYEES_PAGINATION_ADMIN),
+      10
+    ) || 0;
+
+  const pageSize = 10; // Imposta la dimensione della pagina
+  const offset = currentPage * pageSize; // Calcola l'offset
+
   // Aggiungi tutte le righe alla tabella in una volta sola
   const rows = responseEmployee.content
-    .map((employee, index) => createEmployeeRow(employee, index)) // Passa l'indice
+    .map((employee, index) => createEmployeeRow(employee, offset + index + 1)) // Passa l'indice corretto
     .join("");
+
+  // Aggiungi le righe alla tabella
   tableHtml.append(`<tbody>${rows}</tbody>`);
 
+  // Gestione della paginazione
   updatePagination(
     responseEmployee,
     "#paginationEmployeeAdminContainer",
-    Operations.SHOW_EMPLOYEES_ADMIN
+    Operations.SHOW_EMPLOYEES_ADMIN,
+    PaginationName.SHOW_EMPLOYEES_PAGINATION_ADMIN
   );
 }
 
@@ -92,6 +116,13 @@ export async function registerEmployee() {
     // Resetto il form in caso di inserimento
     $("#registrationForm")[0].reset();
 
+    let page = parseInt(
+      sessionStorage.getItem(PaginationName.SHOW_EMPLOYEES_PAGINATION_ADMIN),
+      10
+    );
+
+    basePageable.page = page;
+
     const responseEmployee = await employeeService.findAll(basePageable);
     loadEmployee(responseEmployee);
   }
@@ -107,7 +138,7 @@ const createEmployeeRow = (employee, index) => {
    */
   return `
         <tr>
-          <td>${index + 1}</td>
+          <td>${index}</td>
           <td>${employee.name}</td>
           <td>${employee.surname}</td>
           <td>${employee.user.email}</td>
@@ -119,9 +150,7 @@ const createEmployeeRow = (employee, index) => {
                 Azioni
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item dropdown-item-employee" data-action="${
-                  ActionsAdminAreaUserCard.DELETE_USER
-                }" href="#">Elimina Utente</a></li>
+                <li><a class="dropdown-item dropdown-item-employee" data-action="${ActionsAdminAreaUserCard.DELETE_USER}" href="#">Elimina Utente</a></li>
               </ul>
             </div>
           </td>
@@ -134,7 +163,7 @@ const createTimesheetRow = (timesheet, index) => {
   // Aggiungi gli altri dettagli del timesheet
   return `
     <tr>
-      <td>${index + 1}</td>
+      <td>${index}</td>
       <td>${timesheet.name}</td>
       <td>${timesheet.surname}</td>
       <td>${getMonthName(timesheet.month)}</td>

@@ -3,7 +3,7 @@ import timesheetService from "../service/timesheet-service.js";
 import { loadPage } from "./pagination.js";
 import { getMonthName } from "../utils/date-utils.js";
 import userService from "../service/user-service.js";
-import { Operations } from "../utils/constant.js";
+import { Operations, PaginationName } from "../utils/constant.js";
 
 // Modale di conferma per operazioni sui timesheet (eliminazione o blocco)
 export function showConfirmationModalShowTimesheet(
@@ -56,7 +56,9 @@ export function showConfirmationModalShowTimesheet(
       }
 
       // Ricarica la pagina attuale
-      let page = sessionStorage.getItem("currentPage") || 0;
+      let page =
+        sessionStorage.getItem(PaginationName.SHOW_TIMESHEET_PAGINATION_USER) ||
+        0;
       loadPage(page, Operations.SHOW_TIMESHEET_USER);
     },
   });
@@ -97,7 +99,10 @@ export function showConfirmationModalEmployee(actionType, uuid) {
       }
 
       // Ricarica la pagina attuale
-      let page = sessionStorage.getItem("currentPage") || 0;
+      let page =
+        sessionStorage.getItem(
+          PaginationName.SHOW_EMPLOYEES_PAGINATION_ADMIN
+        ) || 0;
       loadPage(page, Operations.SHOW_EMPLOYEES_ADMIN);
     },
   });
@@ -143,7 +148,10 @@ export function showConfirmationModalTimesheet(
       }
 
       // Ricarica la pagina attuale
-      let page = sessionStorage.getItem("currentPage") || 0;
+      let page =
+        sessionStorage.getItem(
+          PaginationName.SHOW_TIMESHEET_PAGINATION_ADMIN
+        ) || 0;
       loadPage(page, Operations.SHOW_TIMESHEET_ADMIN);
     },
   });

@@ -49,3 +49,9 @@ export const ActionsShowTimesheet = {
   LOCK_TIMESHEET: 4,
   DOWNLOAD_TIMESHEET: 5,
 };
+
+export const PaginationName = {
+  SHOW_TIMESHEET_PAGINATION_USER: 1,
+  SHOW_TIMESHEET_PAGINATION_ADMIN: 2,
+  SHOW_EMPLOYEES_PAGINATION_ADMIN: 3,
+};

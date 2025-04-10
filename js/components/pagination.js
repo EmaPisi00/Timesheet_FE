@@ -9,7 +9,7 @@ import employeeService from "../service/employee-service.js";
 import { showToast } from "../utils/utils.js";
 import { Operations } from "../utils/constant.js";
 
-export function updatePagination(pagination, tag, operation) {
+export function updatePagination(pagination, tag, operation, paginationName) {
   const paginationContainer = $(tag);
 
   // Se non ci sono dati per la paginazione, esci
@@ -54,13 +54,14 @@ export function updatePagination(pagination, tag, operation) {
   // Inserisco i link nel container di paginazione
   paginationContainer.html(paginationHTML);
 
-  sessionStorage.setItem("currentPage", pagination.pageable.pageNumber);
+  sessionStorage.setItem(paginationName, pagination.pageable.pageNumber);
+  console.log("PAGINATION NUMBER: " + pagination.pageable.pageNumber);
 
-  // Con questo binding limitato al container corrente:
   paginationContainer.find(".page-link").on("click", function (event) {
     event.preventDefault();
     const page = $(this).data("page");
-    loadPage(page, operation); // Carica la pagina selezionata
+    sessionStorage.setItem(paginationName, page); // Salva SUBITO la pagina cliccata
+    loadPage(page, operation); // Poi carica la pagina selezionata
   });
 }
 
