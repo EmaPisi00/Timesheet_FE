@@ -103,6 +103,52 @@ export function showConfirmationModalEmployee(actionType, uuid) {
   });
 }
 
+export function showConfirmationModalTimesheet(
+  actionType,
+  uuid,
+  month,
+  year,
+  name,
+  surname
+) {
+  // Mappatura delle azioni disponibili
+  const actionDetails = {
+    1: {
+      title: "Conferma Eliminazione",
+      message: `Sei sicuro di voler eliminare il timesheet dell'utente <strong>${name} ${surname}</strong> 
+      di <strong>${getMonthName(month)} ${year}</strong>`,
+      confirmButtonClass: "btn-danger",
+      confirmButtonText: "Elimina",
+      actionFunction: () => timesheetService.deleteTimesheet(uuid),
+      successMessage: "Timesheet eliminato con successo!",
+      errorMessage: "Errore durante l'operazione",
+    },
+  };
+
+  const action = actionDetails[actionType];
+  if (!action) return; // Se il tipo azione non è supportato, esce silenziosamente
+
+  // Crea e mostra la modale usando la funzione centrale
+  createConfirmationModal({
+    title: action.title,
+    message: action.message,
+    confirmButtonClass: action.confirmButtonClass,
+    confirmButtonText: action.confirmButtonText,
+    onConfirm: async () => {
+      const response = await action.actionFunction();
+      if (!isEmpty(response)) {
+        showToast(action.successMessage);
+      } else {
+        showToast(action.errorMessage, "bg-danger");
+      }
+
+      // Ricarica la pagina attuale
+      let page = sessionStorage.getItem("currentPage") || 0;
+      loadPage(page, Operations.SHOW_TIMESHEET_ADMIN);
+    },
+  });
+}
+
 // Funzione centrale e riutilizzabile per la creazione e gestione della modale di conferma
 function createConfirmationModal({
   title,
@@ -112,11 +158,13 @@ function createConfirmationModal({
   onConfirm = () => {},
 }) {
   // Rimuove eventuali modali già esistenti
-  $("#dynamicModal").remove();
+  if ($("#dynamicModal").length) {
+    $("#dynamicModal").modal("hide");
+    $("#dynamicModal").remove();
+  }
 
-  // HTML della modale
   const modalHTML = `
-    <div class="modal fade" id="dynamicModal" tabindex="-1" aria-labelledby="dynamicModalLabel" aria-hidden="false">
+    <div class="modal fade" id="dynamicModal" tabindex="-1" aria-labelledby="dynamicModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -133,19 +181,19 @@ function createConfirmationModal({
     </div>
   `;
 
-  // Aggiunge la modale al DOM
   $("body").append(modalHTML);
 
-  // Inizializza e mostra la modale
   const modalElement = document.getElementById("dynamicModal");
   const modal = new bootstrap.Modal(modalElement);
   modal.show();
 
-  // Gestisce il click sul bottone di conferma
-  $("#confirmAction").on("click", async function () {
-    await onConfirm(); // Chiama la funzione passata come `onConfirm`
-    modal.hide(); // Chiude la modale
-  });
+  // Rimuove eventuali vecchi listener e aggiunge il nuovo
+  $("#confirmAction")
+    .off("click")
+    .on("click", async function () {
+      await onConfirm();
+      modal.hide();
+    });
 
   // Pulisce il DOM una volta chiusa la modale
   modalElement.addEventListener("hidden.bs.modal", function () {

@@ -5,11 +5,13 @@ import userService from "../../service/user-service.js";
 import { getMonthName } from "../../utils/date-utils.js";
 import { isEmpty } from "../../utils/utils.js";
 import {
+  ActionsAdminAreaTimesheetCard,
   ActionsAdminAreaUserCard,
   basePageable,
   Operations,
 } from "../../utils/constant.js";
-import { handleActionClick } from "./utils/employee-actions.js";
+import { handleActionClickEmployeeActions } from "./utils/employee-actions.js";
+import { handleActionClickTimesheetActions } from "./utils/timesheet-actions-admin.js";
 
 export async function setupAdminaArea() {
   // Chiamata all'API per ottenere i dati dei dipendenti
@@ -25,6 +27,9 @@ export async function setupAdminaArea() {
   if (!isEmpty(responseTimesheet)) {
     loadTimesheetEmployee(responseTimesheet);
   }
+
+  initializeTimesheetActions();
+  initializeEmployeeActions();
 }
 
 export async function loadTimesheetEmployee(responseTimesheet) {
@@ -43,7 +48,7 @@ export async function loadTimesheetEmployee(responseTimesheet) {
   updatePagination(
     responseTimesheet,
     "#paginationTimesheetAdminContainer",
-    Operations.SHOW_EMPLOYEES_ADMIN
+    Operations.SHOW_TIMESHEET_ADMIN
   );
 }
 
@@ -63,20 +68,6 @@ export async function loadEmployee(responseEmployee) {
     "#paginationEmployeeAdminContainer",
     Operations.SHOW_EMPLOYEES_ADMIN
   );
-
-  // Caricamento azioni sui dipendenti
-
-  $(document).on("click", ".dropdown-item", function (e) {
-    e.preventDefault();
-
-    const action = $(this).data("action"); // es: 'delete', 'edit', ecc.
-    const uuid = $(this)
-      .closest(".dropdown")
-      .find(".btn-action-employee")
-      .data("uuid");
-
-    handleActionClick(action, uuid);
-  });
 }
 
 export async function registerEmployee() {
@@ -118,10 +109,10 @@ const createEmployeeRow = (employee) => {
                 Azioni
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" data-action="${ActionsAdminAreaUserCard.DELETE_USER}" href="#">Elimina Utente</a></li>
-                <li><a class="dropdown-item" data-action="${ActionsAdminAreaUserCard.EDIT_USER}" href="#">Modifica Dati</a></li>
-                <li><a class="dropdown-item" data-action="${ActionsAdminAreaUserCard.SHOW_TIMESHEET_USER}" href="#">Visualizza Timesheet</a></li>
-               <li><a class="dropdown-item" data-action="${ActionsAdminAreaUserCard.EDIT_ROLE_USER}" href="#">Modifica Ruolo</a></li>
+                <li><a class="dropdown-item dropdown-item-employee" data-action="${ActionsAdminAreaUserCard.DELETE_USER}" href="#">Elimina Utente</a></li>
+                <li><a class="dropdown-item dropdown-item-employee" data-action="${ActionsAdminAreaUserCard.EDIT_USER}" href="#">Modifica Dati</a></li>
+                <li><a class="dropdown-item dropdown-item-employee" data-action="${ActionsAdminAreaUserCard.SHOW_TIMESHEET_USER}" href="#">Visualizza Timesheet</a></li>
+               <li><a class="dropdown-item dropdown-item-employee" data-action="${ActionsAdminAreaUserCard.EDIT_ROLE_USER}" href="#">Modifica Ruolo</a></li>
               </ul>
             </div>
           </td>
@@ -133,6 +124,8 @@ const createEmployeeRow = (employee) => {
 const createTimesheetRow = (timesheet) => {
   // Inizia con una riga HTML
   let row = "<tr>";
+
+  console.log(timesheet);
 
   // Aggiungi gli altri dettagli del timesheet
   row += `
@@ -147,13 +140,21 @@ const createTimesheetRow = (timesheet) => {
        }</td>
       <td>
         <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+          <button class="btn btn-secondary dropdown-toggle btn-action-timesheet" type="button" data-bs-toggle="dropdown"
+            data-uuid="${timesheet.uuidTimesheet}"
+            data-month="${timesheet.month}"
+            data-year="${timesheet.year}"
+            data-name="${timesheet.name}"
+            data-surname="${timesheet.surname}">
             Azioni
           </button>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Elimina</a></li>
-            <li><a class="dropdown-item" href="#">Modifica</a></li>
-            <li><a class="dropdown-item" href="#">Scarica</a></li>
+            <li><a class="dropdown-item dropdown-item-timesheet" data-action="${
+              ActionsAdminAreaTimesheetCard.DELETE_TIMESHEET
+            }" href="#">Elimina</a></li>
+            <li><a class="dropdown-item dropdown-item-timesheet" data-action="${
+              ActionsAdminAreaTimesheetCard.DOWNLOAD_TIMESHEET
+            }" href="#">Scarica</a></li>
           </ul>
         </div>
       </td>
@@ -161,3 +162,47 @@ const createTimesheetRow = (timesheet) => {
 
   return row;
 };
+
+function initializeTimesheetActions() {
+  $(document).on("click", ".dropdown-item-timesheet", function (e) {
+    e.preventDefault();
+
+    const action = $(this).data("action");
+    const uuid = $(this)
+      .closest(".dropdown")
+      .find(".btn-action-timesheet")
+      .data("uuid");
+    const month = $(this)
+      .closest(".dropdown")
+      .find(".btn-action-timesheet")
+      .data("month");
+    const year = $(this)
+      .closest(".dropdown")
+      .find(".btn-action-timesheet")
+      .data("year");
+    const name = $(this)
+      .closest(".dropdown")
+      .find(".btn-action-timesheet")
+      .data("name");
+    const surname = $(this)
+      .closest(".dropdown")
+      .find(".btn-action-timesheet")
+      .data("surname");
+
+    handleActionClickTimesheetActions(action, uuid, month, year, name, surname);
+  });
+}
+
+function initializeEmployeeActions() {
+  $(document).on("click", ".dropdown-item-employee", function (e) {
+    e.preventDefault();
+
+    const action = $(this).data("action");
+    const uuid = $(this)
+      .closest(".dropdown")
+      .find(".btn-action-employee")
+      .data("uuid");
+
+    handleActionClickEmployeeActions(action, uuid);
+  });
+}

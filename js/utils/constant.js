@@ -37,6 +37,11 @@ export const ActionsAdminAreaUserCard = {
   SHOW_TIMESHEET_USER: 4,
 };
 
+export const ActionsAdminAreaTimesheetCard = {
+  DELETE_TIMESHEET: 1,
+  DOWNLOAD_TIMESHEET: 2,
+};
+
 export const ActionsShowTimesheet = {
   EDIT_TIMESHEET: 1,
   SHOW_DETAIL_TIMESHEET: 2,

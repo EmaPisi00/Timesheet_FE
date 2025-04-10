@@ -77,6 +77,21 @@ select {
     width: 100%;
 }
 
+.save-timesheet-btn {
+    display: block;
+    /* Per trattare come un blocco */
+    margin: 20px auto;
+    /* Centra orizzontalmente */
+    width: 200px;
+    /* Puoi anche specificare una larghezza se desideri */
+}
+
+#saveTimesheet {
+    margin-bottom: 50px;
+}
+
+/* Tabella di generazione del timesheet (END) */
+
 /* Legenda per la visualizzazione dei colori (START) */
 /* Legenda */
 #tableContainer .legend {
@@ -116,18 +131,7 @@ select {
     color: white;
 }
 
-.save-timesheet-btn {
-    display: block;
-    /* Per trattare come un blocco */
-    margin: 20px auto;
-    /* Centra orizzontalmente */
-    width: 200px;
-    /* Puoi anche specificare una larghezza se desideri */
-}
-
-#saveTimesheet {
-    margin-bottom: 50px;
-}
+/* Legenda per la visualizzazione dei colori (END) */
 
 /* Modifica Tabella di visualizzazione dei timesheet*/
 #datatableTimesheet {

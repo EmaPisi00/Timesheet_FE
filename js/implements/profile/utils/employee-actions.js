@@ -1,6 +1,6 @@
 import { showConfirmationModalEmployee } from "../../../components/modal.js";
 
-export async function handleActionClick(action, uuid) {
+export async function handleActionClickEmployeeActions(action, uuid) {
   switch (action) {
     case 1:
       showConfirmationModalEmployee(action, uuid);
