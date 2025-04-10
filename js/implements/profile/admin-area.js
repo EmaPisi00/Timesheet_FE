@@ -40,8 +40,9 @@ export async function loadTimesheetEmployee(responseTimesheet) {
   tableHtml.find("tbody").empty();
 
   // Aggiungi tutte le righe alla tabella in una volta sola
-  const rows = responseTimesheet.content.map(createTimesheetRow).join("");
-
+  const rows = responseTimesheet.content
+    .map((timesheet, index) => createTimesheetRow(timesheet, index)) // Passa l'indice
+    .join("");
   // Aggiungi le righe alla tabella
   tableHtml.append(`<tbody>${rows}</tbody>`);
 
@@ -60,7 +61,9 @@ export async function loadEmployee(responseEmployee) {
   tableHtml.find("tbody").empty();
 
   // Aggiungi tutte le righe alla tabella in una volta sola
-  const rows = responseEmployee.content.map(createEmployeeRow).join("");
+  const rows = responseEmployee.content
+    .map((employee, index) => createEmployeeRow(employee, index)) // Passa l'indice
+    .join("");
   tableHtml.append(`<tbody>${rows}</tbody>`);
 
   updatePagination(
@@ -95,7 +98,7 @@ export async function registerEmployee() {
 }
 
 // Funzione che crea la riga HTML per un dipendente
-const createEmployeeRow = (employee) => {
+const createEmployeeRow = (employee, index) => {
   /**
    * DA AGGIUNGERE QUESTE AZIONI NEL DROPDOWN MENU
    *  <li><a class="dropdown-item dropdown-item-employee" data-action="${ActionsAdminAreaUserCard.EDIT_USER}" href="#">Modifica Dati</a></li>
@@ -104,6 +107,7 @@ const createEmployeeRow = (employee) => {
    */
   return `
         <tr>
+          <td>${index + 1}</td>
           <td>${employee.name}</td>
           <td>${employee.surname}</td>
           <td>${employee.user.email}</td>
@@ -115,7 +119,9 @@ const createEmployeeRow = (employee) => {
                 Azioni
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item dropdown-item-employee" data-action="${ActionsAdminAreaUserCard.DELETE_USER}" href="#">Elimina Utente</a></li>
+                <li><a class="dropdown-item dropdown-item-employee" data-action="${
+                  ActionsAdminAreaUserCard.DELETE_USER
+                }" href="#">Elimina Utente</a></li>
               </ul>
             </div>
           </td>
@@ -124,14 +130,11 @@ const createEmployeeRow = (employee) => {
 };
 
 // Funzione che crea la riga HTML per un timesheet
-const createTimesheetRow = (timesheet) => {
-  // Inizia con una riga HTML
-  let row = "<tr>";
-
-  console.log(timesheet);
-
+const createTimesheetRow = (timesheet, index) => {
   // Aggiungi gli altri dettagli del timesheet
-  row += `
+  return `
+    <tr>
+      <td>${index + 1}</td>
       <td>${timesheet.name}</td>
       <td>${timesheet.surname}</td>
       <td>${getMonthName(timesheet.month)}</td>
@@ -167,8 +170,6 @@ const createTimesheetRow = (timesheet) => {
         </div>
       </td>
     </tr>`;
-
-  return row;
 };
 
 function initializeTimesheetActions() {
