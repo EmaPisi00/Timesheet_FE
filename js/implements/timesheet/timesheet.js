@@ -32,6 +32,7 @@ export async function setupTimesheet() {
     showItem("#containerGenerateTimesheet");
     hideItem("#showTimesheet");
     hideItem("#containerAdminArea");
+    hideItem("#userAreaContainer");
   });
 
   // Visualizzo la tabella di tutti i timesheet salvati a DB
@@ -39,6 +40,7 @@ export async function setupTimesheet() {
     showItem("#showTimesheet");
     hideItem("#containerGenerateTimesheet");
     hideItem("#containerAdminArea");
+    hideItem("#userAreaContainer");
 
     // Mostro il loader
     showItem("#loader-show-timesheet");
@@ -171,6 +173,7 @@ function hideItemsBeforeLoadTable() {
   hideItem("#tableContainer");
   hideItem("#saveTimesheet");
   hideItem("#containerAdminArea");
+  hideItem("#userAreaContainer");
 }
 
 function showItemsAfterLoadTable() {

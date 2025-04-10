@@ -24,6 +24,7 @@ export async function setupAdminaArea() {
   $("#adminArea").click(async () => {
     hideItem("#containerGenerateTimesheet");
     hideItem("#showTimesheet");
+    hideItem("#userAreaContainer");
     showItem("#containerAdminArea");
   });
 
