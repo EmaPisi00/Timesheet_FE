@@ -17,6 +17,7 @@ import {
   setupAdminaArea,
   registerEmployee,
 } from "./implements/profile/admin-area.js";
+import { setupUseraArea } from "./implements/profile/user-area.js";
 
 // SETTO IL TIMEOUT PER IL LOADER
 setTimeout(() => {
@@ -26,8 +27,16 @@ setTimeout(() => {
 
 $(document).ready(async function () {
   $('[data-bs-toggle="tooltip"]').tooltip(); // Inizializza tutti i tooltips
+
+  // Previene la chiusura automatica del dropdown quando si clicca all'interno
+  $(".dropdown-menu-user").click(function (event) {
+    event.stopPropagation();
+  });
+
+  // Setup della UI
   setupUI();
 
+  // Controllo se l'utente è loggato altrimenti mostro la pagina di login
   if (await checkToken()) {
     showAuthenticatedUI();
     setupTimesheet();
@@ -37,6 +46,7 @@ $(document).ready(async function () {
       const email = $("#email").val();
       const password = $("#password").val();
 
+      // Se l'autenticazione va a buon carico tutta la UI
       if (await login(email, password)) {
         showAuthenticatedUI();
         setupTimesheet();
@@ -49,31 +59,6 @@ $(document).ready(async function () {
     logout();
   });
 
-  // Area Utente
-  $("#userArea").click(() => {});
-
-  // Area Admin
-  $("#adminArea").click(async () => {
-    hideItem("#containerGenerateTimesheet");
-    hideItem("#showTimesheet");
-    showItem("#containerAdminArea");
-
-    // Aggiungi l'evento al bottone per generare la password
-    $("#generatePassword").click(function () {
-      const securePassword = generateSecurePassword(16); // lunghezza della password sicura
-      $("#passwordRegister").val(securePassword); // Mostra la password nel campo di input
-    });
-
-    setupAdminaArea();
-
-    $("#registerEmployee").click(() => {
-      // Chiamata all'API per registrare un nuovo dipendente
-      registerEmployee();
-    });
-  });
-
-  // Previene la chiusura automatica del dropdown quando si clicca all'interno
-  $(".dropdown-menu-user").click(function (event) {
-    event.stopPropagation();
-  });
+  setupAdminaArea();
+  setupUseraArea();
 });

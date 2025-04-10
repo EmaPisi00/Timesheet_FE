@@ -1,9 +1,11 @@
 import { updatePagination } from "../../components/pagination.js";
-import employeeService from "../../service/employee-service.js";
-import timesheetService from "../../service/timesheet-service.js";
-import userService from "../../service/user-service.js";
 import { getMonthName } from "../../utils/date-utils.js";
-import { isEmpty } from "../../utils/utils.js";
+import {
+  isEmpty,
+  hideItem,
+  showItem,
+  generateSecurePassword,
+} from "../../utils/utils.js";
 import {
   ActionsAdminAreaTimesheetCard,
   ActionsAdminAreaUserCard,
@@ -13,18 +15,37 @@ import {
 } from "../../utils/constant.js";
 import { handleActionClickEmployeeActions } from "./utils/employee-actions.js";
 import { handleActionClickTimesheetActions } from "./utils/timesheet-actions-admin.js";
+import employeeService from "../../service/employee-service.js";
+import timesheetService from "../../service/timesheet-service.js";
+import userService from "../../service/user-service.js";
 
 export async function setupAdminaArea() {
+  // Carico l'Area Admin
+  $("#adminArea").click(async () => {
+    hideItem("#containerGenerateTimesheet");
+    hideItem("#showTimesheet");
+    showItem("#containerAdminArea");
+  });
+
+  // Chiamata all'API per registrare un nuovo dipendente
+  $("#registerEmployee").click(() => {
+    registerEmployee();
+  });
+
+  // Aggiungi l'evento al bottone per generare la password
+  $("#generatePassword").click(function () {
+    const securePassword = generateSecurePassword(16); // lunghezza della password sicura
+    $("#passwordRegister").val(securePassword); // Mostra la password nel campo di input
+  });
+
   // Chiamata all'API per ottenere i dati dei dipendenti
   const responseEmployee = await employeeService.findAll(basePageable);
-  responseEmployee;
   if (!isEmpty(responseEmployee)) {
     loadEmployee(responseEmployee);
   }
 
   // Chiamata all'API per ottenere i timesheet
   const responseTimesheet = await timesheetService.findAll(basePageable);
-  responseTimesheet;
   if (!isEmpty(responseTimesheet)) {
     loadTimesheetEmployee(responseTimesheet);
   }
