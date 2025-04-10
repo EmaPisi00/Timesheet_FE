@@ -96,6 +96,12 @@ export async function registerEmployee() {
 
 // Funzione che crea la riga HTML per un dipendente
 const createEmployeeRow = (employee) => {
+  /**
+   * DA AGGIUNGERE QUESTE AZIONI NEL DROPDOWN MENU
+   *  <li><a class="dropdown-item dropdown-item-employee" data-action="${ActionsAdminAreaUserCard.EDIT_USER}" href="#">Modifica Dati</a></li>
+                <li><a class="dropdown-item dropdown-item-employee" data-action="${ActionsAdminAreaUserCard.SHOW_TIMESHEET_USER}" href="#">Visualizza Timesheet</a></li>
+               <li><a class="dropdown-item dropdown-item-employee" data-action="${ActionsAdminAreaUserCard.EDIT_ROLE_USER}" href="#">Modifica Ruolo</a></li>
+   */
   return `
         <tr>
           <td>${employee.name}</td>
@@ -110,9 +116,6 @@ const createEmployeeRow = (employee) => {
               </button>
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item dropdown-item-employee" data-action="${ActionsAdminAreaUserCard.DELETE_USER}" href="#">Elimina Utente</a></li>
-                <li><a class="dropdown-item dropdown-item-employee" data-action="${ActionsAdminAreaUserCard.EDIT_USER}" href="#">Modifica Dati</a></li>
-                <li><a class="dropdown-item dropdown-item-employee" data-action="${ActionsAdminAreaUserCard.SHOW_TIMESHEET_USER}" href="#">Visualizza Timesheet</a></li>
-               <li><a class="dropdown-item dropdown-item-employee" data-action="${ActionsAdminAreaUserCard.EDIT_ROLE_USER}" href="#">Modifica Ruolo</a></li>
               </ul>
             </div>
           </td>
