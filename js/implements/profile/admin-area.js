@@ -29,6 +29,7 @@ export async function setupAdminaArea() {
     loadTimesheetEmployee(responseTimesheet);
   }
 
+  // Inizializzo i button con le action nella tabella dei timesheet e dipendenti lato admin
   initializeTimesheetActions();
   initializeEmployeeActions();
 }
@@ -42,7 +43,10 @@ export async function loadTimesheetEmployee(responseTimesheet) {
 
   // Calcola l'offset per l'indice basato sulla pagina corrente
   const currentPage =
-    sessionStorage.getItem(PaginationName.SHOW_TIMESHEET_PAGINATION_ADMIN) || 0; // Ottieni la pagina corrente
+    parseInt(
+      sessionStorage.getItem(PaginationName.SHOW_TIMESHEET_PAGINATION_ADMIN),
+      10
+    ) || 0;
   const pageSize = 10; // Imposta la dimensione della pagina
   const offset = currentPage * pageSize; // Calcola l'offset
 
