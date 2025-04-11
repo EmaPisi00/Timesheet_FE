@@ -360,50 +360,7 @@
       <div class="container mt-2" id="userAreaContainer">
         <h2 class="text-center mb-4">Area Utente</h2>
         <div class="row justify-content-center align-items-start">
-          <div class="col-md-8">
-            <!-- Card Profilo -->
-            <div class="card mb-4 bg-white">
-              <div
-                class="card-header bg-white text-dark"
-                style="cursor: pointer"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseProfileForm"
-                aria-expanded="false"
-                aria-controls="collapseProfileForm"
-              >
-                Modifica Profilo
-              </div>
-              <div id="collapseProfileForm" class="collapse">
-                <div class="card-body">
-                  <form id="profileForm">
-                    <div class="mb-3">
-                      <label for="firstName" class="form-label">Nome</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="firstName"
-                        required
-                      />
-                    </div>
-                    <div class="mb-3">
-                      <label for="lastName" class="form-label">Cognome</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="lastName"
-                        required
-                      />
-                    </div>
-                    <div class="text-center">
-                      <button type="submit" class="btn btn-success">
-                        Salva modifiche
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-
+          <div class="col-md-8 w-75">
             <!-- Card Cambio Password -->
             <div class="card bg-white">
               <div
@@ -414,7 +371,7 @@
                 aria-expanded="false"
                 aria-controls="collapsePasswordForm"
               >
-                Cambia Password
+                Reset Password
               </div>
               <div id="collapsePasswordForm" class="collapse">
                 <div class="card-body">
@@ -458,23 +415,22 @@
       <!-- Area Admin-->
       <div class="container mt-2" id="containerAdminArea">
         <h2 class="text-center mb-4">Area Admin</h2>
-
-        <!-- Card Utenza -->
-        <div class="card mt-4 bg-white mx-auto" style="max-width: 100%">
-          <div
-            class="card-header bg-white text-dark"
-            style="cursor: pointer"
-            data-bs-toggle="collapse"
-            data-bs-target="#utenzaCard"
-            aria-expanded="false"
-            aria-controls="utenzaCard"
-          >
-            <h4>Utenti</h4>
-          </div>
-          <div class="collapse text-center" id="utenzaCard">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-12 col-lg-10 mx-auto">
+        <div class="row justify-content-center align-items-start">
+          <div class="col-md-8 w-75">
+            <!-- User Card -->
+            <div class="card bg-white">
+              <div
+                class="card-header bg-white text-dark"
+                style="cursor: pointer"
+                data-bs-toggle="collapse"
+                data-bs-target="#utenzaCard"
+                aria-expanded="false"
+                aria-controls="utenzaCard"
+              >
+                Utenti
+              </div>
+              <div class="collapse text-center" id="utenzaCard">
+                <div class="card-body">
                   <!-- Sezione Registrazione -->
                   <h5 class="text-center">Registrazione</h5>
                   <form id="registrationForm">
@@ -551,71 +507,72 @@
                       </div>
                     </div>
                   </form>
+
+                  <!-- Linea di separazione -->
+                  <hr />
+
+                  <!-- Sezione Dipendenti -->
+                  <h5 class="mt-5">Dipendenti</h5>
+                  <table class="table" id="employeeTable">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Nome</th>
+                        <th>Cognome</th>
+                        <th>Email</th>
+                        <th>Ruolo</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Le righe verranno aggiunte dinamicamente -->
+                    </tbody>
+                  </table>
+                  <!-- Paginazione -->
+                  <div
+                    id="paginationEmployeeAdminContainer"
+                    class="mt-4 text-center"
+                  ></div>
                 </div>
               </div>
-
-              <!-- Linea di separazione -->
-              <hr />
-
-              <!-- Sezione Dipendenti -->
-              <h5 class="mt-5">Dipendenti</h5>
-              <table class="table" id="employeeTable">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Nome</th>
-                    <th>Cognome</th>
-                    <th>Email</th>
-                    <th>Ruolo</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Le righe verranno aggiunte dinamicamente -->
-                </tbody>
-              </table>
-              <!-- Paginazione -->
-              <div
-                id="paginationEmployeeAdminContainer"
-                class="mt-4 text-center"
-              ></div>
             </div>
-          </div>
-        </div>
 
-        <!-- Card Timesheet -->
-        <div class="card mt-4 mb-5 bg-white">
-          <div
-            class="card-header bg-white text-dark"
-            style="cursor: pointer"
-            data-bs-toggle="collapse"
-            data-bs-target="#timesheetCard"
-            aria-expanded="false"
-            aria-controls="timesheetCard"
-          >
-            <h5>Timesheet</h5>
-          </div>
-
-          <div class="collapse" id="timesheetCard">
-            <div class="card-body">
-              <table class="table" id="adminTimesheetTable">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Nome</th>
-                    <th>Cognome</th>
-                    <th>Mese</th>
-                    <th>Anno</th>
-                    <th>Blocco</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-              </table>
-              <!-- Paginazione -->
+            <!-- Timesheet Card-->
+            <div class="card bg-white mt-5">
               <div
-                id="paginationTimesheetAdminContainer"
-                class="mt-4 text-center"
-              ></div>
+                class="card-header bg-white text-dark"
+                style="cursor: pointer"
+                data-bs-toggle="collapse"
+                data-bs-target="#timesheetCard"
+                aria-expanded="false"
+                aria-controls="timesheetCard"
+              >
+                Timesheet
+              </div>
+              <div class="collapse text-center" id="timesheetCard">
+                <div class="card-body">
+                  <!-- Sezione Dipendenti -->
+                  <h5 class="mt-5">Dipendenti</h5>
+                  <table class="table" id="adminTimesheetTable">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Nome</th>
+                        <th>Cognome</th>
+                        <th>Mese</th>
+                        <th>Anno</th>
+                        <th>Blocco</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                  </table>
+                  <!-- Paginazione -->
+                  <div
+                    id="paginationTimesheetAdminContainer"
+                    class="mt-4 text-center"
+                  ></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
