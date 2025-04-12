@@ -15,3 +15,15 @@
     z-index: 1;
     position: relative;
 }
+
+#toggleResetPasswordIcon,
+#toggleConfirmPasswordIcon {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+    z-index: 2;
+}

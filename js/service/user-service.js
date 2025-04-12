@@ -146,6 +146,41 @@ export class UserService {
       handleUnauthorizedAccess();
     }
   }
+
+  async resetPassword(resetPassword) {
+    const token = sessionStorage.getItem("authToken");
+    if (!token) {
+      handleUnauthorizedAccess();
+      return false;
+    }
+
+    const resetPasswordUrl = Constant.API_URL + "/user/resetPassword";
+
+    try {
+      const response = await ajaxCall(
+        resetPasswordUrl,
+        "POST",
+        resetPassword,
+        token
+      );
+
+      if (!isEmpty(response) && response.code === 500) {
+        showToast(
+          "Errore! In questo momento non puoi cambiare l'email, attendi...",
+          "bg-danger"
+        );
+        return null;
+      } else {
+        showToast("Password Cambiata con successo");
+        showToast("Effettua nuovamente il login");
+        return response;
+      }
+    } catch (error) {
+      console.error("Verifica token fallita:", error);
+      sessionStorage.removeItem("authToken");
+      return false;
+    }
+  }
 }
 
 // Esportazione predefinita della classe

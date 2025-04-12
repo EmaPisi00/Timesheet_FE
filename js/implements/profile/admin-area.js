@@ -26,6 +26,18 @@ export async function setupAdminaArea() {
     hideItem("#showTimesheet");
     hideItem("#userAreaContainer");
     showItem("#containerAdminArea");
+
+    // Chiamata all'API per ottenere i dati dei dipendenti
+    const responseEmployee = await employeeService.findAll(basePageable);
+    if (!isEmpty(responseEmployee)) {
+      loadEmployee(responseEmployee);
+    }
+
+    // Chiamata all'API per ottenere i timesheet
+    const responseTimesheet = await timesheetService.findAll(basePageable);
+    if (!isEmpty(responseTimesheet)) {
+      loadTimesheetEmployee(responseTimesheet);
+    }
   });
 
   // Chiamata all'API per registrare un nuovo dipendente
@@ -38,18 +50,6 @@ export async function setupAdminaArea() {
     const securePassword = generateSecurePassword(16); // lunghezza della password sicura
     $("#passwordRegister").val(securePassword); // Mostra la password nel campo di input
   });
-
-  // Chiamata all'API per ottenere i dati dei dipendenti
-  const responseEmployee = await employeeService.findAll(basePageable);
-  if (!isEmpty(responseEmployee)) {
-    loadEmployee(responseEmployee);
-  }
-
-  // Chiamata all'API per ottenere i timesheet
-  const responseTimesheet = await timesheetService.findAll(basePageable);
-  if (!isEmpty(responseTimesheet)) {
-    loadTimesheetEmployee(responseTimesheet);
-  }
 
   // Inizializzo i button con le action nella tabella dei timesheet e dipendenti lato admin
   initializeTimesheetActions();

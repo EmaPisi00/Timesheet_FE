@@ -3,6 +3,7 @@ import {
   hideItem,
   isEmpty,
   showItem,
+  showToast,
 } from "../../utils/utils.js";
 import userService from "../../service/user-service.js";
 
@@ -63,4 +64,17 @@ export function getProfile() {
   }
 
   handleUnauthorizedAccess();
+}
+
+export function resetPassowrd(resetPasswordObject) {
+  if (!isEmpty(resetPasswordObject)) {
+    const responseResetPassword =
+      userService.resetPassword(resetPasswordObject);
+
+    if (!isEmpty(responseResetPassword)) {
+      setTimeout(() => {
+        logout();
+      }, 3000);
+    }
+  }
 }

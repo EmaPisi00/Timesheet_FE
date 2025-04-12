@@ -380,27 +380,57 @@
                       <label for="newPassword" class="form-label"
                         >Nuova Password</label
                       >
-                      <input
-                        type="password"
-                        class="form-control"
-                        id="newPassword"
-                        required
-                      />
+                      <div class="position-relative">
+                        <input
+                          type="password"
+                          class="form-control pe-5"
+                          id="newPassword"
+                          required
+                        />
+                        <img
+                          src="/assets/images/eye-icon.png"
+                          alt="Mostra/Nascondi"
+                          id="toggleResetPasswordIcon"
+                          class="toggle-eye"
+                        />
+                      </div>
+                      <ul
+                        id="passwordErrors"
+                        class="form-text text-danger mt-1 mb-0"
+                      ></ul>
                     </div>
+
                     <div class="mb-3">
                       <label for="confirmPassword" class="form-label"
                         >Conferma Password</label
                       >
-                      <input
-                        type="password"
-                        class="form-control"
-                        id="confirmPassword"
-                        required
-                      />
-                      <div class="form-text" id="passwordHelp"></div>
+                      <div class="position-relative">
+                        <input
+                          type="password"
+                          class="form-control pe-5"
+                          id="confirmPassword"
+                          required
+                        />
+                        <img
+                          src="/assets/images/eye-icon.png"
+                          alt="Mostra/Nascondi"
+                          id="toggleConfirmPasswordIcon"
+                          class="toggle-eye"
+                        />
+                      </div>
+                      <div
+                        id="matchError"
+                        class="form-text text-danger mt-1"
+                      ></div>
                     </div>
+
                     <div class="text-center">
-                      <button type="submit" class="btn btn-success">
+                      <button
+                        type="submit"
+                        class="btn btn-success"
+                        id="submitBtn"
+                        disabled
+                      >
                         Aggiorna Password
                       </button>
                     </div>
@@ -418,7 +448,7 @@
         <div class="row justify-content-center align-items-start">
           <div class="col-md-8 w-75">
             <!-- User Card -->
-            <div class="card bg-white">
+            <div class="card bg-white mt-5">
               <div
                 class="card-header bg-white text-dark"
                 style="cursor: pointer"
@@ -538,7 +568,7 @@
             </div>
 
             <!-- Timesheet Card-->
-            <div class="card bg-white mt-5">
+            <div class="card bg-white mt-5 mb-5">
               <div
                 class="card-header bg-white text-dark"
                 style="cursor: pointer"
